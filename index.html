@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  <title>CaseCraft · Email Variant Studio</title>
+  <!-- Favicon (root folder: genarator.png) -->
+  <link rel="icon" type="image/png" href="genarator.png">
+  <!-- Font Awesome 6 (free icons) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- SheetJS (XLSX / CSV) -->
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
+  <!-- jsPDF + autoTable for PDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.6.0/jspdf.plugin.autotable.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: system-ui, 'Segoe UI', 'Inter', -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
+    }
+
+    body {
+      background: white;
+      padding-bottom: 75px;   /* space for bottom menu */
+    }
+
+    /* main container */
+    .app-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px 18px 30px 18px;
+    }
+
+    /* sections */
+    .section {
+      display: none;
+      animation: fade 0.2s ease;
+    }
+    .section.active-section {
+      display: block;
+    }
+
+    @keyframes fade {
+      from { opacity: 0; transform: translateY(4px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+
+    /* cards / modules */
+    .card {
+      background: #ffffff;
+      border-radius: 28px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.03), 0 2px 6px rgba(0, 0, 0, 0.05);
+      padding: 20px 18px;
+      margin-bottom: 24px;
+      border: 1px solid #f0f0f0;
+    }
+
+    .generator-title {
+      font-size: 1.65rem;
+      font-weight: 600;
+      letter-spacing: -0.3px;
+      background: linear-gradient(135deg, #1e2b3c, #2c4a6e);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      margin-bottom: 4px;
+    }
+
+    .label {
+      font-weight: 500;
+      color: #1f2a3e;
+      margin-bottom: 8px;
+      display: block;
+      font-size: 0.9rem;
+    }
+
+    input, .count-input {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 24px;
+      font-size: 1rem;
+      transition: 0.2s;
+      background: #fefefe;
+      outline: none;
+    }
+    input:focus {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
+    }
+
+    .row-flex {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      align-items: flex-end;
+    }
+    .count-wrapper {
+      flex: 2;
+      min-width: 120px;
+    }
+    .generate-btn {
+      background: #0f172a;
+      color: white;
+      border: none;
+      padding: 0 26px;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.2s;
+      height: 54px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+    .generate-btn:hover {
+      background: #1e293b;
+      transform: scale(0.97);
+    }
+
+    .action-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 20px;
+      margin-bottom: 20px;
+      border-top: 1px solid #edf2f7;
+      padding-top: 20px;
+    }
+    .small-btn {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      padding: 8px 16px;
+      border-radius: 40px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #1e293b;
+    }
+    .small-btn i {
+      font-size: 0.9rem;
+    }
+    .small-btn:hover {
+      background: #f1f5f9;
+      border-color: #cbd5e1;
+    }
+    .download-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .download-btn {
+      background: white;
+      border: 1px solid #cbd5e1;
+      border-radius: 30px;
+      padding: 6px 16px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .download-btn i {
+      margin-right: 6px;
+    }
+    .download-btn:hover {
+      background: #f1f5f9;
+      border-color: #94a3b8;
+    }
+
+    .result-area {
+      background: #fafcff;
+      border-radius: 24px;
+      border: 1px solid #eef2ff;
+      max-height: 340px;
+      overflow-y: auto;
+      padding: 8px 4px;
+    }
+    .email-item {
+      font-family: 'SF Mono', monospace;
+      padding: 10px 14px;
+      border-bottom: 1px solid #ecf3fa;
+      font-size: 0.85rem;
+      word-break: break-all;
+      color: #0f172a;
+    }
+    .email-item:last-child {
+      border-bottom: none;
+    }
+    .empty-msg {
+      text-align: center;
+      color: #94a3b8;
+      padding: 32px 16px;
+    }
+
+    /* temp mail site list */
+    .site-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .site-card {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 14px 18px;
+      border: 1px solid #eef2ff;
+      transition: 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      text-decoration: none;
+      color: #1e293b;
+    }
+    .site-card:hover {
+      background: #f8fafd;
+      border-color: #cbdff2;
+      transform: translateX(4px);
+    }
+    .site-name {
+      font-weight: 600;
+      font-size: 1rem;
+    }
+    .site-url {
+      font-size: 0.7rem;
+      color: #3b82f6;
+      font-family: monospace;
+    }
+    .about-text {
+      line-height: 1.5;
+      color: #2d3a4b;
+    }
+    .warning {
+      background: #fff8e7;
+      border-left: 4px solid #facc15;
+      padding: 14px;
+      border-radius: 20px;
+      margin: 20px 0;
+      font-size: 0.9rem;
+    }
+
+    /* bottom menu (mobile) */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(255,255,255,0.96);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid #eef2ff;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 10px 16px 20px;
+      box-shadow: 0 -4px 12px rgba(0,0,0,0.02);
+      z-index: 1000;
+    }
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      background: transparent;
+      border: none;
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: #6c757d;
+      transition: 0.2s;
+      cursor: pointer;
+      padding: 6px 12px;
+      border-radius: 40px;
+    }
+    .nav-item i {
+      font-size: 1.5rem;
+    }
+    .nav-item.active {
+      color: #0f172a;
+      background: #f1f5f9;
+    }
+    .install-suggestion {
+      background: #eef2ff;
+      border-radius: 60px;
+      padding: 10px 18px;
+      text-align: center;
+      margin-top: 20px;
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .install-suggestion i {
+      font-size: 1.2rem;
+    }
+    footer {
+      font-size: 0.7rem;
+      text-align: center;
+      color: #8e9aaf;
+      margin-top: 24px;
+    }
+    @media (max-width: 500px) {
+      .app-container {
+        padding: 16px 14px 30px 14px;
+      }
+      .generate-btn {
+        padding: 0 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="app-container">
+  <!-- MAIL GENERATOR SECTION -->
+  <div id="mailGenSection" class="section active-section">
+    <div class="card">
+      <div class="generator-title">✉️ CaseCraft Generator</div>
+      <p style="color: #475569; margin-bottom: 20px; font-size: 0.85rem;">Base email → random uppercase/lowercase variants • digits stay unchanged</p>
+
+      <label class="label">📧 Base email address</label>
+      <input type="email" id="baseEmailInput" placeholder="example: user123@domain.com" value="demo.user99@example.com">
+
+      <div class="row-flex" style="margin-top: 18px;">
+        <div class="count-wrapper">
+          <label class="label" style="margin-bottom: 4px;">🔢 How many variants? (max 1000)</label>
+          <input type="number" id="countInput" class="count-input" min="1" max="1000" value="8" step="1">
+        </div>
+        <button id="generateBtn" class="generate-btn"><i class="fas fa-magic"></i> Generate</button>
+      </div>
+
+      <!-- action row: copy all + clear all -->
+      <div class="action-buttons">
+        <button id="copyAllBtn" class="small-btn"><i class="far fa-copy"></i> Copy all</button>
+        <button id="clearAllBtn" class="small-btn"><i class="fas fa-trash-alt"></i> Clear all</button>
+      </div>
+
+      <!-- result display -->
+      <div id="resultContainer" class="result-area">
+        <div class="empty-msg"><i class="far fa-envelope"></i> No emails generated. Set base & count, hit Generate.</div>
+      </div>
+
+      <!-- download row: CSV, Excel, PDF -->
+      <div style="margin-top: 20px;">
+        <div class="label" style="margin-bottom: 8px;">💾 Export results</div>
+        <div class="download-group">
+          <button id="downloadCsvBtn" class="download-btn"><i class="fas fa-file-csv"></i> CSV</button>
+          <button id="downloadExcelBtn" class="download-btn"><i class="fas fa-file-excel"></i> Excel (XLSX)</button>
+          <button id="downloadPdfBtn" class="download-btn"><i class="fas fa-file-pdf"></i> PDF</button>
+        </div>
+      </div>
+    </div>
+    <!-- install suggestion inside generator section (global style) -->
+    <div class="install-suggestion">
+      <i class="fas fa-download"></i> <span>📱 Install as Web App: use "Add to Home Screen" / "Install App" from browser menu.</span>
+    </div>
+    <footer>⚡ Letter case randomization · Digits protected · Up to 1k variants</footer>
+  </div>
+
+  <!-- TEMP MAIL SITES SECTION -->
+  <div id="tempMailSection" class="section">
+    <div class="card">
+      <h2 style="font-weight: 600; margin-bottom: 8px;">📬 Temporary Email Services</h2>
+      <p style="color: #4b5563; margin-bottom: 20px;">Click any service → instant temp inbox (opens new tab)</p>
+      <div class="site-grid" id="tempSitesList"></div>
+      <div class="warning" style="margin-top: 24px;">
+        <i class="fas fa-shield-alt"></i> <strong>Privacy note:</strong> Use disposable emails for testing & privacy. Never abuse these services.
+      </div>
+    </div>
+  </div>
+
+  <!-- ABOUT SECTION -->
+  <div id="aboutSection" class="section">
+    <div class="card">
+      <h2 style="font-weight: 600;">✨ About CaseCraft</h2>
+      <div class="about-text" style="margin-top: 16px;">
+        <p><strong>Smart Email Variant Engine</strong> — transforms any email address by randomly toggling the case of every letter while keeping digits and symbols exactly as they are. Perfect for testing case-sensitivity, spam filters, or bulk email simulations. </p>
+        <br>
+        <p>✔️ <strong>Limit up to 1000 variations</strong> · One-click copy · Clear all · Export to CSV, Excel, PDF.<br>
+        ✔️ <strong>Ethical use only</strong>: This tool is designed for developers, QA engineers, and security researchers. Do not use for harassment, spamming, or any malicious activity.</p>
+        <div class="warning">
+          <i class="fas fa-exclamation-triangle"></i> <strong>Responsible usage:</strong> Generating emails for unethical purposes violates platform policies. Use with integrity.
+        </div>
+        <p style="margin-top: 12px;">📌 Temporary mail section collects reliable disposable inbox services for anonymous testing. Always respect terms of service.</p>
+        <p style="margin-top: 20px; font-size: 0.85rem;">💡 <strong>Web APK suggestion:</strong> You can install this page as an app on your device (Chrome: ⋮ → Install app, Safari: Share → Add to Home Screen).</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BOTTOM MOBILE MENU (FIXED) -->
+<div class="bottom-nav">
+  <button class="nav-item" data-section="mailGen"><i class="fas fa-magic"></i><span>Generator</span></button>
+  <button class="nav-item" data-section="tempMail"><i class="fas fa-envelope-open-text"></i><span>Temp Mail</span></button>
+  <button class="nav-item" data-section="about"><i class="fas fa-info-circle"></i><span>About</span></button>
+</div>
+
+<script>
+  // ---------- DOM elements ----------
+  const mailGenSection = document.getElementById('mailGenSection');
+  const tempMailSection = document.getElementById('tempMailSection');
+  const aboutSection = document.getElementById('aboutSection');
+  const navBtns = document.querySelectorAll('.nav-item');
+
+  // Switch section function
+  function switchSection(sectionId) {
+    mailGenSection.classList.remove('active-section');
+    tempMailSection.classList.remove('active-section');
+    aboutSection.classList.remove('active-section');
+    if (sectionId === 'mailGen') mailGenSection.classList.add('active-section');
+    if (sectionId === 'tempMail') tempMailSection.classList.add('active-section');
+    if (sectionId === 'about') aboutSection.classList.add('active-section');
+    
+    navBtns.forEach(btn => {
+      const btnSection = btn.getAttribute('data-section');
+      if ((btnSection === 'mailGen' && sectionId === 'mailGen') ||
+          (btnSection === 'tempMail' && sectionId === 'tempMail') ||
+          (btnSection === 'about' && sectionId === 'about')) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    });
+  }
+
+  navBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const target = btn.getAttribute('data-section');
+      switchSection(target);
+    });
+  });
+
+  // ---------- MAIL GENERATOR LOGIC ----------
+  let currentGeneratedEmails = [];   // store array of strings
+
+  // generate single variant: keep digits unchanged, random case for letters
+  function generateSingleVariant(baseEmail) {
+    let result = '';
+    for (let i = 0; i < baseEmail.length; i++) {
+      const ch = baseEmail[i];
+      // if letter (A-Z / a-z) -> randomly upper/lower
+      if (/[A-Za-z]/.test(ch)) {
+        const random = Math.random() < 0.5;
+        result += random ? ch.toUpperCase() : ch.toLowerCase();
+      } else {
+        // digits & special characters stay exactly same
+        result += ch;
+      }
+    }
+    return result;
+  }
+
+  // generate N variants from base
+  function generateVariants(base, count) {
+    const variants = [];
+    for (let i = 0; i < count; i++) {
+      variants.push(generateSingleVariant(base));
+    }
+    return variants;
+  }
+
+  // render email list inside resultContainer
+  function renderEmailList(emails) {
+    const container = document.getElementById('resultContainer');
+    if (!emails.length) {
+      container.innerHTML = `<div class="empty-msg"><i class="far fa-envelope"></i> No emails generated. Set base & count, hit Generate.</div>`;
+      return;
+    }
+    const html = emails.map(email => `<div class="email-item"><i class="far fa-envelope" style="margin-right: 10px; color:#3b82f6;"></i>${escapeHtml(email)}</div>`).join('');
+    container.innerHTML = html;
+  }
+
+  // simple escape for XSS
+  function escapeHtml(str) {
+    return str.replace(/[&<>]/g, function(m) {
+      if (m === '&') return '&amp;';
+      if (m === '<') return '&lt;';
+      if (m === '>') return '&gt;';
+      return m;
+    }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+      return c;
+    });
+  }
+
+  // generate action
+  const generateBtn = document.getElementById('generateBtn');
+  const baseEmailInput = document.getElementById('baseEmailInput');
+  const countInput = document.getElementById('countInput');
+  const copyAllBtn = document.getElementById('copyAllBtn');
+  const clearAllBtn = document.getElementById('clearAllBtn');
+
+  function refreshGenerator() {
+    renderEmailList(currentGeneratedEmails);
+  }
+
+  generateBtn.addEventListener('click', () => {
+    let base = baseEmailInput.value.trim();
+    if (base === "") {
+      alert("Please enter a base email address (e.g., user@example.com)");
+      return;
+    }
+    let count = parseInt(countInput.value, 10);
+    if (isNaN(count) || count < 1) count = 1;
+    if (count > 1000) {
+      alert("Maximum limit is 1000 emails. Your value reduced to 1000.");
+      count = 1000;
+      countInput.value = 1000;
+    }
+    // Validate email-like structure simple
+    if (!base.includes('@') || base.length < 4) {
+      if (!confirm("The input doesn't look like a standard email. Continue anyway?")) return;
+    }
+    const generated = generateVariants(base, count);
+    currentGeneratedEmails = generated;
+    renderEmailList(currentGeneratedEmails);
+  });
+
+  // clear all
+  clearAllBtn.addEventListener('click', () => {
+    if (currentGeneratedEmails.length && confirm("Clear all generated emails?")) {
+      currentGeneratedEmails = [];
+      renderEmailList([]);
+    } else if (!currentGeneratedEmails.length) {
+      alert("Nothing to clear.");
+    }
+  });
+
+  // copy all emails (newline separated)
+  copyAllBtn.addEventListener('click', async () => {
+    if (!currentGeneratedEmails.length) {
+      alert("No emails to copy. Generate some first.");
+      return;
+    }
+    const textToCopy = currentGeneratedEmails.join('\n');
+    try {
+      await navigator.clipboard.writeText(textToCopy);
+      alert(`Copied ${currentGeneratedEmails.length} email(s) to clipboard.`);
+    } catch (err) {
+      alert("Failed to copy. Manual copy?");
+    }
+  });
+
+  // ----- DOWNLOAD FUNCTIONS (CSV, XLSX, PDF) -----
+  function getEmailArrayForExport() {
+    if (!currentGeneratedEmails.length) {
+      alert("No emails to export. Generate emails first.");
+      return null;
+    }
+    return currentGeneratedEmails;
+  }
+
+  // CSV download
+  function downloadCSV() {
+    const emails = getEmailArrayForExport();
+    if (!emails) return;
+    const rows = [["Generated Emails"], ...emails.map(e => [e])];
+    const csvContent = rows.map(row => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(",")).join("\n");
+    const blob = new Blob(["\uFEFF" + csvContent], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    link.href = url;
+    link.setAttribute("download", "email_variants.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  }
+
+  // Excel XLSX using SheetJS
+  function downloadExcel() {
+    const emails = getEmailArrayForExport();
+    if (!emails) return;
+    const worksheetData = [["Generated Emails"], ...emails.map(e => [e])];
+    const ws = XLSX.utils.aoa_to_sheet(worksheetData);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "EmailVariants");
+    XLSX.writeFile(wb, `email_variants_${Date.now()}.xlsx`);
+  }
+
+  // PDF using jsPDF + autoTable
+  async function downloadPDF() {
+    const emails = getEmailArrayForExport();
+    if (!emails) return;
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(16);
+    doc.text("Email Variant Generator Report", 14, 15);
+    doc.setFontSize(10);
+    doc.text(`Total variants: ${emails.length} • Generated from base: ${baseEmailInput.value || "custom"}`, 14, 25);
+    const tableBody = emails.map(email => [email]);
+    doc.autoTable({
+      startY: 32,
+      head: [["Generated Emails"]],
+      body: tableBody,
+      margin: { left: 14, right: 14 },
+      styles: { fontSize: 9, cellPadding: 2, overflow: 'linebreak' },
+      columnStyles: { 0: { cellWidth: 'auto' } },
+      didParseCell: function(data) {
+        if (data.section === 'body') data.cell.styles.fontSize = 8;
+      }
+    });
+    doc.save(`email_variants_${Date.now()}.pdf`);
+  }
+
+  document.getElementById('downloadCsvBtn').addEventListener('click', downloadCSV);
+  document.getElementById('downloadExcelBtn').addEventListener('click', downloadExcel);
+  document.getElementById('downloadPdfBtn').addEventListener('click', downloadPDF);
+
+  // ---------- TEMP MAIL SITES (hardcoded quality list) ----------
+  const tempSites = [
+    { name: "Temp-Mail.org", url: "https://temp-mail.org/" },
+    { name: "10 Minute Mail", url: "https://10minutemail.com/" },
+    { name: "Guerrilla Mail", url: "https://www.guerrillamail.com/" },
+    { name: "Mailinator", url: "https://www.mailinator.com/" },
+    { name: "Mohmal", url: "https://mohmal.com/en" },
+    { name: "EmailOnDeck", url: "https://www.emailondeck.com/" },
+    { name: "TempInbox", url: "https://tempinbox.com/" },
+    { name: "Throwaway Email", url: "https://throwaway.email/" }
+  ];
+
+  function buildTempMailList() {
+    const container = document.getElementById('tempSitesList');
+    if (!container) return;
+    container.innerHTML = '';
+    tempSites.forEach(site => {
+      const anchor = document.createElement('a');
+      anchor.href = site.url;
+      anchor.target = '_blank';
+      anchor.rel = 'noopener noreferrer';
+      anchor.className = 'site-card';
+      anchor.innerHTML = `
+        <div><span class="site-name">${site.name}</span><div class="site-url">${new URL(site.url).hostname}</div></div>
+        <i class="fas fa-external-link-alt" style="color:#94a3b8;"></i>
+      `;
+      container.appendChild(anchor);
+    });
+  }
+  buildTempMailList();
+
+  // ensure bottom menu default active is generator
+  switchSection('mailGen');
+
+  // small demo: prefill some example result (optional but empty, but user sees welcome)
+  // initial empty array, but user sees demo message. Good.
+  // Also update digits & letter test: ensure digits protected.
+  console.log("Ready — digit protection active, max 1000 variants, random case letters only.");
+</script>
+</body>
+</html>
