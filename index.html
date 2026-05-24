@@ -3,15 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-  <meta name="theme-color" content="#ffffff">
-  <title>CaseCraft · Email Variant Studio</title>
+  <meta name="theme-color" content="#0f172a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="CaseForge">
+  <title>CaseForge · Email Variant Studio</title>
   <!-- Favicon (root folder: genarator.png) -->
   <link rel="icon" type="image/png" href="genarator.png">
-  <!-- Font Awesome 6 (free icons) -->
+  <link rel="apple-touch-icon" href="genarator.png">
+  <!-- Font Awesome 6 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <!-- SheetJS (XLSX / CSV) -->
+  <!-- SheetJS & jsPDF -->
   <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
-  <!-- jsPDF + autoTable for PDF -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.6.0/jspdf.plugin.autotable.min.js"></script>
   <style>
@@ -24,17 +27,15 @@
 
     body {
       background: white;
-      padding-bottom: 75px;   /* space for bottom menu */
+      padding-bottom: 75px;
     }
 
-    /* main container */
     .app-container {
       max-width: 800px;
       margin: 0 auto;
       padding: 20px 18px 30px 18px;
     }
 
-    /* sections */
     .section {
       display: none;
       animation: fade 0.2s ease;
@@ -48,7 +49,6 @@
       to { opacity: 1; transform: translateY(0);}
     }
 
-    /* cards / modules */
     .card {
       background: #ffffff;
       border-radius: 28px;
@@ -146,9 +146,7 @@
       gap: 8px;
       color: #1e293b;
     }
-    .small-btn i {
-      font-size: 0.9rem;
-    }
+    .small-btn i { font-size: 0.9rem; }
     .small-btn:hover {
       background: #f1f5f9;
       border-color: #cbd5e1;
@@ -169,9 +167,7 @@
       cursor: pointer;
       transition: all 0.2s;
     }
-    .download-btn i {
-      margin-right: 6px;
-    }
+    .download-btn i { margin-right: 6px; }
     .download-btn:hover {
       background: #f1f5f9;
       border-color: #94a3b8;
@@ -193,16 +189,13 @@
       word-break: break-all;
       color: #0f172a;
     }
-    .email-item:last-child {
-      border-bottom: none;
-    }
+    .email-item:last-child { border-bottom: none; }
     .empty-msg {
       text-align: center;
       color: #94a3b8;
       padding: 32px 16px;
     }
 
-    /* temp mail site list */
     .site-grid {
       display: flex;
       flex-direction: column;
@@ -226,19 +219,13 @@
       border-color: #cbdff2;
       transform: translateX(4px);
     }
-    .site-name {
-      font-weight: 600;
-      font-size: 1rem;
-    }
+    .site-name { font-weight: 600; font-size: 1rem; }
     .site-url {
       font-size: 0.7rem;
       color: #3b82f6;
       font-family: monospace;
     }
-    .about-text {
-      line-height: 1.5;
-      color: #2d3a4b;
-    }
+    .about-text { line-height: 1.5; color: #2d3a4b; }
     .warning {
       background: #fff8e7;
       border-left: 4px solid #facc15;
@@ -248,7 +235,7 @@
       font-size: 0.9rem;
     }
 
-    /* bottom menu (mobile) */
+    /* bottom menu */
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -279,28 +266,47 @@
       padding: 6px 12px;
       border-radius: 40px;
     }
-    .nav-item i {
-      font-size: 1.5rem;
-    }
+    .nav-item i { font-size: 1.5rem; }
     .nav-item.active {
       color: #0f172a;
       background: #f1f5f9;
     }
-    .install-suggestion {
+
+    /* INSTALL BUTTON PREMIUM */
+    .install-panel {
       background: #eef2ff;
       border-radius: 60px;
-      padding: 10px 18px;
-      text-align: center;
+      padding: 8px 12px;
       margin-top: 20px;
-      font-size: 0.8rem;
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 10px;
+      justify-content: space-between;
       flex-wrap: wrap;
+      gap: 12px;
     }
-    .install-suggestion i {
-      font-size: 1.2rem;
+    .install-btn {
+      background: #0f172a;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: 0.2s;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+    .install-btn i { font-size: 1rem; }
+    .install-btn:hover {
+      background: #1e293b;
+      transform: scale(0.97);
+    }
+    .install-info {
+      font-size: 0.75rem;
+      color: #334155;
     }
     footer {
       font-size: 0.7rem;
@@ -309,12 +315,8 @@
       margin-top: 24px;
     }
     @media (max-width: 500px) {
-      .app-container {
-        padding: 16px 14px 30px 14px;
-      }
-      .generate-btn {
-        padding: 0 20px;
-      }
+      .app-container { padding: 16px 14px 30px 14px; }
+      .generate-btn { padding: 0 20px; }
     }
   </style>
 </head>
@@ -338,18 +340,15 @@
         <button id="generateBtn" class="generate-btn"><i class="fas fa-magic"></i> Generate</button>
       </div>
 
-      <!-- action row: copy all + clear all -->
       <div class="action-buttons">
         <button id="copyAllBtn" class="small-btn"><i class="far fa-copy"></i> Copy all</button>
         <button id="clearAllBtn" class="small-btn"><i class="fas fa-trash-alt"></i> Clear all</button>
       </div>
 
-      <!-- result display -->
       <div id="resultContainer" class="result-area">
         <div class="empty-msg"><i class="far fa-envelope"></i> No emails generated. Set base & count, hit Generate.</div>
       </div>
 
-      <!-- download row: CSV, Excel, PDF -->
       <div style="margin-top: 20px;">
         <div class="label" style="margin-bottom: 8px;">💾 Export results</div>
         <div class="download-group">
@@ -359,9 +358,13 @@
         </div>
       </div>
     </div>
-    <!-- install suggestion inside generator section (global style) -->
-    <div class="install-suggestion">
-      <i class="fas fa-download"></i> <span>📱 Install as Web App: use "Add to Home Screen" / "Install App" from browser menu.</span>
+
+    <!-- FIXED: ACTIVE INSTALL BUTTON + PWA -->
+    <div class="install-panel" id="installPanel">
+      <div class="install-info">
+        <i class="fas fa-mobile-alt"></i> <strong>Install as App</strong> — faster access, offline ready
+      </div>
+      <button id="installAppBtn" class="install-btn"><i class="fas fa-download"></i> Install Now</button>
     </div>
     <footer>⚡ Letter case randomization · Digits protected · Up to 1k variants</footer>
   </div>
@@ -391,13 +394,13 @@
           <i class="fas fa-exclamation-triangle"></i> <strong>Responsible usage:</strong> Generating emails for unethical purposes violates platform policies. Use with integrity.
         </div>
         <p style="margin-top: 12px;">📌 Temporary mail section collects reliable disposable inbox services for anonymous testing. Always respect terms of service.</p>
-        <p style="margin-top: 20px; font-size: 0.85rem;">💡 <strong>Web APK suggestion:</strong> You can install this page as an app on your device (Chrome: ⋮ → Install app, Safari: Share → Add to Home Screen).</p>
+        <p style="margin-top: 20px; font-size: 0.85rem;">💡 <strong>Progressive Web App:</strong> This site is fully installable. Click "Install Now" on the home tab or use browser's "Add to Home Screen".</p>
       </div>
     </div>
   </div>
 </div>
 
-<!-- BOTTOM MOBILE MENU (FIXED) -->
+<!-- BOTTOM MOBILE MENU -->
 <div class="bottom-nav">
   <button class="nav-item" data-section="mailGen"><i class="fas fa-magic"></i><span>Generator</span></button>
   <button class="nav-item" data-section="tempMail"><i class="fas fa-envelope-open-text"></i><span>Temp Mail</span></button>
@@ -405,255 +408,283 @@
 </div>
 
 <script>
-  // ---------- DOM elements ----------
-  const mailGenSection = document.getElementById('mailGenSection');
-  const tempMailSection = document.getElementById('tempMailSection');
-  const aboutSection = document.getElementById('aboutSection');
-  const navBtns = document.querySelectorAll('.nav-item');
-
-  // Switch section function
-  function switchSection(sectionId) {
-    mailGenSection.classList.remove('active-section');
-    tempMailSection.classList.remove('active-section');
-    aboutSection.classList.remove('active-section');
-    if (sectionId === 'mailGen') mailGenSection.classList.add('active-section');
-    if (sectionId === 'tempMail') tempMailSection.classList.add('active-section');
-    if (sectionId === 'about') aboutSection.classList.add('active-section');
+  (function() {
+    // ---------- PWA: MANIFEST + SERVICE WORKER + INSTALL PROMPT ----------
+    let deferredPrompt = null;
+    const installBtn = document.getElementById('installAppBtn');
     
-    navBtns.forEach(btn => {
-      const btnSection = btn.getAttribute('data-section');
-      if ((btnSection === 'mailGen' && sectionId === 'mailGen') ||
-          (btnSection === 'tempMail' && sectionId === 'tempMail') ||
-          (btnSection === 'about' && sectionId === 'about')) {
-        btn.classList.add('active');
-      } else {
-        btn.classList.remove('active');
-      }
-    });
-  }
-
-  navBtns.forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      const target = btn.getAttribute('data-section');
-      switchSection(target);
-    });
-  });
-
-  // ---------- MAIL GENERATOR LOGIC ----------
-  let currentGeneratedEmails = [];   // store array of strings
-
-  // generate single variant: keep digits unchanged, random case for letters
-  function generateSingleVariant(baseEmail) {
-    let result = '';
-    for (let i = 0; i < baseEmail.length; i++) {
-      const ch = baseEmail[i];
-      // if letter (A-Z / a-z) -> randomly upper/lower
-      if (/[A-Za-z]/.test(ch)) {
-        const random = Math.random() < 0.5;
-        result += random ? ch.toUpperCase() : ch.toLowerCase();
-      } else {
-        // digits & special characters stay exactly same
-        result += ch;
-      }
-    }
-    return result;
-  }
-
-  // generate N variants from base
-  function generateVariants(base, count) {
-    const variants = [];
-    for (let i = 0; i < count; i++) {
-      variants.push(generateSingleVariant(base));
-    }
-    return variants;
-  }
-
-  // render email list inside resultContainer
-  function renderEmailList(emails) {
-    const container = document.getElementById('resultContainer');
-    if (!emails.length) {
-      container.innerHTML = `<div class="empty-msg"><i class="far fa-envelope"></i> No emails generated. Set base & count, hit Generate.</div>`;
-      return;
-    }
-    const html = emails.map(email => `<div class="email-item"><i class="far fa-envelope" style="margin-right: 10px; color:#3b82f6;"></i>${escapeHtml(email)}</div>`).join('');
-    container.innerHTML = html;
-  }
-
-  // simple escape for XSS
-  function escapeHtml(str) {
-    return str.replace(/[&<>]/g, function(m) {
-      if (m === '&') return '&amp;';
-      if (m === '<') return '&lt;';
-      if (m === '>') return '&gt;';
-      return m;
-    }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
-      return c;
-    });
-  }
-
-  // generate action
-  const generateBtn = document.getElementById('generateBtn');
-  const baseEmailInput = document.getElementById('baseEmailInput');
-  const countInput = document.getElementById('countInput');
-  const copyAllBtn = document.getElementById('copyAllBtn');
-  const clearAllBtn = document.getElementById('clearAllBtn');
-
-  function refreshGenerator() {
-    renderEmailList(currentGeneratedEmails);
-  }
-
-  generateBtn.addEventListener('click', () => {
-    let base = baseEmailInput.value.trim();
-    if (base === "") {
-      alert("Please enter a base email address (e.g., user@example.com)");
-      return;
-    }
-    let count = parseInt(countInput.value, 10);
-    if (isNaN(count) || count < 1) count = 1;
-    if (count > 1000) {
-      alert("Maximum limit is 1000 emails. Your value reduced to 1000.");
-      count = 1000;
-      countInput.value = 1000;
-    }
-    // Validate email-like structure simple
-    if (!base.includes('@') || base.length < 4) {
-      if (!confirm("The input doesn't look like a standard email. Continue anyway?")) return;
-    }
-    const generated = generateVariants(base, count);
-    currentGeneratedEmails = generated;
-    renderEmailList(currentGeneratedEmails);
-  });
-
-  // clear all
-  clearAllBtn.addEventListener('click', () => {
-    if (currentGeneratedEmails.length && confirm("Clear all generated emails?")) {
-      currentGeneratedEmails = [];
-      renderEmailList([]);
-    } else if (!currentGeneratedEmails.length) {
-      alert("Nothing to clear.");
-    }
-  });
-
-  // copy all emails (newline separated)
-  copyAllBtn.addEventListener('click', async () => {
-    if (!currentGeneratedEmails.length) {
-      alert("No emails to copy. Generate some first.");
-      return;
-    }
-    const textToCopy = currentGeneratedEmails.join('\n');
-    try {
-      await navigator.clipboard.writeText(textToCopy);
-      alert(`Copied ${currentGeneratedEmails.length} email(s) to clipboard.`);
-    } catch (err) {
-      alert("Failed to copy. Manual copy?");
-    }
-  });
-
-  // ----- DOWNLOAD FUNCTIONS (CSV, XLSX, PDF) -----
-  function getEmailArrayForExport() {
-    if (!currentGeneratedEmails.length) {
-      alert("No emails to export. Generate emails first.");
-      return null;
-    }
-    return currentGeneratedEmails;
-  }
-
-  // CSV download
-  function downloadCSV() {
-    const emails = getEmailArrayForExport();
-    if (!emails) return;
-    const rows = [["Generated Emails"], ...emails.map(e => [e])];
-    const csvContent = rows.map(row => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(",")).join("\n");
-    const blob = new Blob(["\uFEFF" + csvContent], { type: "text/csv;charset=utf-8;" });
-    const link = document.createElement("a");
-    const url = URL.createObjectURL(blob);
-    link.href = url;
-    link.setAttribute("download", "email_variants.csv");
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-  }
-
-  // Excel XLSX using SheetJS
-  function downloadExcel() {
-    const emails = getEmailArrayForExport();
-    if (!emails) return;
-    const worksheetData = [["Generated Emails"], ...emails.map(e => [e])];
-    const ws = XLSX.utils.aoa_to_sheet(worksheetData);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "EmailVariants");
-    XLSX.writeFile(wb, `email_variants_${Date.now()}.xlsx`);
-  }
-
-  // PDF using jsPDF + autoTable
-  async function downloadPDF() {
-    const emails = getEmailArrayForExport();
-    if (!emails) return;
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(16);
-    doc.text("Email Variant Generator Report", 14, 15);
-    doc.setFontSize(10);
-    doc.text(`Total variants: ${emails.length} • Generated from base: ${baseEmailInput.value || "custom"}`, 14, 25);
-    const tableBody = emails.map(email => [email]);
-    doc.autoTable({
-      startY: 32,
-      head: [["Generated Emails"]],
-      body: tableBody,
-      margin: { left: 14, right: 14 },
-      styles: { fontSize: 9, cellPadding: 2, overflow: 'linebreak' },
-      columnStyles: { 0: { cellWidth: 'auto' } },
-      didParseCell: function(data) {
-        if (data.section === 'body') data.cell.styles.fontSize = 8;
-      }
-    });
-    doc.save(`email_variants_${Date.now()}.pdf`);
-  }
-
-  document.getElementById('downloadCsvBtn').addEventListener('click', downloadCSV);
-  document.getElementById('downloadExcelBtn').addEventListener('click', downloadExcel);
-  document.getElementById('downloadPdfBtn').addEventListener('click', downloadPDF);
-
-  // ---------- TEMP MAIL SITES (hardcoded quality list) ----------
-  const tempSites = [
-    { name: "Temp-Mail.org", url: "https://temp-mail.org/" },
-    { name: "10 Minute Mail", url: "https://10minutemail.com/" },
-    { name: "Guerrilla Mail", url: "https://www.guerrillamail.com/" },
-    { name: "Mailinator", url: "https://www.mailinator.com/" },
-    { name: "Mohmal", url: "https://mohmal.com/en" },
-    { name: "EmailOnDeck", url: "https://www.emailondeck.com/" },
-    { name: "TempInbox", url: "https://tempinbox.com/" },
-    { name: "Throwaway Email", url: "https://throwaway.email/" }
-  ];
-
-  function buildTempMailList() {
-    const container = document.getElementById('tempSitesList');
-    if (!container) return;
-    container.innerHTML = '';
-    tempSites.forEach(site => {
-      const anchor = document.createElement('a');
-      anchor.href = site.url;
-      anchor.target = '_blank';
-      anchor.rel = 'noopener noreferrer';
-      anchor.className = 'site-card';
-      anchor.innerHTML = `
-        <div><span class="site-name">${site.name}</span><div class="site-url">${new URL(site.url).hostname}</div></div>
-        <i class="fas fa-external-link-alt" style="color:#94a3b8;"></i>
+    // Dynamically create manifest.json blob and inject link
+    const manifestObj = {
+      name: "CaseForge Email Studio",
+      short_name: "CaseForge",
+      start_url: ".",
+      display: "standalone",
+      theme_color: "#0f172a",
+      background_color: "#ffffff",
+      icons: [
+        {
+          src: "genarator.png",
+          sizes: "192x192",
+          type: "image/png",
+          purpose: "any maskable"
+        },
+        {
+          src: "genarator.png",
+          sizes: "512x512",
+          type: "image/png"
+        }
+      ]
+    };
+    const manifestBlob = new Blob([JSON.stringify(manifestObj)], {type: 'application/json'});
+    const manifestURL = URL.createObjectURL(manifestBlob);
+    const manifestLink = document.createElement('link');
+    manifestLink.rel = 'manifest';
+    manifestLink.href = manifestURL;
+    document.head.appendChild(manifestLink);
+    
+    // Service Worker: minimal to satisfy PWA requirements (caching not needed but must register)
+    if ('serviceWorker' in navigator) {
+      const swCode = `
+        self.addEventListener('fetch', (event) => {
+          // simple offline fallback: just fetch normally, makes app installable
+          event.respondWith(fetch(event.request));
+        });
+        self.addEventListener('install', (event) => {
+          self.skipWaiting();
+        });
+        self.addEventListener('activate', (event) => {
+          event.waitUntil(clients.claim());
+        });
       `;
-      container.appendChild(anchor);
+      const swBlob = new Blob([swCode], {type: 'application/javascript'});
+      const swURL = URL.createObjectURL(swBlob);
+      navigator.serviceWorker.register(swURL).then(reg => {
+        console.log('Service Worker registered', reg);
+        URL.revokeObjectURL(swURL);
+      }).catch(err => console.warn('SW error:', err));
+    }
+    
+    // Listen for beforeinstallprompt
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      // Show install button (it's already visible)
+      if (installBtn) {
+        installBtn.style.display = 'inline-flex';
+      }
     });
-  }
-  buildTempMailList();
-
-  // ensure bottom menu default active is generator
-  switchSection('mailGen');
-
-  // small demo: prefill some example result (optional but empty, but user sees welcome)
-  // initial empty array, but user sees demo message. Good.
-  // Also update digits & letter test: ensure digits protected.
-  console.log("Ready — digit protection active, max 1000 variants, random case letters only.");
+    
+    // Also if app is already installed, hide button
+    window.addEventListener('appinstalled', () => {
+      deferredPrompt = null;
+      if (installBtn) installBtn.style.display = 'none';
+      alert('✅ CaseForge installed successfully! You can now launch it from your home screen.');
+    });
+    
+    // Install button click handler
+    if (installBtn) {
+      installBtn.addEventListener('click', async () => {
+        if (deferredPrompt) {
+          deferredPrompt.prompt();
+          const { outcome } = await deferredPrompt.userChoice;
+          if (outcome === 'accepted') {
+            console.log('User accepted install');
+          } else {
+            console.log('User dismissed install');
+          }
+          deferredPrompt = null;
+        } else {
+          // Fallback: manual instructions (since some browsers require user gesture)
+          alert('To install this app:\n• Android/Chrome: Tap ⋮ → Install App\n• iOS Safari: Tap Share → Add to Home Screen');
+        }
+      });
+    }
+    
+    // ---------- SECTION SWITCHING ----------
+    const mailGenSection = document.getElementById('mailGenSection');
+    const tempMailSection = document.getElementById('tempMailSection');
+    const aboutSection = document.getElementById('aboutSection');
+    const navBtns = document.querySelectorAll('.nav-item');
+    
+    function switchSection(sectionId) {
+      mailGenSection.classList.remove('active-section');
+      tempMailSection.classList.remove('active-section');
+      aboutSection.classList.remove('active-section');
+      if (sectionId === 'mailGen') mailGenSection.classList.add('active-section');
+      if (sectionId === 'tempMail') tempMailSection.classList.add('active-section');
+      if (sectionId === 'about') aboutSection.classList.add('active-section');
+      navBtns.forEach(btn => {
+        const btnSection = btn.getAttribute('data-section');
+        if ((btnSection === 'mailGen' && sectionId === 'mailGen') ||
+            (btnSection === 'tempMail' && sectionId === 'tempMail') ||
+            (btnSection === 'about' && sectionId === 'about')) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+    }
+    navBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const target = btn.getAttribute('data-section');
+        switchSection(target);
+      });
+    });
+    
+    // ---------- MAIL GENERATOR ----------
+    let currentGeneratedEmails = [];
+    function generateSingleVariant(baseEmail) {
+      let result = '';
+      for (let ch of baseEmail) {
+        if (/[A-Za-z]/.test(ch)) {
+          result += Math.random() < 0.5 ? ch.toUpperCase() : ch.toLowerCase();
+        } else {
+          result += ch;
+        }
+      }
+      return result;
+    }
+    function generateVariants(base, count) {
+      const variants = [];
+      for (let i = 0; i < count; i++) variants.push(generateSingleVariant(base));
+      return variants;
+    }
+    function escapeHtml(str) {
+      return str.replace(/[&<>]/g, function(m) {
+        if (m === '&') return '&amp;';
+        if (m === '<') return '&lt;';
+        if (m === '>') return '&gt;';
+        return m;
+      });
+    }
+    function renderEmailList(emails) {
+      const container = document.getElementById('resultContainer');
+      if (!emails.length) {
+        container.innerHTML = `<div class="empty-msg"><i class="far fa-envelope"></i> No emails generated. Set base & count, hit Generate.</div>`;
+        return;
+      }
+      const html = emails.map(email => `<div class="email-item"><i class="far fa-envelope" style="margin-right: 10px; color:#3b82f6;"></i>${escapeHtml(email)}</div>`).join('');
+      container.innerHTML = html;
+    }
+    
+    const generateBtn = document.getElementById('generateBtn');
+    const baseEmailInput = document.getElementById('baseEmailInput');
+    const countInput = document.getElementById('countInput');
+    const copyAllBtn = document.getElementById('copyAllBtn');
+    const clearAllBtn = document.getElementById('clearAllBtn');
+    
+    generateBtn.addEventListener('click', () => {
+      let base = baseEmailInput.value.trim();
+      if (base === "") { alert("Please enter a base email address."); return; }
+      let count = parseInt(countInput.value, 10);
+      if (isNaN(count) || count < 1) count = 1;
+      if (count > 1000) { alert("Max limit 1000, adjusting."); count = 1000; countInput.value = 1000; }
+      if (!base.includes('@') && !confirm("Not a typical email, continue?")) return;
+      const generated = generateVariants(base, count);
+      currentGeneratedEmails = generated;
+      renderEmailList(currentGeneratedEmails);
+    });
+    
+    clearAllBtn.addEventListener('click', () => {
+      if (currentGeneratedEmails.length && confirm("Clear all generated emails?")) {
+        currentGeneratedEmails = [];
+        renderEmailList([]);
+      } else if (!currentGeneratedEmails.length) alert("Nothing to clear.");
+    });
+    
+    copyAllBtn.addEventListener('click', async () => {
+      if (!currentGeneratedEmails.length) { alert("No emails to copy."); return; }
+      const textToCopy = currentGeneratedEmails.join('\n');
+      try {
+        await navigator.clipboard.writeText(textToCopy);
+        alert(`Copied ${currentGeneratedEmails.length} email(s).`);
+      } catch { alert("Copy failed."); }
+    });
+    
+    function getEmailArrayForExport() {
+      if (!currentGeneratedEmails.length) { alert("No emails to export."); return null; }
+      return currentGeneratedEmails;
+    }
+    function downloadCSV() {
+      const emails = getEmailArrayForExport();
+      if (!emails) return;
+      const rows = [["Generated Emails"], ...emails.map(e => [e])];
+      const csvContent = rows.map(row => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(",")).join("\n");
+      const blob = new Blob(["\uFEFF" + csvContent], { type: "text/csv;charset=utf-8;" });
+      const link = document.createElement("a");
+      const url = URL.createObjectURL(blob);
+      link.href = url;
+      link.setAttribute("download", "email_variants.csv");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    }
+    function downloadExcel() {
+      const emails = getEmailArrayForExport();
+      if (!emails) return;
+      const ws = XLSX.utils.aoa_to_sheet([["Generated Emails"], ...emails.map(e => [e])]);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "EmailVariants");
+      XLSX.writeFile(wb, `email_variants_${Date.now()}.xlsx`);
+    }
+    async function downloadPDF() {
+      const emails = getEmailArrayForExport();
+      if (!emails) return;
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(16);
+      doc.text("Email Variant Generator Report", 14, 15);
+      doc.setFontSize(10);
+      doc.text(`Total variants: ${emails.length} • Base: ${baseEmailInput.value || "custom"}`, 14, 25);
+      doc.autoTable({
+        startY: 32,
+        head: [["Generated Emails"]],
+        body: emails.map(e => [e]),
+        margin: { left: 14, right: 14 },
+        styles: { fontSize: 9, cellPadding: 2, overflow: 'linebreak' }
+      });
+      doc.save(`email_variants_${Date.now()}.pdf`);
+    }
+    document.getElementById('downloadCsvBtn').addEventListener('click', downloadCSV);
+    document.getElementById('downloadExcelBtn').addEventListener('click', downloadExcel);
+    document.getElementById('downloadPdfBtn').addEventListener('click', downloadPDF);
+    
+    // ---------- TEMP MAIL SITES ----------
+    const tempSites = [
+      { name: "Temp-Mail.org", url: "https://temp-mail.org/" },
+      { name: "10 Minute Mail", url: "https://10minutemail.com/" },
+      { name: "Guerrilla Mail", url: "https://www.guerrillamail.com/" },
+      { name: "Mailinator", url: "https://www.mailinator.com/" },
+      { name: "Mohmal", url: "https://mohmal.com/en" },
+      { name: "EmailOnDeck", url: "https://www.emailondeck.com/" },
+      { name: "TempInbox", url: "https://tempinbox.com/" },
+      { name: "Throwaway Email", url: "https://throwaway.email/" }
+    ];
+    function buildTempMailList() {
+      const container = document.getElementById('tempSitesList');
+      if (!container) return;
+      container.innerHTML = '';
+      tempSites.forEach(site => {
+        const anchor = document.createElement('a');
+        anchor.href = site.url;
+        anchor.target = '_blank';
+        anchor.rel = 'noopener noreferrer';
+        anchor.className = 'site-card';
+        anchor.innerHTML = `<div><span class="site-name">${site.name}</span><div class="site-url">${new URL(site.url).hostname}</div></div><i class="fas fa-external-link-alt" style="color:#94a3b8;"></i>`;
+        container.appendChild(anchor);
+      });
+    }
+    buildTempMailList();
+    
+    // default active section
+    switchSection('mailGen');
+    // small demo data to show something
+    const demoVariants = generateVariants(baseEmailInput.value.trim(), 4);
+    currentGeneratedEmails = demoVariants;
+    renderEmailList(currentGeneratedEmails);
+  })();
 </script>
 </body>
 </html>
