@@ -272,7 +272,7 @@
       background: #f1f5f9;
     }
 
-    /* INSTALL BUTTON PREMIUM */
+    /* INSTALL PANEL - will hide when installed */
     .install-panel {
       background: #eef2ff;
       border-radius: 60px;
@@ -283,6 +283,10 @@
       justify-content: space-between;
       flex-wrap: wrap;
       gap: 12px;
+      transition: 0.2s;
+    }
+    .install-panel.hidden {
+      display: none;
     }
     .install-btn {
       background: #0f172a;
@@ -359,7 +363,7 @@
       </div>
     </div>
 
-    <!-- FIXED: ACTIVE INSTALL BUTTON + PWA -->
+    <!-- INSTALL BUTTON (will auto hide when installed or standalone) -->
     <div class="install-panel" id="installPanel">
       <div class="install-info">
         <i class="fas fa-mobile-alt"></i> <strong>Install as App</strong> — faster access, offline ready
@@ -394,7 +398,7 @@
           <i class="fas fa-exclamation-triangle"></i> <strong>Responsible usage:</strong> Generating emails for unethical purposes violates platform policies. Use with integrity.
         </div>
         <p style="margin-top: 12px;">📌 Temporary mail section collects reliable disposable inbox services for anonymous testing. Always respect terms of service.</p>
-        <p style="margin-top: 20px; font-size: 0.85rem;">💡 <strong>Progressive Web App:</strong> This site is fully installable. Click "Install Now" on the home tab or use browser's "Add to Home Screen".</p>
+        <p style="margin-top: 20px; font-size: 0.85rem;">💡 <strong>Progressive Web App:</strong> This site is fully installable. Once installed, the install button disappears automatically.</p>
       </div>
     </div>
   </div>
@@ -409,9 +413,25 @@
 
 <script>
   (function() {
-    // ---------- PWA: MANIFEST + SERVICE WORKER + INSTALL PROMPT ----------
+    // ---------- PWA: MANIFEST + SERVICE WORKER + INSTALL PROMPT (FIXED HIDE AFTER INSTALL) ----------
     let deferredPrompt = null;
+    const installPanel = document.getElementById('installPanel');
     const installBtn = document.getElementById('installAppBtn');
+    
+    // Function to hide install panel if already installed or standalone
+    function hideInstallPanelIfInstalled() {
+      // Check if running as installed PWA (standalone mode)
+      const isStandalone = window.matchMedia('(display-mode: standalone)').matches || 
+                          (window.navigator.standalone === true); // iOS Safari
+      if (isStandalone) {
+        if (installPanel) installPanel.classList.add('hidden');
+        return true;
+      }
+      return false;
+    }
+    
+    // Initially check
+    const alreadyStandalone = hideInstallPanelIfInstalled();
     
     // Dynamically create manifest.json blob and inject link
     const manifestObj = {
@@ -442,11 +462,10 @@
     manifestLink.href = manifestURL;
     document.head.appendChild(manifestLink);
     
-    // Service Worker: minimal to satisfy PWA requirements (caching not needed but must register)
+    // Service Worker: minimal to satisfy PWA requirements
     if ('serviceWorker' in navigator) {
       const swCode = `
         self.addEventListener('fetch', (event) => {
-          // simple offline fallback: just fetch normally, makes app installable
           event.respondWith(fetch(event.request));
         });
         self.addEventListener('install', (event) => {
@@ -468,17 +487,33 @@
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
-      // Show install button (it's already visible)
-      if (installBtn) {
-        installBtn.style.display = 'inline-flex';
+      // Show install panel only if not already installed (standalone)
+      if (!hideInstallPanelIfInstalled()) {
+        if (installPanel) installPanel.classList.remove('hidden');
       }
     });
     
-    // Also if app is already installed, hide button
+    // If app gets installed while page is open, hide button
     window.addEventListener('appinstalled', () => {
       deferredPrompt = null;
-      if (installBtn) installBtn.style.display = 'none';
+      if (installPanel) installPanel.classList.add('hidden');
       alert('✅ CaseForge installed successfully! You can now launch it from your home screen.');
+    });
+    
+    // Also listen for display-mode changes (if user switches to standalone later)
+    window.matchMedia('(display-mode: standalone)').addEventListener('change', (evt) => {
+      if (evt.matches) {
+        if (installPanel) installPanel.classList.add('hidden');
+      } else {
+        // If not standalone, but we still may show if not installed and prompt available
+        if (!deferredPrompt) {
+          // No prompt means maybe not installable, but we keep hidden or show manual?
+          // Better to keep hidden if no deferredPrompt, but we can show instructions?
+          if (installPanel) installPanel.classList.add('hidden');
+        } else {
+          if (installPanel) installPanel.classList.remove('hidden');
+        }
+      }
     });
     
     // Install button click handler
@@ -489,15 +524,32 @@
           const { outcome } = await deferredPrompt.userChoice;
           if (outcome === 'accepted') {
             console.log('User accepted install');
+            // installPanel will be hidden by appinstalled event
           } else {
             console.log('User dismissed install');
           }
           deferredPrompt = null;
         } else {
-          // Fallback: manual instructions (since some browsers require user gesture)
+          // Fallback: show manual instructions
           alert('To install this app:\n• Android/Chrome: Tap ⋮ → Install App\n• iOS Safari: Tap Share → Add to Home Screen');
         }
       });
+    }
+    
+    // If already standalone, ensure panel is hidden (already called)
+    // Additional: if no deferredPrompt and not standalone, maybe keep panel hidden to avoid empty button? but we show it anyway with fallback.
+    // But we want the button to be visible only if the browser supports installation & not yet installed.
+    // For browsers that never fire beforeinstallprompt, but user can still add to homescreen manually, we might still show the button as manual help.
+    // Keep the panel visible if not standalone, because manual install is still possible. But if there's no prompt, we still show manual instructions.
+    // However if the app is running in standalone we already hid it.
+    if (!alreadyStandalone) {
+      // If after 3 seconds no prompt event, still show the panel but with manual hint
+      setTimeout(() => {
+        if (!deferredPrompt && !hideInstallPanelIfInstalled()) {
+          // Still show panel but user will get manual instructions on click
+          if (installPanel) installPanel.classList.remove('hidden');
+        }
+      }, 2000);
     }
     
     // ---------- SECTION SWITCHING ----------
