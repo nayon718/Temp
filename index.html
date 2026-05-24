@@ -19,12 +19,12 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: system-ui, 'Segoe UI', 'Inter', -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
+      font-family: system-ui, 'Segoe UI', 'Inter', -apple-system, 'Roboto', sans-serif;
     }
 
     body {
-      background: white;
-      padding-bottom: 75px;
+      background: #f8fafc;
+      padding-bottom: 85px;
     }
 
     .app-container {
@@ -35,29 +35,28 @@
 
     .section {
       display: none;
-      animation: fade 0.2s ease;
+      animation: fadeSlide 0.25s ease;
     }
     .section.active-section {
       display: block;
     }
-
-    @keyframes fade {
-      from { opacity: 0; transform: translateY(4px);}
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateY(8px);}
       to { opacity: 1; transform: translateY(0);}
     }
 
     .card {
       background: #ffffff;
       border-radius: 28px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.03), 0 2px 6px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
       padding: 20px 18px;
       margin-bottom: 24px;
-      border: 1px solid #f0f0f0;
+      border: 1px solid #edf2f7;
     }
 
     .generator-title {
       font-size: 1.65rem;
-      font-weight: 600;
+      font-weight: 700;
       letter-spacing: -0.3px;
       background: linear-gradient(135deg, #1e2b3c, #2c4a6e);
       background-clip: text;
@@ -67,11 +66,12 @@
     }
 
     .label {
-      font-weight: 500;
+      font-weight: 600;
       color: #1f2a3e;
       margin-bottom: 8px;
       display: block;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
+      letter-spacing: 0.3px;
     }
 
     input, .count-input {
@@ -81,7 +81,7 @@
       border-radius: 24px;
       font-size: 1rem;
       transition: 0.2s;
-      background: #fefefe;
+      background: #ffffff;
       outline: none;
     }
     input:focus {
@@ -143,11 +143,11 @@
       gap: 8px;
       color: #1e293b;
     }
-    .small-btn i { font-size: 0.9rem; }
     .small-btn:hover {
       background: #f1f5f9;
       border-color: #cbd5e1;
     }
+
     .download-group {
       display: flex;
       flex-wrap: wrap;
@@ -193,13 +193,14 @@
       padding: 32px 16px;
     }
 
-    .site-grid {
+    /* All Creat Mail - Notes Grid */
+    .notes-grid {
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      margin-top: 16px;
+      gap: 14px;
+      margin-top: 8px;
     }
-    .site-card {
+    .note-card {
       background: #ffffff;
       border-radius: 20px;
       padding: 14px 18px;
@@ -208,30 +209,130 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      text-decoration: none;
-      color: #1e293b;
+      cursor: pointer;
     }
-    .site-card:hover {
+    .note-card:hover {
       background: #f8fafd;
       border-color: #cbdff2;
-      transform: translateX(4px);
+      transform: translateX(3px);
     }
-    .site-name { font-weight: 600; font-size: 1rem; }
-    .site-url {
+    .note-info {
+      flex: 1;
+    }
+    .note-title {
+      font-weight: 700;
+      font-size: 1rem;
+      color: #0f172a;
+    }
+    .note-meta {
       font-size: 0.7rem;
-      color: #3b82f6;
-      font-family: monospace;
+      color: #5b6e8c;
+      margin-top: 4px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
     }
-    .about-text { line-height: 1.5; color: #2d3a4b; }
-    .warning {
-      background: #fff8e7;
-      border-left: 4px solid #facc15;
-      padding: 14px;
-      border-radius: 20px;
-      margin: 20px 0;
-      font-size: 0.9rem;
+    .delete-note-btn {
+      background: transparent;
+      border: none;
+      font-size: 1.2rem;
+      color: #cbd5e1;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 40px;
+      transition: 0.2s;
+    }
+    .delete-note-btn:hover {
+      color: #ef4444;
+      background: #fee2e2;
+    }
+    .empty-notes {
+      text-align: center;
+      padding: 40px 20px;
+      color: #94a3b8;
     }
 
+    /* Fullscreen Modal for Note Details (with Cut) */
+    .full-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: white;
+      z-index: 2000;
+      display: flex;
+      flex-direction: column;
+      transform: translateY(100%);
+      transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      box-shadow: 0 -4px 30px rgba(0,0,0,0.1);
+    }
+    .full-modal.active {
+      transform: translateY(0);
+    }
+    .modal-header {
+      padding: 20px 18px;
+      border-bottom: 1px solid #eef2ff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: white;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .modal-header h3 {
+      font-size: 1.3rem;
+      font-weight: 600;
+    }
+    .close-modal {
+      background: #f1f5f9;
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 30px;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+    .modal-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px 18px 30px;
+    }
+    .modal-email-row {
+      background: #fafcff;
+      border-radius: 18px;
+      padding: 12px 16px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid #eef2ff;
+    }
+    .modal-email-text {
+      font-family: monospace;
+      font-size: 0.85rem;
+      word-break: break-all;
+      flex: 1;
+      margin-right: 12px;
+    }
+    .cut-single-btn {
+      background: #fee2e2;
+      border: 1px solid #fecaca;
+      padding: 8px 14px;
+      border-radius: 30px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+      color: #b91c1c;
+    }
+    .cut-single-btn:hover {
+      background: #fecaca;
+      transform: scale(0.96);
+    }
+
+    /* bottom menu */
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -244,7 +345,6 @@
       justify-content: space-around;
       align-items: center;
       padding: 10px 16px 20px;
-      box-shadow: 0 -4px 12px rgba(0,0,0,0.02);
       z-index: 1000;
     }
     .nav-item {
@@ -257,7 +357,6 @@
       font-size: 0.7rem;
       font-weight: 500;
       color: #6c757d;
-      transition: 0.2s;
       cursor: pointer;
       padding: 6px 12px;
       border-radius: 40px;
@@ -278,9 +377,7 @@
       justify-content: space-between;
       flex-wrap: wrap;
       gap: 12px;
-      transition: 0.2s;
     }
-    .install-panel.hidden { display: none; }
     .install-btn {
       background: #0f172a;
       border: none;
@@ -289,15 +386,7 @@
       border-radius: 40px;
       font-weight: 600;
       font-size: 0.85rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
       cursor: pointer;
-      transition: 0.2s;
-    }
-    .install-btn:hover {
-      background: #1e293b;
-      transform: scale(0.97);
     }
     footer {
       font-size: 0.7rem;
@@ -305,468 +394,442 @@
       color: #8e9aaf;
       margin-top: 24px;
     }
-
-    /* TOAST NOTIFICATION */
     .toast-container {
       position: fixed;
       bottom: 90px;
       left: 50%;
       transform: translateX(-50%);
-      z-index: 2000;
+      z-index: 3000;
       display: flex;
       flex-direction: column;
       gap: 10px;
       pointer-events: none;
-      max-width: 90%;
-      width: auto;
     }
     .toast {
       background: #1e293b;
       color: white;
-      padding: 12px 24px;
+      padding: 10px 20px;
       border-radius: 60px;
-      font-size: 0.9rem;
-      font-weight: 500;
+      font-size: 0.85rem;
       display: flex;
       align-items: center;
-      gap: 12px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-      backdrop-filter: blur(8px);
-      animation: slideUp 0.3s ease;
-      pointer-events: auto;
+      gap: 10px;
+      animation: fadeUp 0.3s ease;
     }
-    .toast.success { background: #0f3b2c; border-left: 4px solid #2ecc71; }
-    .toast.error { background: #4a2c2c; border-left: 4px solid #e74c3c; }
-    .toast.info { background: #1e3a5f; border-left: 4px solid #3b82f6; }
-    @keyframes slideUp {
-      from { opacity: 0; transform: translateY(20px); }
+    .toast.success { background: #0f3b2c; border-left: 3px solid #2ecc71; }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
     }
-
-    /* CUSTOM CONFIRM MODAL */
-    .modal-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.5);
-      backdrop-filter: blur(4px);
-      z-index: 3000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      visibility: hidden;
-      transition: 0.2s;
-    }
-    .modal-overlay.active {
-      opacity: 1;
-      visibility: visible;
-    }
-    .confirm-modal {
-      background: white;
-      border-radius: 32px;
-      max-width: 320px;
-      width: 85%;
-      padding: 24px 20px;
-      text-align: center;
-      box-shadow: 0 25px 40px rgba(0,0,0,0.2);
-      transform: scale(0.95);
-      transition: 0.2s;
-    }
-    .modal-overlay.active .confirm-modal {
-      transform: scale(1);
-    }
-    .confirm-modal i {
-      font-size: 2.5rem;
-      color: #f97316;
-      margin-bottom: 12px;
-    }
-    .confirm-modal h3 {
-      font-size: 1.3rem;
-      margin-bottom: 8px;
-    }
-    .confirm-modal p {
-      color: #475569;
-      margin-bottom: 24px;
-    }
-    .modal-buttons {
-      display: flex;
-      gap: 12px;
-      justify-content: center;
-    }
-    .modal-btn {
-      padding: 10px 22px;
-      border-radius: 40px;
-      border: none;
-      font-weight: 600;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-    .modal-btn.cancel {
-      background: #eef2ff;
-      color: #1e293b;
-    }
-    .modal-btn.confirm {
-      background: #0f172a;
-      color: white;
-    }
-    .modal-btn.confirm:hover { background: #1e293b; }
-    .modal-btn.cancel:hover { background: #e2e8f0; }
   </style>
 </head>
 <body>
 
 <div class="app-container">
-  <div id="mailGenSection" class="section active-section">
+  <!-- GENERATOR SECTION -->
+  <div id="generatorSection" class="section active-section">
     <div class="card">
       <div class="generator-title">✉️ CaseCraft Generator</div>
-      <p style="color: #475569; margin-bottom: 20px; font-size: 0.85rem;">Base email → random uppercase/lowercase variants • digits stay unchanged</p>
-
+      <p style="color: #475569; margin-bottom: 20px; font-size: 0.85rem;">Base email → random case variants • digits stay unchanged</p>
       <label class="label">📧 Base email address</label>
       <input type="email" id="baseEmailInput" placeholder="example: user123@domain.com" value="demo.user99@example.com">
-
       <div class="row-flex" style="margin-top: 18px;">
         <div class="count-wrapper">
-          <label class="label" style="margin-bottom: 4px;">🔢 How many variants? (max 1000)</label>
-          <input type="number" id="countInput" class="count-input" min="1" max="1000" value="8" step="1">
+          <label class="label" style="margin-bottom: 4px;">🔢 Variants (max 1000)</label>
+          <input type="number" id="countInput" class="count-input" min="1" max="1000" value="8">
         </div>
-        <button id="generateBtn" class="generate-btn"><i class="fas fa-magic"></i> Generate</button>
+        <button id="generateBtn" class="generate-btn"><i class="fas fa-magic"></i> Generate & Save</button>
       </div>
-
       <div class="action-buttons">
-        <button id="copyAllBtn" class="small-btn"><i class="far fa-copy"></i> Copy all</button>
-        <button id="clearAllBtn" class="small-btn"><i class="fas fa-trash-alt"></i> Clear all</button>
+        <button id="copyAllBtn" class="small-btn"><i class="far fa-copy"></i> Copy current</button>
+        <button id="clearAllBtn" class="small-btn"><i class="fas fa-trash-alt"></i> Clear current</button>
       </div>
-
       <div id="resultContainer" class="result-area">
-        <div class="empty-msg"><i class="far fa-envelope"></i> No emails generated. Set base & count, hit Generate.</div>
+        <div class="empty-msg"><i class="far fa-envelope"></i> No emails generated yet.</div>
       </div>
-
       <div style="margin-top: 20px;">
-        <div class="label" style="margin-bottom: 8px;">💾 Export results</div>
+        <div class="label" style="margin-bottom: 8px;">💾 Export current</div>
         <div class="download-group">
           <button id="downloadCsvBtn" class="download-btn"><i class="fas fa-file-csv"></i> CSV</button>
-          <button id="downloadExcelBtn" class="download-btn"><i class="fas fa-file-excel"></i> Excel (XLSX)</button>
+          <button id="downloadExcelBtn" class="download-btn"><i class="fas fa-file-excel"></i> Excel</button>
           <button id="downloadPdfBtn" class="download-btn"><i class="fas fa-file-pdf"></i> PDF</button>
         </div>
       </div>
     </div>
-
     <div class="install-panel" id="installPanel">
-      <div class="install-info"><i class="fas fa-mobile-alt"></i> <strong>Install as App</strong> — faster access</div>
-      <button id="installAppBtn" class="install-btn"><i class="fas fa-download"></i> Install Now</button>
+      <div class="install-info"><i class="fas fa-mobile-alt"></i> <strong>Install as App</strong></div>
+      <button id="installAppBtn" class="install-btn"><i class="fas fa-download"></i> Install</button>
     </div>
-    <footer>⚡ Letter case randomization · Digits protected · Up to 1k variants</footer>
+    <footer>⚡ Each generation auto-saved in "All Creat Mail" · Cut = copy + remove</footer>
   </div>
 
-  <div id="tempMailSection" class="section">
+  <!-- ALL CREAT MAIL SECTION (CUT ENABLED) -->
+  <div id="allCreatSection" class="section">
     <div class="card">
-      <h2 style="font-weight: 600; margin-bottom: 8px;">📬 Temporary Email Services</h2>
-      <p style="color: #4b5563; margin-bottom: 20px;">Click any service → instant temp inbox (opens new tab)</p>
-      <div class="site-grid" id="tempSitesList"></div>
-      <div class="warning" style="margin-top: 24px;">
-        <i class="fas fa-shield-alt"></i> <strong>Privacy note:</strong> Use disposable emails for testing & privacy. Never abuse these services.
+      <div class="generator-title">📁 All Creat Mail</div>
+      <p style="color: #475569; margin-bottom: 16px;">Saved email sets – click a note, then press <strong style="color:#b91c1c;">✂️ Cut</strong> to copy & remove that email.</p>
+      <div id="notesListContainer" class="notes-grid">
+        <div class="empty-notes"><i class="far fa-save"></i> No saved notes. Generate emails to auto-save.</div>
       </div>
     </div>
   </div>
 
+  <!-- ABOUT SECTION -->
   <div id="aboutSection" class="section">
     <div class="card">
-      <h2 style="font-weight: 600;">✨ About CaseCraft</h2>
-      <div class="about-text" style="margin-top: 16px;">
-        <p><strong>Smart Email Variant Engine</strong> — transforms any email address by randomly toggling the case of every letter while keeping digits and symbols exactly as they are. Perfect for testing case-sensitivity, spam filters, or bulk email simulations. </p>
-        <br>
-        <p>✔️ <strong>Limit up to 1000 variations</strong> · One-click copy · Clear all · Export to CSV, Excel, PDF.<br>
-        ✔️ <strong>Ethical use only</strong>: This tool is designed for developers, QA engineers, and security researchers. Do not use for harassment, spamming, or any malicious activity.</p>
-        <div class="warning">
-          <i class="fas fa-exclamation-triangle"></i> <strong>Responsible usage:</strong> Generating emails for unethical purposes violates platform policies. Use with integrity.
+      <h2 style="font-weight: 700;">✨ About CaseCraft</h2>
+      <div class="about-text" style="margin-top: 16px; line-height: 1.5;">
+        <p>Smart email variant engine with persistent note storage. Every generation is automatically saved as a note in "All Creat Mail".</p><br>
+        <p>✔️ Up to 1000 variants · Random letter case · Digits preserved<br>✔️ Export CSV/Excel/PDF · Copy current set<br>✔️ <strong>Cut feature:</strong> In any saved note, click "Cut" on an email → copies to clipboard and removes it from the note.</p>
+        <div class="warning" style="background:#fff8e7; border-left:4px solid #facc15; padding:14px; border-radius:20px; margin:20px 0;">
+          <i class="fas fa-heart"></i> <strong>Ethical use only</strong> — For devs & testers.
         </div>
-        <p style="margin-top: 12px;">📌 Temporary mail section collects reliable disposable inbox services for anonymous testing. Always respect terms of service.</p>
-        <p style="margin-top: 20px; font-size: 0.85rem;">💡 <strong>Progressive Web App:</strong> This site is fully installable. Once installed, the install button disappears automatically.</p>
       </div>
     </div>
   </div>
 </div>
 
+<!-- BOTTOM NAV -->
 <div class="bottom-nav">
-  <button class="nav-item" data-section="mailGen"><i class="fas fa-magic"></i><span>Generator</span></button>
-  <button class="nav-item" data-section="tempMail"><i class="fas fa-envelope-open-text"></i><span>Temp Mail</span></button>
+  <button class="nav-item" data-section="generator"><i class="fas fa-magic"></i><span>Generator</span></button>
+  <button class="nav-item" data-section="allCreat"><i class="fas fa-folder-open"></i><span>All Creat Mail</span></button>
   <button class="nav-item" data-section="about"><i class="fas fa-info-circle"></i><span>About</span></button>
 </div>
 
-<!-- Toast container -->
-<div class="toast-container" id="toastContainer"></div>
-<!-- Custom confirm modal -->
-<div class="modal-overlay" id="confirmModal">
-  <div class="confirm-modal">
-    <i class="fas fa-trash-alt"></i>
-    <h3>Clear all?</h3>
-    <p>Are you sure you want to delete all generated emails?</p>
-    <div class="modal-buttons">
-      <button class="modal-btn cancel" id="modalCancel">Cancel</button>
-      <button class="modal-btn confirm" id="modalConfirm">Yes, Clear</button>
-    </div>
+<!-- FULLSCREEN MODAL FOR NOTE DETAILS (WITH CUT) -->
+<div id="noteModal" class="full-modal">
+  <div class="modal-header">
+    <h3 id="modalTitle">📄 Email Set</h3>
+    <button class="close-modal" id="closeModalBtn"><i class="fas fa-times"></i></button>
   </div>
+  <div class="modal-body" id="modalBody"></div>
 </div>
+
+<div class="toast-container" id="toastContainer"></div>
 
 <script>
   (function() {
-    // ---------- TOAST SYSTEM ----------
+    // ---------- TOAST ----------
     const toastContainer = document.getElementById('toastContainer');
-    function showToast(message, type = 'info') {
+    function showToast(msg, type = 'info') {
       const toast = document.createElement('div');
       toast.className = `toast ${type}`;
-      let icon = 'fa-info-circle';
-      if (type === 'success') icon = 'fa-check-circle';
-      if (type === 'error') icon = 'fa-exclamation-circle';
-      toast.innerHTML = `<i class="fas ${icon}"></i><span>${message}</span>`;
+      toast.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-info-circle'}"></i><span>${msg}</span>`;
       toastContainer.appendChild(toast);
-      setTimeout(() => {
-        toast.style.opacity = '0';
-        toast.style.transform = 'translateY(20px)';
-        setTimeout(() => toast.remove(), 300);
-      }, 2500);
+      setTimeout(() => { toast.remove(); }, 2500);
     }
 
-    // ---------- CUSTOM CONFIRM MODAL (Promise based) ----------
-    let confirmResolver = null;
-    const modalOverlay = document.getElementById('confirmModal');
-    const modalConfirmBtn = document.getElementById('modalConfirm');
-    const modalCancelBtn = document.getElementById('modalCancel');
+    // ---------- LOCALSTORAGE NOTES ----------
+    let savedNotes = []; // each note: { id, timestamp, emails, baseHint, count }
+    const STORAGE_KEY = 'caseforge_notes';
+    
+    function loadNotes() {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) savedNotes = JSON.parse(stored);
+      else savedNotes = [];
+      renderNotesList();
+    }
+    
+    function saveNotesToStorage() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(savedNotes));
+      renderNotesList();
+    }
+    
+    function addNote(emailsArray, baseEmailHint, count) {
+      const newNote = {
+        id: Date.now(),
+        timestamp: new Date().toLocaleString(),
+        emails: [...emailsArray],
+        baseHint: baseEmailHint,
+        count: emailsArray.length
+      };
+      savedNotes.unshift(newNote);
+      saveNotesToStorage();
+      showToast(`✅ Saved "${newNote.count} emails" as a note`, 'success');
+      return newNote;
+    }
+    
+    function deleteNoteById(id) {
+      savedNotes = savedNotes.filter(n => n.id !== id);
+      saveNotesToStorage();
+      showToast('Note deleted', 'success');
+      if (activeModalNoteId === id) closeModal();
+    }
+    
+    // ---- CUT FUNCTION: copy email and remove from note ----
+    async function cutEmailFromNote(noteId, emailIndex) {
+      const note = savedNotes.find(n => n.id === noteId);
+      if (!note) return false;
+      const emailToCut = note.emails[emailIndex];
+      if (!emailToCut) return false;
+      // copy to clipboard
+      try {
+        await navigator.clipboard.writeText(emailToCut);
+        // remove from array
+        note.emails.splice(emailIndex, 1);
+        // update count
+        note.count = note.emails.length;
+        // if note becomes empty, delete the note
+        if (note.emails.length === 0) {
+          deleteNoteById(noteId);
+          showToast(`✂️ Cut last email: "${emailToCut.substring(0, 30)}..." (note removed)`, 'success');
+        } else {
+          saveNotesToStorage();
+          // if modal is open for this note, refresh modal content
+          if (activeModalNoteId === noteId) {
+            refreshModalContent(noteId);
+          }
+          showToast(`✂️ Cut: "${emailToCut.substring(0, 30)}..." (removed from note)`, 'success');
+        }
+        return true;
+      } catch (err) {
+        showToast('Failed to copy', 'error');
+        return false;
+      }
+    }
+    
+    // Render notes list in "All Creat Mail"
+    function renderNotesList() {
+      const container = document.getElementById('notesListContainer');
+      if (!container) return;
+      if (savedNotes.length === 0) {
+        container.innerHTML = '<div class="empty-notes"><i class="far fa-save"></i> No saved notes. Generate emails to auto-save.</div>';
+        return;
+      }
+      container.innerHTML = '';
+      savedNotes.forEach(note => {
+        const noteDiv = document.createElement('div');
+        noteDiv.className = 'note-card';
+        noteDiv.innerHTML = `
+          <div class="note-info">
+            <div class="note-title">📧 ${note.count} variants</div>
+            <div class="note-meta">
+              <span><i class="far fa-calendar-alt"></i> ${note.timestamp}</span>
+              <span><i class="fas fa-at"></i> ${note.baseHint?.substring(0, 25) || 'email'}</span>
+            </div>
+          </div>
+          <button class="delete-note-btn" data-id="${note.id}" title="Delete note"><i class="fas fa-trash-alt"></i></button>
+        `;
+        const infoDiv = noteDiv.querySelector('.note-info');
+        const deleteBtn = noteDiv.querySelector('.delete-note-btn');
+        infoDiv.addEventListener('click', (e) => {
+          e.stopPropagation();
+          openNoteModal(note.id);
+        });
+        deleteBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          deleteNoteById(note.id);
+        });
+        container.appendChild(noteDiv);
+      });
+    }
+    
+    // Modal handling with cut buttons
+    let activeModalNoteId = null;
+    const modal = document.getElementById('noteModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalBody = document.getElementById('modalBody');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    
+    function refreshModalContent(noteId) {
+      const note = savedNotes.find(n => n.id === noteId);
+      if (!note) {
+        closeModal();
+        return;
+      }
+      modalTitle.innerText = `📄 ${note.count} Emails · ${note.timestamp}`;
+      modalBody.innerHTML = '';
+      if (note.emails.length === 0) {
+        modalBody.innerHTML = '<div class="empty-notes">This note is empty. It will be deleted when you close.</div>';
+        // schedule auto-delete after close? but we already delete when cut last email. For safety, if 0, delete on close.
+        return;
+      }
+      note.emails.forEach((email, idx) => {
+        const row = document.createElement('div');
+        row.className = 'modal-email-row';
+        row.innerHTML = `
+          <div class="modal-email-text">${escapeHtml(email)}</div>
+          <button class="cut-single-btn" data-idx="${idx}"><i class="fas fa-cut"></i> Cut (copy & remove)</button>
+        `;
+        const cutBtn = row.querySelector('.cut-single-btn');
+        cutBtn.addEventListener('click', async (e) => {
+          e.stopPropagation();
+          await cutEmailFromNote(noteId, idx);
+        });
+        modalBody.appendChild(row);
+      });
+    }
+    
+    function openNoteModal(noteId) {
+      const note = savedNotes.find(n => n.id === noteId);
+      if (!note) return;
+      activeModalNoteId = noteId;
+      refreshModalContent(noteId);
+      modal.classList.add('active');
+    }
     
     function closeModal() {
-      modalOverlay.classList.remove('active');
-      if (confirmResolver) confirmResolver(false);
-      confirmResolver = null;
+      modal.classList.remove('active');
+      activeModalNoteId = null;
+    }
+    closeModalBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => { if(e.target === modal) closeModal(); });
+    
+    function escapeHtml(str) {
+      return str.replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m]));
     }
     
-    function showConfirm(message = "Are you sure?") {
-      modalOverlay.classList.add('active');
-      // update message dynamically
-      const p = modalOverlay.querySelector('p');
-      if (p) p.innerText = message;
-      return new Promise((resolve) => {
-        confirmResolver = resolve;
-        const onConfirm = () => {
-          modalOverlay.classList.remove('active');
-          resolve(true);
-          cleanup();
-        };
-        const onCancel = () => {
-          modalOverlay.classList.remove('active');
-          resolve(false);
-          cleanup();
-        };
-        function cleanup() {
-          modalConfirmBtn.removeEventListener('click', onConfirm);
-          modalCancelBtn.removeEventListener('click', onCancel);
-          modalOverlay.removeEventListener('click', backdropHandler);
-        }
-        function backdropHandler(e) {
-          if (e.target === modalOverlay) onCancel();
-        }
-        modalConfirmBtn.addEventListener('click', onConfirm, { once: true });
-        modalCancelBtn.addEventListener('click', onCancel, { once: true });
-        modalOverlay.addEventListener('click', backdropHandler, { once: true });
-      });
-    }
-
-    // ---------- PWA INSTALL (same as before, but no alerts) ----------
-    let deferredPrompt = null;
-    const installPanel = document.getElementById('installPanel');
-    const installBtn = document.getElementById('installAppBtn');
-    function hideInstallPanel() { if(installPanel) installPanel.classList.add('hidden'); }
-    function isStandalone() { return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true; }
-    if (isStandalone()) hideInstallPanel();
-
-    const manifestObj = { name: "CaseForge Email Studio", short_name: "CaseForge", start_url: ".", display: "standalone", theme_color: "#0f172a", background_color: "#ffffff", icons: [{ src: "genarator.png", sizes: "192x192", type: "image/png" },{ src: "genarator.png", sizes: "512x512", type: "image/png" }] };
-    const manifestBlob = new Blob([JSON.stringify(manifestObj)], {type: 'application/json'});
-    const manifestURL = URL.createObjectURL(manifestBlob);
-    const manifestLink = document.createElement('link');
-    manifestLink.rel = 'manifest';
-    manifestLink.href = manifestURL;
-    document.head.appendChild(manifestLink);
-    if ('serviceWorker' in navigator) {
-      const swCode = `self.addEventListener('fetch', e => e.respondWith(fetch(e.request))); self.addEventListener('install', e => self.skipWaiting()); self.addEventListener('activate', e => e.waitUntil(clients.claim()));`;
-      const swBlob = new Blob([swCode], {type: 'application/javascript'});
-      const swURL = URL.createObjectURL(swBlob);
-      navigator.serviceWorker.register(swURL).catch(e=>console.warn);
-    }
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-      if (!isStandalone()) installPanel.classList.remove('hidden');
-    });
-    window.addEventListener('appinstalled', () => { deferredPrompt = null; hideInstallPanel(); showToast("✓ App installed successfully!","success"); });
-    if (installBtn) {
-      installBtn.addEventListener('click', async () => {
-        if (deferredPrompt) {
-          deferredPrompt.prompt();
-          const { outcome } = await deferredPrompt.userChoice;
-          if (outcome === 'accepted') showToast("Installing app...","success");
-          deferredPrompt = null;
-        } else { showToast("Use browser menu: Add to Home Screen","info"); }
-      });
-    }
-
-    // ---------- SECTION SWITCHING ----------
-    const mailGenSection = document.getElementById('mailGenSection');
-    const tempMailSection = document.getElementById('tempMailSection');
-    const aboutSection = document.getElementById('aboutSection');
-    const navBtns = document.querySelectorAll('.nav-item');
-    function switchSection(sectionId) {
-      mailGenSection.classList.remove('active-section');
-      tempMailSection.classList.remove('active-section');
-      aboutSection.classList.remove('active-section');
-      if (sectionId === 'mailGen') mailGenSection.classList.add('active-section');
-      if (sectionId === 'tempMail') tempMailSection.classList.add('active-section');
-      if (sectionId === 'about') aboutSection.classList.add('active-section');
-      navBtns.forEach(btn => {
-        const btnSection = btn.getAttribute('data-section');
-        if ((btnSection === 'mailGen' && sectionId === 'mailGen') || (btnSection === 'tempMail' && sectionId === 'tempMail') || (btnSection === 'about' && sectionId === 'about')) btn.classList.add('active');
-        else btn.classList.remove('active');
-      });
-    }
-    navBtns.forEach(btn => btn.addEventListener('click', () => switchSection(btn.getAttribute('data-section'))));
-
-    // ---------- MAIL LOGIC ----------
+    // ---------- MAIL GENERATOR LOGIC ----------
     let currentGeneratedEmails = [];
+    
     function generateSingleVariant(baseEmail) {
-      let result = '';
-      for (let ch of baseEmail) {
-        if (/[A-Za-z]/.test(ch)) result += Math.random() < 0.5 ? ch.toUpperCase() : ch.toLowerCase();
-        else result += ch;
+      let res = '';
+      for(let ch of baseEmail) {
+        if(/[A-Za-z]/.test(ch)) res += Math.random() < 0.5 ? ch.toUpperCase() : ch.toLowerCase();
+        else res += ch;
       }
-      return result;
+      return res;
     }
     function generateVariants(base, count) {
-      const variants = [];
-      for (let i = 0; i < count; i++) variants.push(generateSingleVariant(base));
-      return variants;
+      const arr = [];
+      for(let i=0;i<count;i++) arr.push(generateSingleVariant(base));
+      return arr;
     }
-    function escapeHtml(str) { return str.replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m])); }
-    function renderEmailList(emails) {
+    
+    function renderCurrentEmails() {
       const container = document.getElementById('resultContainer');
-      if (!emails.length) { container.innerHTML = `<div class="empty-msg"><i class="far fa-envelope"></i> No emails generated. Set base & count, hit Generate.</div>`; return; }
-      container.innerHTML = emails.map(email => `<div class="email-item"><i class="far fa-envelope" style="margin-right: 10px; color:#3b82f6;"></i>${escapeHtml(email)}</div>`).join('');
+      if(!currentGeneratedEmails.length) {
+        container.innerHTML = `<div class="empty-msg"><i class="far fa-envelope"></i> No emails generated. Set base & hit Generate.</div>`;
+        return;
+      }
+      container.innerHTML = currentGeneratedEmails.map(email => `<div class="email-item"><i class="far fa-envelope" style="margin-right:10px;color:#3b82f6;"></i>${escapeHtml(email)}</div>`).join('');
     }
-    const generateBtn = document.getElementById('generateBtn');
-    const baseEmailInput = document.getElementById('baseEmailInput');
+    
+    const baseInput = document.getElementById('baseEmailInput');
     const countInput = document.getElementById('countInput');
+    const generateBtn = document.getElementById('generateBtn');
     const copyAllBtn = document.getElementById('copyAllBtn');
     const clearAllBtn = document.getElementById('clearAllBtn');
     
     generateBtn.addEventListener('click', () => {
-      let base = baseEmailInput.value.trim();
-      if (base === "") { showToast("Please enter a base email address", "error"); return; }
-      let count = parseInt(countInput.value, 10);
-      if (isNaN(count) || count < 1) count = 1;
-      if (count > 1000) { showToast("Max limit is 1000, capped", "info"); count = 1000; countInput.value = 1000; }
-      if (!base.includes('@') && !confirm("Not a typical email, continue?")) return; // only one confirm left but we keep it minimal, actually we can replace but user said only alerts. We'll keep a small confirm but that's fine.
+      let base = baseInput.value.trim();
+      if(!base) { showToast("Enter base email", "error"); return; }
+      let count = parseInt(countInput.value,10);
+      if(isNaN(count) || count<1) count=1;
+      if(count>1000) { showToast("Max 1000, capped", "info"); count=1000; countInput.value=1000; }
+      if(!base.includes('@') && !confirm("Continue without proper email?")) return;
       const generated = generateVariants(base, count);
       currentGeneratedEmails = generated;
-      renderEmailList(currentGeneratedEmails);
-      showToast(`✨ ${generated.length} variants generated!`, "success");
+      renderCurrentEmails();
+      // AUTO SAVE AS NOTE
+      addNote(generated, base, generated.length);
+      showToast(`✨ ${generated.length} variants generated & saved`, "success");
     });
     
-    clearAllBtn.addEventListener('click', async () => {
-      if (!currentGeneratedEmails.length) { showToast("No emails to clear", "info"); return; }
-      const confirmed = await showConfirm("Are you sure you want to delete all generated emails?");
-      if (confirmed) {
-        currentGeneratedEmails = [];
-        renderEmailList([]);
-        showToast("All emails cleared", "success");
-      }
+    clearAllBtn.addEventListener('click', () => {
+      if(currentGeneratedEmails.length === 0) { showToast("Nothing to clear", "info"); return; }
+      currentGeneratedEmails = [];
+      renderCurrentEmails();
+      showToast("Current emails cleared (saved notes remain)", "info");
     });
     
     copyAllBtn.addEventListener('click', async () => {
-      if (!currentGeneratedEmails.length) { showToast("No emails to copy", "error"); return; }
-      const textToCopy = currentGeneratedEmails.join('\n');
-      try {
-        await navigator.clipboard.writeText(textToCopy);
-        showToast(`📋 Copied ${currentGeneratedEmails.length} email(s) to clipboard`, "success");
-      } catch { showToast("Copy failed. Try manual select.", "error"); }
+      if(!currentGeneratedEmails.length) { showToast("No emails to copy", "error"); return; }
+      await navigator.clipboard.writeText(currentGeneratedEmails.join('\n'));
+      showToast(`📋 Copied ${currentGeneratedEmails.length} emails`, "success");
     });
     
-    function getEmailArrayForExport() {
-      if (!currentGeneratedEmails.length) { showToast("No emails to export. Generate first.", "error"); return null; }
+    // EXPORTS
+    function getCurrentForExport() {
+      if(!currentGeneratedEmails.length) { showToast("Generate emails first", "error"); return null; }
       return currentGeneratedEmails;
     }
     function downloadCSV() {
-      const emails = getEmailArrayForExport();
-      if (!emails) return;
-      const rows = [["Generated Emails"], ...emails.map(e => [e])];
-      const csvContent = rows.map(row => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(",")).join("\n");
-      const blob = new Blob(["\uFEFF" + csvContent], { type: "text/csv;charset=utf-8;" });
-      const link = document.createElement("a");
-      const url = URL.createObjectURL(blob);
-      link.href = url;
-      link.setAttribute("download", "email_variants.csv");
-      document.body.appendChild(link);
+      const emails = getCurrentForExport();
+      if(!emails) return;
+      const rows = [["Generated Emails"], ...emails.map(e=>[e])];
+      const csv = rows.map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(",")).join("\n");
+      const blob = new Blob(["\uFEFF"+csv], {type:"text/csv"});
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = "email_variants.csv";
       link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
-      showToast("CSV exported", "success");
+      URL.revokeObjectURL(link.href);
+      showToast("CSV exported","success");
     }
     function downloadExcel() {
-      const emails = getEmailArrayForExport();
-      if (!emails) return;
-      const ws = XLSX.utils.aoa_to_sheet([["Generated Emails"], ...emails.map(e => [e])]);
+      const emails = getCurrentForExport();
+      if(!emails) return;
+      const ws = XLSX.utils.aoa_to_sheet([["Generated Emails"], ...emails.map(e=>[e])]);
       const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, "EmailVariants");
-      XLSX.writeFile(wb, `email_variants_${Date.now()}.xlsx`);
-      showToast("Excel file saved", "success");
+      XLSX.utils.book_append_sheet(wb, ws, "Emails");
+      XLSX.writeFile(wb, `emails_${Date.now()}.xlsx`);
+      showToast("Excel saved","success");
     }
     async function downloadPDF() {
-      const emails = getEmailArrayForExport();
-      if (!emails) return;
+      const emails = getCurrentForExport();
+      if(!emails) return;
       const { jsPDF } = window.jspdf;
-      const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
-      doc.setFont("helvetica", "normal");
+      const doc = new jsPDF();
       doc.setFontSize(16);
-      doc.text("Email Variant Generator Report", 14, 15);
+      doc.text("Email Variant Report", 14, 15);
       doc.setFontSize(10);
-      doc.text(`Total variants: ${emails.length} • Base: ${baseEmailInput.value || "custom"}`, 14, 25);
-      doc.autoTable({ startY: 32, head: [["Generated Emails"]], body: emails.map(e => [e]), margin: { left: 14, right: 14 }, styles: { fontSize: 9, cellPadding: 2, overflow: 'linebreak' } });
-      doc.save(`email_variants_${Date.now()}.pdf`);
-      showToast("PDF exported", "success");
+      doc.text(`Total: ${emails.length} | Base: ${baseInput.value}`, 14, 25);
+      doc.autoTable({ startY: 32, head: [["Emails"]], body: emails.map(e=>[e]), styles:{ fontSize:8 } });
+      doc.save(`emails_${Date.now()}.pdf`);
+      showToast("PDF exported","success");
     }
     document.getElementById('downloadCsvBtn').addEventListener('click', downloadCSV);
     document.getElementById('downloadExcelBtn').addEventListener('click', downloadExcel);
     document.getElementById('downloadPdfBtn').addEventListener('click', downloadPDF);
     
-    // Temp mail sites
-    const tempSites = [
-      { name: "Temp-Mail.org", url: "https://temp-mail.org/" },
-      { name: "10 Minute Mail", url: "https://10minutemail.com/" },
-      { name: "Guerrilla Mail", url: "https://www.guerrillamail.com/" },
-      { name: "Mailinator", url: "https://www.mailinator.com/" },
-      { name: "Mohmal", url: "https://mohmal.com/en" },
-      { name: "EmailOnDeck", url: "https://www.emailondeck.com/" },
-      { name: "TempInbox", url: "https://tempinbox.com/" },
-      { name: "Throwaway Email", url: "https://throwaway.email/" }
-    ];
-    function buildTempMailList() {
-      const container = document.getElementById('tempSitesList');
-      if (!container) return;
-      container.innerHTML = '';
-      tempSites.forEach(site => {
-        const anchor = document.createElement('a');
-        anchor.href = site.url;
-        anchor.target = '_blank';
-        anchor.rel = 'noopener noreferrer';
-        anchor.className = 'site-card';
-        anchor.innerHTML = `<div><span class="site-name">${site.name}</span><div class="site-url">${new URL(site.url).hostname}</div></div><i class="fas fa-external-link-alt" style="color:#94a3b8;"></i>`;
-        container.appendChild(anchor);
+    // SECTION SWITCH
+    const genSec = document.getElementById('generatorSection');
+    const creatSec = document.getElementById('allCreatSection');
+    const aboutSec = document.getElementById('aboutSection');
+    const navs = document.querySelectorAll('.nav-item');
+    function switchSection(section) {
+      genSec.classList.remove('active-section');
+      creatSec.classList.remove('active-section');
+      aboutSec.classList.remove('active-section');
+      if(section === 'generator') genSec.classList.add('active-section');
+      if(section === 'allCreat') creatSec.classList.add('active-section');
+      if(section === 'about') aboutSec.classList.add('active-section');
+      navs.forEach(btn => {
+        const s = btn.getAttribute('data-section');
+        if(s === section) btn.classList.add('active');
+        else btn.classList.remove('active');
       });
+      if(section === 'allCreat') renderNotesList();
     }
-    buildTempMailList();
-    switchSection('mailGen');
-    const demoVariants = generateVariants(baseEmailInput.value.trim(), 4);
-    currentGeneratedEmails = demoVariants;
-    renderEmailList(currentGeneratedEmails);
+    navs.forEach(btn => btn.addEventListener('click', () => switchSection(btn.getAttribute('data-section'))));
+    
+    // PWA INSTALL (minimal)
+    let deferredPrompt;
+    const installBtnEl = document.getElementById('installAppBtn');
+    const installPanel = document.getElementById('installPanel');
+    function isStandalone() { return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone; }
+    if(isStandalone()) installPanel.style.display = 'none';
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      if(!isStandalone()) installPanel.style.display = 'flex';
+    });
+    installBtnEl.addEventListener('click', async () => {
+      if(deferredPrompt) { deferredPrompt.prompt(); const {outcome} = await deferredPrompt.userChoice; if(outcome === 'accepted') showToast("Installing app...","success"); deferredPrompt=null; }
+      else showToast("Use browser menu: Add to Home Screen","info");
+    });
+    window.addEventListener('appinstalled', () => installPanel.style.display = 'none');
+    
+    // Load notes & initial demo
+    loadNotes();
+    if(currentGeneratedEmails.length === 0) {
+      const demoBase = baseInput.value.trim();
+      const demoGen = generateVariants(demoBase, 4);
+      currentGeneratedEmails = demoGen;
+      renderCurrentEmails();
+    }
+    switchSection('generator');
   })();
 </script>
 </body>
