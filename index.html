@@ -19,101 +19,102 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: system-ui, 'Segoe UI', 'Inter', -apple-system, 'Roboto', sans-serif;
     }
 
     body {
       background: #f8fafc;
-      padding-bottom: 85px;
+      padding-bottom: 70px;
+      font-family: system-ui, 'Segoe UI', 'Inter', -apple-system, sans-serif;
     }
 
     .app-container {
-      max-width: 800px;
+      max-width: 750px;
       margin: 0 auto;
-      padding: 20px 18px 30px 18px;
+      padding: 14px 16px 25px;
     }
 
     .section {
       display: none;
-      animation: fadeSlide 0.25s ease;
+      animation: fade 0.2s ease;
     }
     .section.active-section {
       display: block;
     }
-    @keyframes fadeSlide {
-      from { opacity: 0; transform: translateY(8px);}
+    @keyframes fade {
+      from { opacity: 0; transform: translateY(3px);}
       to { opacity: 1; transform: translateY(0);}
     }
 
+    /* Smaller cards */
     .card {
       background: #ffffff;
-      border-radius: 28px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
-      padding: 20px 18px;
-      margin-bottom: 24px;
+      border-radius: 22px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03), 0 1px 2px rgba(0, 0, 0, 0.02);
+      padding: 14px 16px;
+      margin-bottom: 18px;
       border: 1px solid #edf2f7;
     }
 
     .generator-title {
-      font-size: 1.65rem;
+      font-size: 1.4rem;
       font-weight: 700;
-      letter-spacing: -0.3px;
+      letter-spacing: -0.2px;
       background: linear-gradient(135deg, #1e2b3c, #2c4a6e);
       background-clip: text;
       -webkit-background-clip: text;
       color: transparent;
-      margin-bottom: 4px;
+      margin-bottom: 2px;
     }
 
     .label {
       font-weight: 600;
       color: #1f2a3e;
-      margin-bottom: 8px;
+      margin-bottom: 5px;
       display: block;
-      font-size: 0.85rem;
+      font-size: 0.75rem;
       letter-spacing: 0.3px;
     }
 
     input, .count-input {
       width: 100%;
-      padding: 14px 16px;
+      padding: 10px 14px;
       border: 1.5px solid #e2e8f0;
-      border-radius: 24px;
-      font-size: 1rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
       transition: 0.2s;
       background: #ffffff;
       outline: none;
     }
     input:focus {
       border-color: #3b82f6;
-      box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
+      box-shadow: 0 0 0 2px rgba(59,130,246,0.1);
     }
 
     .row-flex {
       display: flex;
-      gap: 14px;
+      gap: 10px;
       flex-wrap: wrap;
       align-items: flex-end;
+      margin-top: 8px;
     }
     .count-wrapper {
       flex: 2;
-      min-width: 120px;
+      min-width: 100px;
     }
     .generate-btn {
       background: #0f172a;
       color: white;
       border: none;
-      padding: 0 26px;
-      border-radius: 40px;
+      padding: 0 20px;
+      border-radius: 30px;
       font-weight: 600;
-      font-size: 1rem;
+      font-size: 0.85rem;
       cursor: pointer;
       transition: 0.2s;
-      height: 54px;
+      height: 44px;
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
     }
     .generate-btn:hover {
       background: #1e293b;
@@ -123,124 +124,104 @@
     .action-buttons {
       display: flex;
       flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 20px;
-      margin-bottom: 20px;
+      gap: 10px;
+      margin: 14px 0 12px;
       border-top: 1px solid #edf2f7;
-      padding-top: 20px;
+      padding-top: 14px;
     }
     .small-btn {
       background: #f8fafc;
       border: 1px solid #e2e8f0;
-      padding: 8px 16px;
-      border-radius: 40px;
-      font-size: 0.85rem;
+      padding: 6px 12px;
+      border-radius: 30px;
+      font-size: 0.75rem;
       font-weight: 500;
       cursor: pointer;
-      transition: 0.2s;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       color: #1e293b;
     }
     .small-btn:hover {
       background: #f1f5f9;
-      border-color: #cbd5e1;
     }
 
     .download-group {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 8px;
+      gap: 8px;
+      margin-top: 6px;
     }
     .download-btn {
       background: white;
       border: 1px solid #cbd5e1;
-      border-radius: 30px;
-      padding: 6px 16px;
-      font-size: 0.8rem;
+      border-radius: 25px;
+      padding: 5px 12px;
+      font-size: 0.7rem;
       font-weight: 500;
       cursor: pointer;
-      transition: all 0.2s;
     }
-    .download-btn i { margin-right: 6px; }
-    .download-btn:hover {
-      background: #f1f5f9;
-      border-color: #94a3b8;
-    }
+    .download-btn i { margin-right: 4px; font-size: 0.7rem; }
 
     .result-area {
       background: #fafcff;
-      border-radius: 24px;
+      border-radius: 20px;
       border: 1px solid #eef2ff;
-      max-height: 340px;
+      max-height: 280px;
       overflow-y: auto;
-      padding: 8px 4px;
+      padding: 6px 2px;
     }
     .email-item {
-      font-family: 'SF Mono', monospace;
-      padding: 10px 14px;
+      font-family: monospace;
+      padding: 8px 12px;
       border-bottom: 1px solid #ecf3fa;
-      font-size: 0.85rem;
+      font-size: 0.75rem;
       word-break: break-all;
       color: #0f172a;
     }
-    .email-item:last-child { border-bottom: none; }
     .empty-msg {
       text-align: center;
       color: #94a3b8;
-      padding: 32px 16px;
+      padding: 25px 12px;
+      font-size: 0.8rem;
     }
 
-    /* All Creat Mail - Notes Grid */
+    /* Notes grid */
     .notes-grid {
       display: flex;
       flex-direction: column;
-      gap: 14px;
-      margin-top: 8px;
+      gap: 10px;
+      margin-top: 10px;
     }
     .note-card {
       background: #ffffff;
-      border-radius: 20px;
-      padding: 14px 18px;
+      border-radius: 18px;
+      padding: 10px 14px;
       border: 1px solid #eef2ff;
-      transition: 0.2s;
       display: flex;
       align-items: center;
       justify-content: space-between;
       cursor: pointer;
     }
-    .note-card:hover {
-      background: #f8fafd;
-      border-color: #cbdff2;
-      transform: translateX(3px);
-    }
-    .note-info {
-      flex: 1;
-    }
     .note-title {
       font-weight: 700;
-      font-size: 1rem;
-      color: #0f172a;
+      font-size: 0.85rem;
     }
     .note-meta {
-      font-size: 0.7rem;
+      font-size: 0.65rem;
       color: #5b6e8c;
-      margin-top: 4px;
+      margin-top: 3px;
       display: flex;
-      gap: 12px;
-      align-items: center;
+      gap: 10px;
     }
     .delete-note-btn {
       background: transparent;
       border: none;
-      font-size: 1.2rem;
+      font-size: 1rem;
       color: #cbd5e1;
       cursor: pointer;
-      padding: 8px;
-      border-radius: 40px;
-      transition: 0.2s;
+      padding: 6px;
+      border-radius: 30px;
     }
     .delete-note-btn:hover {
       color: #ef4444;
@@ -248,11 +229,12 @@
     }
     .empty-notes {
       text-align: center;
-      padding: 40px 20px;
+      padding: 30px 12px;
       color: #94a3b8;
+      font-size: 0.8rem;
     }
 
-    /* Fullscreen Modal for Note Details (with Cut) */
+    /* Modal */
     .full-modal {
       position: fixed;
       top: 0;
@@ -264,46 +246,41 @@
       display: flex;
       flex-direction: column;
       transform: translateY(100%);
-      transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-      box-shadow: 0 -4px 30px rgba(0,0,0,0.1);
+      transition: transform 0.25s ease;
     }
     .full-modal.active {
       transform: translateY(0);
     }
     .modal-header {
-      padding: 20px 18px;
+      padding: 14px 16px;
       border-bottom: 1px solid #eef2ff;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: white;
-      position: sticky;
-      top: 0;
-      z-index: 10;
     }
     .modal-header h3 {
-      font-size: 1.3rem;
+      font-size: 1.1rem;
       font-weight: 600;
     }
     .close-modal {
       background: #f1f5f9;
       border: none;
-      width: 40px;
-      height: 40px;
+      width: 34px;
+      height: 34px;
       border-radius: 30px;
-      font-size: 1.2rem;
+      font-size: 1rem;
       cursor: pointer;
     }
     .modal-body {
       flex: 1;
       overflow-y: auto;
-      padding: 16px 18px 30px;
+      padding: 12px 14px;
     }
     .modal-email-row {
       background: #fafcff;
-      border-radius: 18px;
-      padding: 12px 16px;
-      margin-bottom: 12px;
+      border-radius: 16px;
+      padding: 8px 12px;
+      margin-bottom: 10px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -311,28 +288,23 @@
     }
     .modal-email-text {
       font-family: monospace;
-      font-size: 0.85rem;
+      font-size: 0.75rem;
       word-break: break-all;
       flex: 1;
-      margin-right: 12px;
+      margin-right: 10px;
     }
     .cut-single-btn {
       background: #fee2e2;
-      border: 1px solid #fecaca;
-      padding: 8px 14px;
-      border-radius: 30px;
-      font-size: 0.7rem;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 25px;
+      font-size: 0.65rem;
       font-weight: 600;
       cursor: pointer;
-      transition: 0.2s;
       color: #b91c1c;
     }
-    .cut-single-btn:hover {
-      background: #fecaca;
-      transform: scale(0.96);
-    }
 
-    /* bottom menu */
+    /* Bottom Nav */
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -344,111 +316,108 @@
       display: flex;
       justify-content: space-around;
       align-items: center;
-      padding: 10px 16px 20px;
+      padding: 8px 16px 16px;
       z-index: 1000;
     }
     .nav-item {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 4px;
+      gap: 3px;
       background: transparent;
       border: none;
-      font-size: 0.7rem;
+      font-size: 0.65rem;
       font-weight: 500;
       color: #6c757d;
       cursor: pointer;
-      padding: 6px 12px;
-      border-radius: 40px;
+      padding: 5px 10px;
+      border-radius: 30px;
     }
-    .nav-item i { font-size: 1.5rem; }
+    .nav-item i { font-size: 1.2rem; }
     .nav-item.active {
       color: #0f172a;
       background: #f1f5f9;
     }
 
+    /* Install panel */
     .install-panel {
       background: #eef2ff;
-      border-radius: 60px;
-      padding: 8px 12px;
-      margin-top: 20px;
+      border-radius: 50px;
+      padding: 6px 12px;
+      margin-top: 14px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 12px;
+      gap: 10px;
     }
     .install-btn {
       background: #0f172a;
       border: none;
       color: white;
-      padding: 10px 20px;
+      padding: 6px 16px;
       border-radius: 40px;
       font-weight: 600;
-      font-size: 0.85rem;
+      font-size: 0.75rem;
       cursor: pointer;
     }
     footer {
-      font-size: 0.7rem;
+      font-size: 0.6rem;
       text-align: center;
       color: #8e9aaf;
-      margin-top: 24px;
+      margin-top: 16px;
     }
     .toast-container {
       position: fixed;
-      bottom: 90px;
+      bottom: 80px;
       left: 50%;
       transform: translateX(-50%);
       z-index: 3000;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
       pointer-events: none;
     }
     .toast {
       background: #1e293b;
       color: white;
-      padding: 10px 20px;
-      border-radius: 60px;
-      font-size: 0.85rem;
+      padding: 8px 16px;
+      border-radius: 40px;
+      font-size: 0.75rem;
       display: flex;
       align-items: center;
-      gap: 10px;
-      animation: fadeUp 0.3s ease;
+      gap: 8px;
+      animation: fadeUp 0.2s ease;
     }
-    .toast.success { background: #0f3b2c; border-left: 3px solid #2ecc71; }
+    .toast.success { background: #0f3b2c; }
     @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
+      from { opacity: 0; transform: translateY(8px);}
+      to { opacity: 1; transform: translateY(0);}
     }
   </style>
 </head>
 <body>
 
 <div class="app-container">
-  <!-- GENERATOR SECTION -->
+  <!-- GENERATOR -->
   <div id="generatorSection" class="section active-section">
     <div class="card">
-      <div class="generator-title">✉️ CaseCraft Generator</div>
-      <p style="color: #475569; margin-bottom: 20px; font-size: 0.85rem;">Base email → random case variants • digits stay unchanged</p>
-      <label class="label">📧 Base email address</label>
-      <input type="email" id="baseEmailInput" placeholder="example: user123@domain.com" value="demo.user99@example.com">
-      <div class="row-flex" style="margin-top: 18px;">
+      <div class="generator-title">✉️ CaseCraft</div>
+      <p style="font-size: 0.7rem; color: #475569; margin-bottom: 12px;">Random case · digits unchanged · auto-save</p>
+      <label class="label">Base email</label>
+      <input type="email" id="baseEmailInput" value="demo.user99@example.com">
+      <div class="row-flex">
         <div class="count-wrapper">
-          <label class="label" style="margin-bottom: 4px;">🔢 Variants (max 1000)</label>
-          <input type="number" id="countInput" class="count-input" min="1" max="1000" value="8">
+          <label class="label">Variants (max 1000)</label>
+          <input type="number" id="countInput" min="1" max="1000" value="8">
         </div>
-        <button id="generateBtn" class="generate-btn"><i class="fas fa-magic"></i> Generate & Save</button>
+        <button id="generateBtn" class="generate-btn"><i class="fas fa-magic"></i> Generate</button>
       </div>
       <div class="action-buttons">
-        <button id="copyAllBtn" class="small-btn"><i class="far fa-copy"></i> Copy current</button>
-        <button id="clearAllBtn" class="small-btn"><i class="fas fa-trash-alt"></i> Clear current</button>
+        <button id="copyAllBtn" class="small-btn"><i class="far fa-copy"></i> Copy</button>
+        <button id="clearAllBtn" class="small-btn"><i class="fas fa-trash-alt"></i> Clear</button>
       </div>
       <div id="resultContainer" class="result-area">
-        <div class="empty-msg"><i class="far fa-envelope"></i> No emails generated yet.</div>
+        <div class="empty-msg">No emails yet. Generate & auto-save.</div>
       </div>
-      <div style="margin-top: 20px;">
-        <div class="label" style="margin-bottom: 8px;">💾 Export current</div>
+      <div style="margin-top: 12px;">
+        <div class="label">Export</div>
         <div class="download-group">
           <button id="downloadCsvBtn" class="download-btn"><i class="fas fa-file-csv"></i> CSV</button>
           <button id="downloadExcelBtn" class="download-btn"><i class="fas fa-file-excel"></i> Excel</button>
@@ -457,138 +426,117 @@
       </div>
     </div>
     <div class="install-panel" id="installPanel">
-      <div class="install-info"><i class="fas fa-mobile-alt"></i> <strong>Install as App</strong></div>
-      <button id="installAppBtn" class="install-btn"><i class="fas fa-download"></i> Install</button>
+      <span style="font-size:0.7rem;"><i class="fas fa-mobile-alt"></i> Install app</span>
+      <button id="installAppBtn" class="install-btn"><i class="fas fa-download"></i> Install Now</button>
     </div>
-    <footer>⚡ Each generation auto-saved in "All Creat Mail" · Cut = copy + remove</footer>
+    <footer>Each generation saved in "All Creat Mail" · Cut = copy & remove</footer>
   </div>
 
-  <!-- ALL CREAT MAIL SECTION (CUT ENABLED) -->
+  <!-- ALL CREAT MAIL -->
   <div id="allCreatSection" class="section">
     <div class="card">
       <div class="generator-title">📁 All Creat Mail</div>
-      <p style="color: #475569; margin-bottom: 16px;">Saved email sets – click a note, then press <strong style="color:#b91c1c;">✂️ Cut</strong> to copy & remove that email.</p>
+      <p style="font-size:0.7rem; color:#475569; margin-bottom:8px;">Saved notes — tap to view, cut emails (copy+remove)</p>
       <div id="notesListContainer" class="notes-grid">
-        <div class="empty-notes"><i class="far fa-save"></i> No saved notes. Generate emails to auto-save.</div>
+        <div class="empty-notes">No saved notes. Generate emails.</div>
       </div>
     </div>
   </div>
 
-  <!-- ABOUT SECTION -->
+  <!-- ABOUT -->
   <div id="aboutSection" class="section">
     <div class="card">
-      <h2 style="font-weight: 700;">✨ About CaseCraft</h2>
-      <div class="about-text" style="margin-top: 16px; line-height: 1.5;">
-        <p>Smart email variant engine with persistent note storage. Every generation is automatically saved as a note in "All Creat Mail".</p><br>
-        <p>✔️ Up to 1000 variants · Random letter case · Digits preserved<br>✔️ Export CSV/Excel/PDF · Copy current set<br>✔️ <strong>Cut feature:</strong> In any saved note, click "Cut" on an email → copies to clipboard and removes it from the note.</p>
-        <div class="warning" style="background:#fff8e7; border-left:4px solid #facc15; padding:14px; border-radius:20px; margin:20px 0;">
-          <i class="fas fa-heart"></i> <strong>Ethical use only</strong> — For devs & testers.
+      <h2 style="font-weight:700; font-size:1.2rem;">✨ About</h2>
+      <div style="font-size:0.75rem; line-height:1.4; margin-top:10px;">
+        <p>Random email case generator with persistent storage. Every generation creates a note in "All Creat Mail".</p><br>
+        <p>✔ Up to 1000 variants · Copy current set · Export CSV/Excel/PDF<br>✔ Cut: copy email and remove from note instantly.</p>
+        <div style="background:#fff8e7; border-left:3px solid #facc15; padding:8px 10px; border-radius:14px; margin:12px 0;">
+          <i class="fas fa-heart"></i> Ethical use only — for testing & dev.
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- BOTTOM NAV -->
 <div class="bottom-nav">
-  <button class="nav-item" data-section="generator"><i class="fas fa-magic"></i><span>Generator</span></button>
-  <button class="nav-item" data-section="allCreat"><i class="fas fa-folder-open"></i><span>All Creat Mail</span></button>
+  <button class="nav-item" data-section="generator"><i class="fas fa-magic"></i><span>Forge</span></button>
+  <button class="nav-item" data-section="allCreat"><i class="fas fa-folder-open"></i><span>Creat Mail</span></button>
   <button class="nav-item" data-section="about"><i class="fas fa-info-circle"></i><span>About</span></button>
 </div>
 
-<!-- FULLSCREEN MODAL FOR NOTE DETAILS (WITH CUT) -->
 <div id="noteModal" class="full-modal">
   <div class="modal-header">
-    <h3 id="modalTitle">📄 Email Set</h3>
+    <h3 id="modalTitle">📄 Emails</h3>
     <button class="close-modal" id="closeModalBtn"><i class="fas fa-times"></i></button>
   </div>
   <div class="modal-body" id="modalBody"></div>
 </div>
-
 <div class="toast-container" id="toastContainer"></div>
 
 <script>
-  (function() {
-    // ---------- TOAST ----------
+  (function(){
+    // ----- Toast -----
     const toastContainer = document.getElementById('toastContainer');
-    function showToast(msg, type = 'info') {
+    function showToast(msg, type='info') {
       const toast = document.createElement('div');
       toast.className = `toast ${type}`;
-      toast.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-info-circle'}"></i><span>${msg}</span>`;
+      toast.innerHTML = `<i class="fas ${type==='success'?'fa-check-circle':'fa-info-circle'}"></i><span>${msg}</span>`;
       toastContainer.appendChild(toast);
-      setTimeout(() => { toast.remove(); }, 2500);
+      setTimeout(() => toast.remove(), 2200);
     }
 
-    // ---------- LOCALSTORAGE NOTES ----------
-    let savedNotes = []; // each note: { id, timestamp, emails, baseHint, count }
+    // ----- LocalStorage Notes -----
+    let savedNotes = [];
     const STORAGE_KEY = 'caseforge_notes';
-    
     function loadNotes() {
       const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored) savedNotes = JSON.parse(stored);
-      else savedNotes = [];
+      savedNotes = stored ? JSON.parse(stored) : [];
       renderNotesList();
     }
-    
-    function saveNotesToStorage() {
+    function saveNotes() {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(savedNotes));
       renderNotesList();
     }
-    
-    function addNote(emailsArray, baseEmailHint, count) {
+    function addNote(emails, baseHint) {
       const newNote = {
         id: Date.now(),
         timestamp: new Date().toLocaleString(),
-        emails: [...emailsArray],
-        baseHint: baseEmailHint,
-        count: emailsArray.length
+        emails: [...emails],
+        baseHint: baseHint,
+        count: emails.length
       };
       savedNotes.unshift(newNote);
-      saveNotesToStorage();
-      showToast(`✅ Saved "${newNote.count} emails" as a note`, 'success');
-      return newNote;
+      saveNotes();
+      showToast(`✅ Saved ${emails.length} emails as note`, 'success');
     }
-    
-    function deleteNoteById(id) {
+    function deleteNote(id) {
       savedNotes = savedNotes.filter(n => n.id !== id);
-      saveNotesToStorage();
+      saveNotes();
       showToast('Note deleted', 'success');
       if (activeModalNoteId === id) closeModal();
     }
     
-    // ---- CUT FUNCTION: copy email and remove from note ----
+    // Cut (copy + remove)
     async function cutEmailFromNote(noteId, emailIndex) {
       const note = savedNotes.find(n => n.id === noteId);
-      if (!note) return false;
-      const emailToCut = note.emails[emailIndex];
-      if (!emailToCut) return false;
-      // copy to clipboard
+      if (!note) return;
+      const email = note.emails[emailIndex];
+      if (!email) return;
       try {
-        await navigator.clipboard.writeText(emailToCut);
-        // remove from array
+        await navigator.clipboard.writeText(email);
         note.emails.splice(emailIndex, 1);
-        // update count
         note.count = note.emails.length;
-        // if note becomes empty, delete the note
         if (note.emails.length === 0) {
-          deleteNoteById(noteId);
-          showToast(`✂️ Cut last email: "${emailToCut.substring(0, 30)}..." (note removed)`, 'success');
+          deleteNote(noteId);
+          showToast(`✂️ Cut last email — note removed`, 'success');
         } else {
-          saveNotesToStorage();
-          // if modal is open for this note, refresh modal content
-          if (activeModalNoteId === noteId) {
-            refreshModalContent(noteId);
-          }
-          showToast(`✂️ Cut: "${emailToCut.substring(0, 30)}..." (removed from note)`, 'success');
+          saveNotes();
+          if (activeModalNoteId === noteId) refreshModal(noteId);
+          showToast(`✂️ Cut: "${email.substring(0, 35)}..."`, 'success');
         }
-        return true;
-      } catch (err) {
-        showToast('Failed to copy', 'error');
-        return false;
-      }
+      } catch(e) { showToast('Copy failed', 'error'); }
     }
     
-    // Render notes list in "All Creat Mail"
     function renderNotesList() {
       const container = document.getElementById('notesListContainer');
       if (!container) return;
@@ -598,50 +546,39 @@
       }
       container.innerHTML = '';
       savedNotes.forEach(note => {
-        const noteDiv = document.createElement('div');
-        noteDiv.className = 'note-card';
-        noteDiv.innerHTML = `
+        const div = document.createElement('div');
+        div.className = 'note-card';
+        div.innerHTML = `
           <div class="note-info">
-            <div class="note-title">📧 ${note.count} variants</div>
-            <div class="note-meta">
-              <span><i class="far fa-calendar-alt"></i> ${note.timestamp}</span>
-              <span><i class="fas fa-at"></i> ${note.baseHint?.substring(0, 25) || 'email'}</span>
-            </div>
+            <div class="note-title">📧 ${note.count} variant${note.count!==1?'s':''}</div>
+            <div class="note-meta"><span>${note.timestamp}</span><span>${note.baseHint?.substring(0,20)||''}</span></div>
           </div>
-          <button class="delete-note-btn" data-id="${note.id}" title="Delete note"><i class="fas fa-trash-alt"></i></button>
+          <button class="delete-note-btn" data-id="${note.id}"><i class="fas fa-trash-alt"></i></button>
         `;
-        const infoDiv = noteDiv.querySelector('.note-info');
-        const deleteBtn = noteDiv.querySelector('.delete-note-btn');
-        infoDiv.addEventListener('click', (e) => {
+        const infoDiv = div.querySelector('.note-info');
+        const delBtn = div.querySelector('.delete-note-btn');
+        infoDiv.addEventListener('click', () => openNoteModal(note.id));
+        delBtn.addEventListener('click', (e) => {
           e.stopPropagation();
-          openNoteModal(note.id);
+          deleteNote(note.id);
         });
-        deleteBtn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          deleteNoteById(note.id);
-        });
-        container.appendChild(noteDiv);
+        container.appendChild(div);
       });
     }
     
-    // Modal handling with cut buttons
     let activeModalNoteId = null;
     const modal = document.getElementById('noteModal');
     const modalTitle = document.getElementById('modalTitle');
     const modalBody = document.getElementById('modalBody');
     const closeModalBtn = document.getElementById('closeModalBtn');
     
-    function refreshModalContent(noteId) {
+    function refreshModal(noteId) {
       const note = savedNotes.find(n => n.id === noteId);
-      if (!note) {
-        closeModal();
-        return;
-      }
-      modalTitle.innerText = `📄 ${note.count} Emails · ${note.timestamp}`;
+      if (!note) { closeModal(); return; }
+      modalTitle.innerText = `📄 ${note.count} emails · ${note.timestamp}`;
       modalBody.innerHTML = '';
       if (note.emails.length === 0) {
-        modalBody.innerHTML = '<div class="empty-notes">This note is empty. It will be deleted when you close.</div>';
-        // schedule auto-delete after close? but we already delete when cut last email. For safety, if 0, delete on close.
+        modalBody.innerHTML = '<div class="empty-notes">Empty note will be deleted.</div>';
         return;
       }
       note.emails.forEach((email, idx) => {
@@ -649,12 +586,11 @@
         row.className = 'modal-email-row';
         row.innerHTML = `
           <div class="modal-email-text">${escapeHtml(email)}</div>
-          <button class="cut-single-btn" data-idx="${idx}"><i class="fas fa-cut"></i> Cut (copy & remove)</button>
+          <button class="cut-single-btn" data-idx="${idx}"><i class="fas fa-cut"></i> Cut</button>
         `;
-        const cutBtn = row.querySelector('.cut-single-btn');
-        cutBtn.addEventListener('click', async (e) => {
+        row.querySelector('.cut-single-btn').addEventListener('click', (e) => {
           e.stopPropagation();
-          await cutEmailFromNote(noteId, idx);
+          cutEmailFromNote(noteId, idx);
         });
         modalBody.appendChild(row);
       });
@@ -664,124 +600,158 @@
       const note = savedNotes.find(n => n.id === noteId);
       if (!note) return;
       activeModalNoteId = noteId;
-      refreshModalContent(noteId);
+      refreshModal(noteId);
       modal.classList.add('active');
     }
-    
     function closeModal() {
       modal.classList.remove('active');
       activeModalNoteId = null;
     }
     closeModalBtn.addEventListener('click', closeModal);
-    modal.addEventListener('click', (e) => { if(e.target === modal) closeModal(); });
+    modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
     
     function escapeHtml(str) {
-      return str.replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m]));
+      return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]));
     }
     
-    // ---------- MAIL GENERATOR LOGIC ----------
-    let currentGeneratedEmails = [];
-    
-    function generateSingleVariant(baseEmail) {
+    // ----- Generator -----
+    let currentEmails = [];
+    function randomCaseVariant(base) {
       let res = '';
-      for(let ch of baseEmail) {
-        if(/[A-Za-z]/.test(ch)) res += Math.random() < 0.5 ? ch.toUpperCase() : ch.toLowerCase();
+      for(let ch of base) {
+        if (/[A-Za-z]/.test(ch)) res += Math.random() < 0.5 ? ch.toUpperCase() : ch.toLowerCase();
         else res += ch;
       }
       return res;
     }
     function generateVariants(base, count) {
       const arr = [];
-      for(let i=0;i<count;i++) arr.push(generateSingleVariant(base));
+      for(let i=0;i<count;i++) arr.push(randomCaseVariant(base));
       return arr;
     }
-    
-    function renderCurrentEmails() {
+    function renderCurrent() {
       const container = document.getElementById('resultContainer');
-      if(!currentGeneratedEmails.length) {
-        container.innerHTML = `<div class="empty-msg"><i class="far fa-envelope"></i> No emails generated. Set base & hit Generate.</div>`;
+      if (!currentEmails.length) {
+        container.innerHTML = '<div class="empty-msg"><i class="far fa-envelope"></i> No emails generated. Generate & auto-save.</div>';
         return;
       }
-      container.innerHTML = currentGeneratedEmails.map(email => `<div class="email-item"><i class="far fa-envelope" style="margin-right:10px;color:#3b82f6;"></i>${escapeHtml(email)}</div>`).join('');
+      container.innerHTML = currentEmails.map(e => `<div class="email-item"><i class="far fa-envelope" style="margin-right:8px;color:#3b82f6;"></i>${escapeHtml(e)}</div>`).join('');
     }
     
     const baseInput = document.getElementById('baseEmailInput');
     const countInput = document.getElementById('countInput');
-    const generateBtn = document.getElementById('generateBtn');
-    const copyAllBtn = document.getElementById('copyAllBtn');
-    const clearAllBtn = document.getElementById('clearAllBtn');
+    const genBtn = document.getElementById('generateBtn');
+    const copyAll = document.getElementById('copyAllBtn');
+    const clearCurr = document.getElementById('clearAllBtn');
     
-    generateBtn.addEventListener('click', () => {
+    genBtn.addEventListener('click', () => {
       let base = baseInput.value.trim();
-      if(!base) { showToast("Enter base email", "error"); return; }
+      if (!base) { showToast("Enter base email", "error"); return; }
       let count = parseInt(countInput.value,10);
-      if(isNaN(count) || count<1) count=1;
-      if(count>1000) { showToast("Max 1000, capped", "info"); count=1000; countInput.value=1000; }
-      if(!base.includes('@') && !confirm("Continue without proper email?")) return;
+      if (isNaN(count) || count<1) count=1;
+      if (count>1000) { showToast("Max 1000, capped", "info"); count=1000; countInput.value=1000; }
       const generated = generateVariants(base, count);
-      currentGeneratedEmails = generated;
-      renderCurrentEmails();
-      // AUTO SAVE AS NOTE
-      addNote(generated, base, generated.length);
-      showToast(`✨ ${generated.length} variants generated & saved`, "success");
+      currentEmails = generated;
+      renderCurrent();
+      addNote(generated, base);
+      showToast(`✨ ${generated.length} variants generated & saved`, 'success');
     });
     
-    clearAllBtn.addEventListener('click', () => {
-      if(currentGeneratedEmails.length === 0) { showToast("Nothing to clear", "info"); return; }
-      currentGeneratedEmails = [];
-      renderCurrentEmails();
-      showToast("Current emails cleared (saved notes remain)", "info");
+    clearCurr.addEventListener('click', () => {
+      if (!currentEmails.length) { showToast("Nothing to clear", "info"); return; }
+      currentEmails = [];
+      renderCurrent();
+      showToast("Current list cleared (saved notes remain)", "info");
     });
     
-    copyAllBtn.addEventListener('click', async () => {
-      if(!currentGeneratedEmails.length) { showToast("No emails to copy", "error"); return; }
-      await navigator.clipboard.writeText(currentGeneratedEmails.join('\n'));
-      showToast(`📋 Copied ${currentGeneratedEmails.length} emails`, "success");
+    copyAll.addEventListener('click', async () => {
+      if (!currentEmails.length) { showToast("No emails to copy", "error"); return; }
+      await navigator.clipboard.writeText(currentEmails.join('\n'));
+      showToast(`📋 Copied ${currentEmails.length} emails`, 'success');
     });
     
-    // EXPORTS
-    function getCurrentForExport() {
-      if(!currentGeneratedEmails.length) { showToast("Generate emails first", "error"); return null; }
-      return currentGeneratedEmails;
+    // Exports
+    function getCurrent() {
+      if (!currentEmails.length) { showToast("Generate emails first", "error"); return null; }
+      return currentEmails;
     }
-    function downloadCSV() {
-      const emails = getCurrentForExport();
-      if(!emails) return;
+    function exportCSV() {
+      const emails = getCurrent();
+      if (!emails) return;
       const rows = [["Generated Emails"], ...emails.map(e=>[e])];
       const csv = rows.map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(",")).join("\n");
       const blob = new Blob(["\uFEFF"+csv], {type:"text/csv"});
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = "email_variants.csv";
-      link.click();
-      URL.revokeObjectURL(link.href);
-      showToast("CSV exported","success");
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `emails_${Date.now()}.csv`;
+      a.click();
+      URL.revokeObjectURL(a.href);
+      showToast("CSV exported", "success");
     }
-    function downloadExcel() {
-      const emails = getCurrentForExport();
-      if(!emails) return;
+    function exportExcel() {
+      const emails = getCurrent();
+      if (!emails) return;
       const ws = XLSX.utils.aoa_to_sheet([["Generated Emails"], ...emails.map(e=>[e])]);
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws, "Emails");
       XLSX.writeFile(wb, `emails_${Date.now()}.xlsx`);
-      showToast("Excel saved","success");
+      showToast("Excel saved", "success");
     }
-    async function downloadPDF() {
-      const emails = getCurrentForExport();
-      if(!emails) return;
+    async function exportPDF() {
+      const emails = getCurrent();
+      if (!emails) return;
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF();
-      doc.setFontSize(16);
-      doc.text("Email Variant Report", 14, 15);
-      doc.setFontSize(10);
-      doc.text(`Total: ${emails.length} | Base: ${baseInput.value}`, 14, 25);
-      doc.autoTable({ startY: 32, head: [["Emails"]], body: emails.map(e=>[e]), styles:{ fontSize:8 } });
+      doc.setFontSize(14);
+      doc.text("Email Variants", 14, 15);
+      doc.setFontSize(9);
+      doc.text(`Total: ${emails.length} | Base: ${baseInput.value}`, 14, 23);
+      doc.autoTable({ startY: 30, head: [["Emails"]], body: emails.map(e=>[e]), styles:{ fontSize:7 } });
       doc.save(`emails_${Date.now()}.pdf`);
-      showToast("PDF exported","success");
+      showToast("PDF exported", "success");
     }
-    document.getElementById('downloadCsvBtn').addEventListener('click', downloadCSV);
-    document.getElementById('downloadExcelBtn').addEventListener('click', downloadExcel);
-    document.getElementById('downloadPdfBtn').addEventListener('click', downloadPDF);
+    document.getElementById('downloadCsvBtn').addEventListener('click', exportCSV);
+    document.getElementById('downloadExcelBtn').addEventListener('click', exportExcel);
+    document.getElementById('downloadPdfBtn').addEventListener('click', exportPDF);
+    
+    // ----- PWA INSTALL (FIXED) -----
+    let deferredPrompt = null;
+    const installBtn = document.getElementById('installAppBtn');
+    const installPanel = document.getElementById('installPanel');
+    
+    function isStandalone() {
+      return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+    }
+    if (isStandalone()) installPanel.style.display = 'none';
+    
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      if (!isStandalone()) installPanel.style.display = 'flex';
+    });
+    
+    installBtn.addEventListener('click', async () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') {
+          showToast("Installing app...", "success");
+          installPanel.style.display = 'none';
+        } else {
+          showToast("Install cancelled", "info");
+        }
+        deferredPrompt = null;
+      } else {
+        // fallback for browsers that don't support beforeinstallprompt
+        showToast("Tap browser menu → Add to Home Screen", "info");
+      }
+    });
+    
+    window.addEventListener('appinstalled', () => {
+      deferredPrompt = null;
+      installPanel.style.display = 'none';
+      showToast("✅ App installed! Launch from home screen.", "success");
+    });
     
     // SECTION SWITCH
     const genSec = document.getElementById('generatorSection');
@@ -792,43 +762,25 @@
       genSec.classList.remove('active-section');
       creatSec.classList.remove('active-section');
       aboutSec.classList.remove('active-section');
-      if(section === 'generator') genSec.classList.add('active-section');
-      if(section === 'allCreat') creatSec.classList.add('active-section');
-      if(section === 'about') aboutSec.classList.add('active-section');
+      if (section === 'generator') genSec.classList.add('active-section');
+      if (section === 'allCreat') creatSec.classList.add('active-section');
+      if (section === 'about') aboutSec.classList.add('active-section');
       navs.forEach(btn => {
         const s = btn.getAttribute('data-section');
-        if(s === section) btn.classList.add('active');
+        if (s === section) btn.classList.add('active');
         else btn.classList.remove('active');
       });
-      if(section === 'allCreat') renderNotesList();
+      if (section === 'allCreat') renderNotesList();
     }
     navs.forEach(btn => btn.addEventListener('click', () => switchSection(btn.getAttribute('data-section'))));
     
-    // PWA INSTALL (minimal)
-    let deferredPrompt;
-    const installBtnEl = document.getElementById('installAppBtn');
-    const installPanel = document.getElementById('installPanel');
-    function isStandalone() { return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone; }
-    if(isStandalone()) installPanel.style.display = 'none';
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-      if(!isStandalone()) installPanel.style.display = 'flex';
-    });
-    installBtnEl.addEventListener('click', async () => {
-      if(deferredPrompt) { deferredPrompt.prompt(); const {outcome} = await deferredPrompt.userChoice; if(outcome === 'accepted') showToast("Installing app...","success"); deferredPrompt=null; }
-      else showToast("Use browser menu: Add to Home Screen","info");
-    });
-    window.addEventListener('appinstalled', () => installPanel.style.display = 'none');
-    
-    // Load notes & initial demo
+    // INIT
     loadNotes();
-    if(currentGeneratedEmails.length === 0) {
-      const demoBase = baseInput.value.trim();
-      const demoGen = generateVariants(demoBase, 4);
-      currentGeneratedEmails = demoGen;
-      renderCurrentEmails();
-    }
+    // demo current emails
+    const demoBase = baseInput.value.trim();
+    const demoGen = generateVariants(demoBase, 4);
+    currentEmails = demoGen;
+    renderCurrent();
     switchSection('generator');
   })();
 </script>
