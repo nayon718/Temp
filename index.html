@@ -7,7 +7,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="CaseForge">
-  <title>CaseForge · Email Variant Studio</title>
+  <title>CaseForge · Email Case Studio</title>
   <link rel="icon" type="image/png" href="genarator.png">
   <link rel="apple-touch-icon" href="genarator.png">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -20,82 +20,71 @@
       padding: 0;
       box-sizing: border-box;
     }
-
     body {
-      background: #f8fafc;
-      padding-bottom: 70px;
-      font-family: system-ui, 'Segoe UI', 'Inter', -apple-system, sans-serif;
+      background: #f4f7fb;
+      padding-bottom: 68px;
+      font-family: system-ui, -apple-system, 'Segoe UI', 'Inter', sans-serif;
     }
-
     .app-container {
-      max-width: 750px;
+      max-width: 700px;
       margin: 0 auto;
-      padding: 14px 16px 25px;
+      padding: 12px 14px 20px;
     }
-
     .section {
       display: none;
-      animation: fade 0.2s ease;
+      animation: fade 0.2s;
     }
-    .section.active-section {
-      display: block;
-    }
+    .section.active-section { display: block; }
     @keyframes fade {
       from { opacity: 0; transform: translateY(3px);}
       to { opacity: 1; transform: translateY(0);}
     }
-
-    /* Smaller cards */
+    /* compact cards */
     .card {
-      background: #ffffff;
-      border-radius: 22px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03), 0 1px 2px rgba(0, 0, 0, 0.02);
-      padding: 14px 16px;
-      margin-bottom: 18px;
-      border: 1px solid #edf2f7;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02), 0 1px 2px rgba(0,0,0,0.03);
+      padding: 12px 14px;
+      margin-bottom: 14px;
+      border: 1px solid #eef2f8;
     }
-
     .generator-title {
-      font-size: 1.4rem;
+      font-size: 1.35rem;
       font-weight: 700;
       letter-spacing: -0.2px;
       background: linear-gradient(135deg, #1e2b3c, #2c4a6e);
-      background-clip: text;
       -webkit-background-clip: text;
+      background-clip: text;
       color: transparent;
       margin-bottom: 2px;
     }
-
     .label {
       font-weight: 600;
       color: #1f2a3e;
-      margin-bottom: 5px;
+      margin-bottom: 4px;
       display: block;
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       letter-spacing: 0.3px;
     }
-
     input, .count-input {
       width: 100%;
-      padding: 10px 14px;
+      padding: 8px 12px;
       border: 1.5px solid #e2e8f0;
-      border-radius: 20px;
-      font-size: 0.9rem;
-      transition: 0.2s;
-      background: #ffffff;
+      border-radius: 18px;
+      font-size: 0.85rem;
+      background: white;
       outline: none;
     }
     input:focus {
       border-color: #3b82f6;
       box-shadow: 0 0 0 2px rgba(59,130,246,0.1);
     }
-
     .row-flex {
       display: flex;
-      gap: 10px;
+      gap: 8px;
       flex-wrap: wrap;
       align-items: flex-end;
-      margin-top: 8px;
+      margin-top: 6px;
     }
     .count-wrapper {
       flex: 2;
@@ -105,135 +94,103 @@
       background: #0f172a;
       color: white;
       border: none;
-      padding: 0 20px;
-      border-radius: 30px;
+      padding: 0 18px;
+      border-radius: 28px;
       font-weight: 600;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       cursor: pointer;
-      transition: 0.2s;
-      height: 44px;
+      height: 42px;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
     }
-    .generate-btn:hover {
-      background: #1e293b;
-      transform: scale(0.97);
-    }
-
+    .generate-btn:hover { background: #1e293b; transform: scale(0.97);}
     .action-buttons {
       display: flex;
-      flex-wrap: wrap;
       gap: 10px;
-      margin: 14px 0 12px;
+      margin: 12px 0 10px;
       border-top: 1px solid #edf2f7;
-      padding-top: 14px;
+      padding-top: 12px;
     }
     .small-btn {
       background: #f8fafc;
       border: 1px solid #e2e8f0;
-      padding: 6px 12px;
-      border-radius: 30px;
-      font-size: 0.75rem;
+      padding: 5px 12px;
+      border-radius: 28px;
+      font-size: 0.7rem;
       font-weight: 500;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
       color: #1e293b;
     }
-    .small-btn:hover {
-      background: #f1f5f9;
-    }
-
     .download-group {
       display: flex;
-      flex-wrap: wrap;
       gap: 8px;
       margin-top: 6px;
+      flex-wrap: wrap;
     }
     .download-btn {
       background: white;
       border: 1px solid #cbd5e1;
-      border-radius: 25px;
-      padding: 5px 12px;
-      font-size: 0.7rem;
+      border-radius: 24px;
+      padding: 4px 12px;
+      font-size: 0.68rem;
       font-weight: 500;
       cursor: pointer;
     }
-    .download-btn i { margin-right: 4px; font-size: 0.7rem; }
-
     .result-area {
       background: #fafcff;
-      border-radius: 20px;
+      border-radius: 18px;
       border: 1px solid #eef2ff;
-      max-height: 280px;
+      max-height: 260px;
       overflow-y: auto;
-      padding: 6px 2px;
+      padding: 4px 2px;
     }
     .email-item {
-      font-family: monospace;
-      padding: 8px 12px;
+      font-family: 'SF Mono', monospace;
+      padding: 6px 10px;
       border-bottom: 1px solid #ecf3fa;
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       word-break: break-all;
-      color: #0f172a;
     }
     .empty-msg {
       text-align: center;
       color: #94a3b8;
-      padding: 25px 12px;
-      font-size: 0.8rem;
+      padding: 20px 12px;
+      font-size: 0.75rem;
     }
-
-    /* Notes grid */
+    /* Notes */
     .notes-grid {
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      margin-top: 10px;
+      gap: 8px;
+      margin-top: 8px;
     }
     .note-card {
-      background: #ffffff;
-      border-radius: 18px;
-      padding: 10px 14px;
+      background: white;
+      border-radius: 16px;
+      padding: 8px 12px;
       border: 1px solid #eef2ff;
       display: flex;
-      align-items: center;
       justify-content: space-between;
+      align-items: center;
       cursor: pointer;
     }
-    .note-title {
-      font-weight: 700;
-      font-size: 0.85rem;
-    }
-    .note-meta {
-      font-size: 0.65rem;
-      color: #5b6e8c;
-      margin-top: 3px;
-      display: flex;
-      gap: 10px;
-    }
+    .note-title { font-weight: 700; font-size: 0.8rem; }
+    .note-meta { font-size: 0.6rem; color: #5b6e8c; margin-top: 2px; display: flex; gap: 8px; }
     .delete-note-btn {
       background: transparent;
       border: none;
-      font-size: 1rem;
+      font-size: 0.9rem;
       color: #cbd5e1;
       cursor: pointer;
-      padding: 6px;
+      padding: 5px;
       border-radius: 30px;
     }
-    .delete-note-btn:hover {
-      color: #ef4444;
-      background: #fee2e2;
-    }
-    .empty-notes {
-      text-align: center;
-      padding: 30px 12px;
-      color: #94a3b8;
-      font-size: 0.8rem;
-    }
-
+    .delete-note-btn:hover { color: #ef4444; background: #fee2e2; }
+    .empty-notes { text-align: center; padding: 25px 12px; color: #94a3b8; font-size: 0.75rem; }
     /* Modal */
     .full-modal {
       position: fixed;
@@ -248,39 +205,33 @@
       transform: translateY(100%);
       transition: transform 0.25s ease;
     }
-    .full-modal.active {
-      transform: translateY(0);
-    }
+    .full-modal.active { transform: translateY(0); }
     .modal-header {
-      padding: 14px 16px;
+      padding: 12px 14px;
       border-bottom: 1px solid #eef2ff;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
-    .modal-header h3 {
-      font-size: 1.1rem;
-      font-weight: 600;
-    }
+    .modal-header h3 { font-size: 1rem; font-weight: 600; }
     .close-modal {
       background: #f1f5f9;
       border: none;
-      width: 34px;
-      height: 34px;
+      width: 32px;
+      height: 32px;
       border-radius: 30px;
-      font-size: 1rem;
       cursor: pointer;
     }
     .modal-body {
       flex: 1;
       overflow-y: auto;
-      padding: 12px 14px;
+      padding: 10px 12px;
     }
     .modal-email-row {
       background: #fafcff;
-      border-radius: 16px;
-      padding: 8px 12px;
-      margin-bottom: 10px;
+      border-radius: 14px;
+      padding: 6px 10px;
+      margin-bottom: 8px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -288,23 +239,22 @@
     }
     .modal-email-text {
       font-family: monospace;
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       word-break: break-all;
       flex: 1;
-      margin-right: 10px;
+      margin-right: 8px;
     }
     .cut-single-btn {
       background: #fee2e2;
       border: none;
-      padding: 5px 10px;
-      border-radius: 25px;
+      padding: 4px 10px;
+      border-radius: 24px;
       font-size: 0.65rem;
       font-weight: 600;
       cursor: pointer;
       color: #b91c1c;
     }
-
-    /* Bottom Nav */
+    /* bottom nav */
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -316,35 +266,33 @@
       display: flex;
       justify-content: space-around;
       align-items: center;
-      padding: 8px 16px 16px;
+      padding: 6px 16px 14px;
       z-index: 1000;
     }
     .nav-item {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 3px;
+      gap: 2px;
       background: transparent;
       border: none;
-      font-size: 0.65rem;
+      font-size: 0.6rem;
       font-weight: 500;
       color: #6c757d;
       cursor: pointer;
-      padding: 5px 10px;
+      padding: 4px 10px;
       border-radius: 30px;
     }
-    .nav-item i { font-size: 1.2rem; }
+    .nav-item i { font-size: 1.1rem; }
     .nav-item.active {
       color: #0f172a;
       background: #f1f5f9;
     }
-
-    /* Install panel */
     .install-panel {
       background: #eef2ff;
-      border-radius: 50px;
+      border-radius: 40px;
       padding: 6px 12px;
-      margin-top: 14px;
+      margin-top: 12px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -354,21 +302,21 @@
       background: #0f172a;
       border: none;
       color: white;
-      padding: 6px 16px;
-      border-radius: 40px;
+      padding: 5px 14px;
+      border-radius: 30px;
       font-weight: 600;
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       cursor: pointer;
     }
     footer {
-      font-size: 0.6rem;
+      font-size: 0.55rem;
       text-align: center;
       color: #8e9aaf;
-      margin-top: 16px;
+      margin-top: 12px;
     }
     .toast-container {
       position: fixed;
-      bottom: 80px;
+      bottom: 75px;
       left: 50%;
       transform: translateX(-50%);
       z-index: 3000;
@@ -377,17 +325,17 @@
     .toast {
       background: #1e293b;
       color: white;
-      padding: 8px 16px;
-      border-radius: 40px;
-      font-size: 0.75rem;
+      padding: 6px 14px;
+      border-radius: 30px;
+      font-size: 0.7rem;
       display: flex;
       align-items: center;
-      gap: 8px;
-      animation: fadeUp 0.2s ease;
+      gap: 6px;
+      animation: fadeUp 0.2s;
     }
     .toast.success { background: #0f3b2c; }
     @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(8px);}
+      from { opacity: 0; transform: translateY(6px);}
       to { opacity: 1; transform: translateY(0);}
     }
   </style>
@@ -395,11 +343,11 @@
 <body>
 
 <div class="app-container">
-  <!-- GENERATOR -->
+  <!-- GENERATOR SECTION -->
   <div id="generatorSection" class="section active-section">
     <div class="card">
-      <div class="generator-title">✉️ CaseCraft</div>
-      <p style="font-size: 0.7rem; color: #475569; margin-bottom: 12px;">Random case · digits unchanged · auto-save</p>
+      <div class="generator-title">⚡ CaseCraft</div>
+      <p style="font-size:0.65rem; color:#475569; margin-bottom:10px;">Random letter case · digits unchanged · auto‑saved</p>
       <label class="label">Base email</label>
       <input type="email" id="baseEmailInput" value="demo.user99@example.com">
       <div class="row-flex">
@@ -410,14 +358,14 @@
         <button id="generateBtn" class="generate-btn"><i class="fas fa-magic"></i> Generate</button>
       </div>
       <div class="action-buttons">
-        <button id="copyAllBtn" class="small-btn"><i class="far fa-copy"></i> Copy</button>
+        <button id="copyAllBtn" class="small-btn"><i class="far fa-copy"></i> Copy all</button>
         <button id="clearAllBtn" class="small-btn"><i class="fas fa-trash-alt"></i> Clear</button>
       </div>
       <div id="resultContainer" class="result-area">
-        <div class="empty-msg">No emails yet. Generate & auto-save.</div>
+        <div class="empty-msg">✨ Generate emails → auto‑saved to "All Creat Mail"</div>
       </div>
-      <div style="margin-top: 12px;">
-        <div class="label">Export</div>
+      <div style="margin-top: 10px;">
+        <div class="label">Export current</div>
         <div class="download-group">
           <button id="downloadCsvBtn" class="download-btn"><i class="fas fa-file-csv"></i> CSV</button>
           <button id="downloadExcelBtn" class="download-btn"><i class="fas fa-file-excel"></i> Excel</button>
@@ -426,19 +374,19 @@
       </div>
     </div>
     <div class="install-panel" id="installPanel">
-      <span style="font-size:0.7rem;"><i class="fas fa-mobile-alt"></i> Install app</span>
+      <span style="font-size:0.7rem;"><i class="fas fa-mobile-alt"></i> Install as App</span>
       <button id="installAppBtn" class="install-btn"><i class="fas fa-download"></i> Install Now</button>
     </div>
-    <footer>Each generation saved in "All Creat Mail" · Cut = copy & remove</footer>
+    <footer>✂️ Cut = copy + remove from note · All notes saved locally</footer>
   </div>
 
   <!-- ALL CREAT MAIL -->
   <div id="allCreatSection" class="section">
     <div class="card">
       <div class="generator-title">📁 All Creat Mail</div>
-      <p style="font-size:0.7rem; color:#475569; margin-bottom:8px;">Saved notes — tap to view, cut emails (copy+remove)</p>
+      <p style="font-size:0.65rem; color:#475569; margin-bottom:6px;">Tap a note → cut emails (copy & delete)</p>
       <div id="notesListContainer" class="notes-grid">
-        <div class="empty-notes">No saved notes. Generate emails.</div>
+        <div class="empty-notes">No saved notes. Generate emails first.</div>
       </div>
     </div>
   </div>
@@ -446,12 +394,12 @@
   <!-- ABOUT -->
   <div id="aboutSection" class="section">
     <div class="card">
-      <h2 style="font-weight:700; font-size:1.2rem;">✨ About</h2>
-      <div style="font-size:0.75rem; line-height:1.4; margin-top:10px;">
-        <p>Random email case generator with persistent storage. Every generation creates a note in "All Creat Mail".</p><br>
-        <p>✔ Up to 1000 variants · Copy current set · Export CSV/Excel/PDF<br>✔ Cut: copy email and remove from note instantly.</p>
-        <div style="background:#fff8e7; border-left:3px solid #facc15; padding:8px 10px; border-radius:14px; margin:12px 0;">
-          <i class="fas fa-heart"></i> Ethical use only — for testing & dev.
+      <h2 style="font-weight:700; font-size:1.1rem;">📌 About</h2>
+      <div style="font-size:0.7rem; line-height:1.4; margin-top:8px;">
+        <p>Random email case generator with persistent storage. Each generation creates a note.</p>
+        <p>✔ Up to 1000 variants · Copy & export · Cut = copy+remove from note</p>
+        <div style="background:#fff8e7; border-left:3px solid #facc15; padding:6px 8px; border-radius:12px; margin:10px 0;">
+          <i class="fas fa-heart"></i> Ethical use only — for dev/testing.
         </div>
       </div>
     </div>
@@ -475,17 +423,17 @@
 
 <script>
   (function(){
-    // ----- Toast -----
+    // ----- toast -----
     const toastContainer = document.getElementById('toastContainer');
-    function showToast(msg, type='info') {
-      const toast = document.createElement('div');
-      toast.className = `toast ${type}`;
-      toast.innerHTML = `<i class="fas ${type==='success'?'fa-check-circle':'fa-info-circle'}"></i><span>${msg}</span>`;
-      toastContainer.appendChild(toast);
-      setTimeout(() => toast.remove(), 2200);
+    function toast(msg, type='info') {
+      const t = document.createElement('div');
+      t.className = `toast ${type}`;
+      t.innerHTML = `<i class="fas ${type==='success'?'fa-check-circle':'fa-info-circle'}"></i><span>${msg}</span>`;
+      toastContainer.appendChild(t);
+      setTimeout(() => t.remove(), 2200);
     }
 
-    // ----- LocalStorage Notes -----
+    // ----- localStorage notes -----
     let savedNotes = [];
     const STORAGE_KEY = 'caseforge_notes';
     function loadNotes() {
@@ -502,21 +450,21 @@
         id: Date.now(),
         timestamp: new Date().toLocaleString(),
         emails: [...emails],
-        baseHint: baseHint,
+        baseHint: baseHint.substring(0, 30),
         count: emails.length
       };
       savedNotes.unshift(newNote);
       saveNotes();
-      showToast(`✅ Saved ${emails.length} emails as note`, 'success');
+      toast(`✅ Saved ${emails.length} emails as note`, 'success');
     }
     function deleteNote(id) {
       savedNotes = savedNotes.filter(n => n.id !== id);
       saveNotes();
-      showToast('Note deleted', 'success');
+      toast('Note deleted', 'success');
       if (activeModalNoteId === id) closeModal();
     }
-    
-    // Cut (copy + remove)
+
+    // cut (copy + remove from note)
     async function cutEmailFromNote(noteId, emailIndex) {
       const note = savedNotes.find(n => n.id === noteId);
       if (!note) return;
@@ -528,20 +476,20 @@
         note.count = note.emails.length;
         if (note.emails.length === 0) {
           deleteNote(noteId);
-          showToast(`✂️ Cut last email — note removed`, 'success');
+          toast(`✂️ Cut last email — note removed`, 'success');
         } else {
           saveNotes();
           if (activeModalNoteId === noteId) refreshModal(noteId);
-          showToast(`✂️ Cut: "${email.substring(0, 35)}..."`, 'success');
+          toast(`✂️ Cut: "${email.substring(0, 35)}..."`, 'success');
         }
-      } catch(e) { showToast('Copy failed', 'error'); }
+      } catch(e) { toast('Copy failed', 'error'); }
     }
-    
+
     function renderNotesList() {
       const container = document.getElementById('notesListContainer');
       if (!container) return;
       if (savedNotes.length === 0) {
-        container.innerHTML = '<div class="empty-notes"><i class="far fa-save"></i> No saved notes. Generate emails to auto-save.</div>';
+        container.innerHTML = '<div class="empty-notes"><i class="far fa-save"></i> No saved notes. Generate emails.</div>';
         return;
       }
       container.innerHTML = '';
@@ -551,7 +499,7 @@
         div.innerHTML = `
           <div class="note-info">
             <div class="note-title">📧 ${note.count} variant${note.count!==1?'s':''}</div>
-            <div class="note-meta"><span>${note.timestamp}</span><span>${note.baseHint?.substring(0,20)||''}</span></div>
+            <div class="note-meta"><span>${note.timestamp}</span><span>${note.baseHint}</span></div>
           </div>
           <button class="delete-note-btn" data-id="${note.id}"><i class="fas fa-trash-alt"></i></button>
         `;
@@ -565,20 +513,19 @@
         container.appendChild(div);
       });
     }
-    
+
     let activeModalNoteId = null;
     const modal = document.getElementById('noteModal');
     const modalTitle = document.getElementById('modalTitle');
     const modalBody = document.getElementById('modalBody');
     const closeModalBtn = document.getElementById('closeModalBtn');
-    
     function refreshModal(noteId) {
       const note = savedNotes.find(n => n.id === noteId);
       if (!note) { closeModal(); return; }
-      modalTitle.innerText = `📄 ${note.count} emails · ${note.timestamp}`;
+      modalTitle.innerText = `📄 ${note.count} email${note.count!==1?'s':''} · ${note.timestamp}`;
       modalBody.innerHTML = '';
       if (note.emails.length === 0) {
-        modalBody.innerHTML = '<div class="empty-notes">Empty note will be deleted.</div>';
+        modalBody.innerHTML = '<div class="empty-notes">Empty note will be removed.</div>';
         return;
       }
       note.emails.forEach((email, idx) => {
@@ -595,7 +542,6 @@
         modalBody.appendChild(row);
       });
     }
-    
     function openNoteModal(noteId) {
       const note = savedNotes.find(n => n.id === noteId);
       if (!note) return;
@@ -609,76 +555,79 @@
     }
     closeModalBtn.addEventListener('click', closeModal);
     modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
-    
     function escapeHtml(str) {
       return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]));
     }
-    
-    // ----- Generator -----
+
+    // ----- generator (no extra spaces) -----
     let currentEmails = [];
     function randomCaseVariant(base) {
-      let res = '';
-      for(let ch of base) {
-        if (/[A-Za-z]/.test(ch)) res += Math.random() < 0.5 ? ch.toUpperCase() : ch.toLowerCase();
-        else res += ch;
+      let out = '';
+      for (let i = 0; i < base.length; i++) {
+        const ch = base[i];
+        if (/[A-Za-z]/.test(ch)) {
+          out += Math.random() < 0.5 ? ch.toUpperCase() : ch.toLowerCase();
+        } else {
+          out += ch;
+        }
       }
-      return res;
+      return out;
     }
     function generateVariants(base, count) {
       const arr = [];
-      for(let i=0;i<count;i++) arr.push(randomCaseVariant(base));
+      for (let i = 0; i < count; i++) arr.push(randomCaseVariant(base));
       return arr;
     }
     function renderCurrent() {
       const container = document.getElementById('resultContainer');
       if (!currentEmails.length) {
-        container.innerHTML = '<div class="empty-msg"><i class="far fa-envelope"></i> No emails generated. Generate & auto-save.</div>';
+        container.innerHTML = '<div class="empty-msg">✨ No emails yet. Click Generate.</div>';
         return;
       }
-      container.innerHTML = currentEmails.map(e => `<div class="email-item"><i class="far fa-envelope" style="margin-right:8px;color:#3b82f6;"></i>${escapeHtml(e)}</div>`).join('');
+      container.innerHTML = currentEmails.map(e => `<div class="email-item"><i class="far fa-envelope" style="margin-right:6px; color:#3b82f6;"></i>${escapeHtml(e)}</div>`).join('');
     }
-    
+
     const baseInput = document.getElementById('baseEmailInput');
     const countInput = document.getElementById('countInput');
     const genBtn = document.getElementById('generateBtn');
-    const copyAll = document.getElementById('copyAllBtn');
-    const clearCurr = document.getElementById('clearAllBtn');
-    
+    const copyBtn = document.getElementById('copyAllBtn');
+    const clearBtn = document.getElementById('clearAllBtn');
+
     genBtn.addEventListener('click', () => {
       let base = baseInput.value.trim();
-      if (!base) { showToast("Enter base email", "error"); return; }
-      let count = parseInt(countInput.value,10);
-      if (isNaN(count) || count<1) count=1;
-      if (count>1000) { showToast("Max 1000, capped", "info"); count=1000; countInput.value=1000; }
+      if (!base) { toast("Enter base email", "error"); return; }
+      let count = parseInt(countInput.value, 10);
+      if (isNaN(count) || count < 1) count = 1;
+      if (count > 1000) { toast("Max 1000, capped", "info"); count = 1000; countInput.value = 1000; }
       const generated = generateVariants(base, count);
       currentEmails = generated;
       renderCurrent();
       addNote(generated, base);
-      showToast(`✨ ${generated.length} variants generated & saved`, 'success');
+      toast(`✨ ${generated.length} variants generated & saved`, 'success');
     });
-    
-    clearCurr.addEventListener('click', () => {
-      if (!currentEmails.length) { showToast("Nothing to clear", "info"); return; }
+
+    clearBtn.addEventListener('click', () => {
+      if (!currentEmails.length) { toast("Nothing to clear", "info"); return; }
       currentEmails = [];
       renderCurrent();
-      showToast("Current list cleared (saved notes remain)", "info");
+      toast("Current list cleared (saved notes remain)", "info");
     });
-    
-    copyAll.addEventListener('click', async () => {
-      if (!currentEmails.length) { showToast("No emails to copy", "error"); return; }
+
+    copyBtn.addEventListener('click', async () => {
+      if (!currentEmails.length) { toast("No emails to copy", "error"); return; }
       await navigator.clipboard.writeText(currentEmails.join('\n'));
-      showToast(`📋 Copied ${currentEmails.length} emails`, 'success');
+      toast(`📋 Copied ${currentEmails.length} emails`, 'success');
     });
-    
-    // Exports
-    function getCurrent() {
-      if (!currentEmails.length) { showToast("Generate emails first", "error"); return null; }
+
+    // exports
+    function getCurrentExport() {
+      if (!currentEmails.length) { toast("Generate emails first", "error"); return null; }
       return currentEmails;
     }
     function exportCSV() {
-      const emails = getCurrent();
-      if (!emails) return;
-      const rows = [["Generated Emails"], ...emails.map(e=>[e])];
+      const arr = getCurrentExport();
+      if (!arr) return;
+      const rows = [["Generated Emails"], ...arr.map(e=>[e])];
       const csv = rows.map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(",")).join("\n");
       const blob = new Blob(["\uFEFF"+csv], {type:"text/csv"});
       const a = document.createElement('a');
@@ -686,74 +635,96 @@
       a.download = `emails_${Date.now()}.csv`;
       a.click();
       URL.revokeObjectURL(a.href);
-      showToast("CSV exported", "success");
+      toast("CSV exported", "success");
     }
     function exportExcel() {
-      const emails = getCurrent();
-      if (!emails) return;
-      const ws = XLSX.utils.aoa_to_sheet([["Generated Emails"], ...emails.map(e=>[e])]);
+      const arr = getCurrentExport();
+      if (!arr) return;
+      const ws = XLSX.utils.aoa_to_sheet([["Generated Emails"], ...arr.map(e=>[e])]);
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws, "Emails");
       XLSX.writeFile(wb, `emails_${Date.now()}.xlsx`);
-      showToast("Excel saved", "success");
+      toast("Excel saved", "success");
     }
     async function exportPDF() {
-      const emails = getCurrent();
-      if (!emails) return;
+      const arr = getCurrentExport();
+      if (!arr) return;
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF();
-      doc.setFontSize(14);
-      doc.text("Email Variants", 14, 15);
-      doc.setFontSize(9);
-      doc.text(`Total: ${emails.length} | Base: ${baseInput.value}`, 14, 23);
-      doc.autoTable({ startY: 30, head: [["Emails"]], body: emails.map(e=>[e]), styles:{ fontSize:7 } });
+      doc.setFontSize(12);
+      doc.text("Email Variants", 14, 12);
+      doc.setFontSize(8);
+      doc.text(`Total: ${arr.length} | Base: ${baseInput.value}`, 14, 20);
+      doc.autoTable({ startY: 26, head: [["Emails"]], body: arr.map(e=>[e]), styles:{ fontSize:7 } });
       doc.save(`emails_${Date.now()}.pdf`);
-      showToast("PDF exported", "success");
+      toast("PDF exported", "success");
     }
     document.getElementById('downloadCsvBtn').addEventListener('click', exportCSV);
     document.getElementById('downloadExcelBtn').addEventListener('click', exportExcel);
     document.getElementById('downloadPdfBtn').addEventListener('click', exportPDF);
-    
-    // ----- PWA INSTALL (FIXED) -----
+
+    // ========== PWA INSTALL (FIXED) ==========
     let deferredPrompt = null;
-    const installBtn = document.getElementById('installAppBtn');
+    const installBtnEl = document.getElementById('installAppBtn');
     const installPanel = document.getElementById('installPanel');
-    
     function isStandalone() {
       return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
     }
     if (isStandalone()) installPanel.style.display = 'none';
-    
+
+    // dynamic manifest to ensure installability
+    const manifestObj = {
+      name: "CaseForge Email Studio",
+      short_name: "CaseForge",
+      start_url: ".",
+      display: "standalone",
+      theme_color: "#0f172a",
+      background_color: "#ffffff",
+      icons: [{ src: "genarator.png", sizes: "192x192", type: "image/png" }, { src: "genarator.png", sizes: "512x512", type: "image/png" }]
+    };
+    const manifestBlob = new Blob([JSON.stringify(manifestObj)], {type: 'application/json'});
+    const manifestURL = URL.createObjectURL(manifestBlob);
+    const manifestLink = document.createElement('link');
+    manifestLink.rel = 'manifest';
+    manifestLink.href = manifestURL;
+    document.head.appendChild(manifestLink);
+    // service worker
+    if ('serviceWorker' in navigator) {
+      const swCode = `self.addEventListener('fetch', e => e.respondWith(fetch(e.request))); self.addEventListener('install', e => self.skipWaiting()); self.addEventListener('activate', e => e.waitUntil(clients.claim()));`;
+      const swBlob = new Blob([swCode], {type: 'application/javascript'});
+      const swURL = URL.createObjectURL(swBlob);
+      navigator.serviceWorker.register(swURL).catch(e => console.log("SW error", e));
+    }
+
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
       if (!isStandalone()) installPanel.style.display = 'flex';
     });
-    
-    installBtn.addEventListener('click', async () => {
+
+    installBtnEl.addEventListener('click', async () => {
       if (deferredPrompt) {
         deferredPrompt.prompt();
         const { outcome } = await deferredPrompt.userChoice;
         if (outcome === 'accepted') {
-          showToast("Installing app...", "success");
+          toast("Installing app...", "success");
           installPanel.style.display = 'none';
         } else {
-          showToast("Install cancelled", "info");
+          toast("Install cancelled", "info");
         }
         deferredPrompt = null;
       } else {
-        // fallback for browsers that don't support beforeinstallprompt
-        showToast("Tap browser menu → Add to Home Screen", "info");
+        toast("Tap browser menu → Add to Home Screen", "info");
       }
     });
-    
+
     window.addEventListener('appinstalled', () => {
       deferredPrompt = null;
       installPanel.style.display = 'none';
-      showToast("✅ App installed! Launch from home screen.", "success");
+      toast("✅ App installed! Launch from home screen.", "success");
     });
-    
-    // SECTION SWITCH
+
+    // section switching
     const genSec = document.getElementById('generatorSection');
     const creatSec = document.getElementById('allCreatSection');
     const aboutSec = document.getElementById('aboutSection');
@@ -773,10 +744,9 @@
       if (section === 'allCreat') renderNotesList();
     }
     navs.forEach(btn => btn.addEventListener('click', () => switchSection(btn.getAttribute('data-section'))));
-    
-    // INIT
+
+    // initial data
     loadNotes();
-    // demo current emails
     const demoBase = baseInput.value.trim();
     const demoGen = generateVariants(demoBase, 4);
     currentEmails = demoGen;
