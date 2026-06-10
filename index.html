@@ -261,39 +261,53 @@
       cursor: pointer;
       color: #b91c1c;
     }
-    /* bottom nav */
+    /* bottom nav — modern app‑style tab bar */
     .bottom-nav {
       position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      background: rgba(255,255,255,0.96);
-      backdrop-filter: blur(12px);
-      border-top: 1px solid #eef2ff;
+      bottom: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 32px);
+      max-width: 400px;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(20px);
+      border-radius: 40px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.06), 0 2px 8px rgba(0,0,0,0.04);
       display: flex;
       justify-content: space-around;
       align-items: center;
-      padding: 8px 16px 16px;
+      padding: 8px 6px;
       z-index: 1000;
+      border: 1px solid rgba(255,255,255,0.6);
     }
     .nav-item {
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
       gap: 3px;
-      background: transparent;
-      border: none;
-      font-size: 0.65rem;
-      font-weight: 500;
-      color: #6c757d;
-      cursor: pointer;
-      padding: 5px 12px;
+      padding: 8px 14px;
       border-radius: 30px;
+      border: none;
+      background: transparent;
+      font-size: 0.6rem;
+      font-weight: 600;
+      color: #6b7280;
+      cursor: pointer;
+      transition: 0.2s ease;
+      min-width: 70px;
     }
-    .nav-item i { font-size: 1.2rem; }
+    .nav-item i {
+      font-size: 1.2rem;
+      transition: 0.2s;
+    }
     .nav-item.active {
-      color: #0f172a;
-      background: #f1f5f9;
+      background: #0f172a;
+      color: white;
+      box-shadow: 0 4px 12px rgba(15,23,42,0.2);
+    }
+    .nav-item.active i {
+      color: white;
     }
     .install-panel {
       background: #eef2ff;
@@ -316,12 +330,12 @@
       cursor: pointer;
     }
     .install-btn:hover { background: #15803d; }
-    /* Contact button bigger */
+    /* Contact & social buttons */
     .contact-btn {
       background: #16a34a;
       border: none;
       color: white;
-      padding: 7px 22px;
+      padding: 7px 20px;
       border-radius: 34px;
       font-weight: 600;
       font-size: 0.8rem;
@@ -331,8 +345,16 @@
       gap: 8px;
       transition: 0.2s;
       text-decoration: none;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
     }
     .contact-btn:hover { background: #15803d; transform: scale(0.97); }
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin: 10px 0 4px;
+      flex-wrap: wrap;
+    }
     /* Sweet watermark */
     .sweet-watermark {
       text-align: center;
@@ -375,6 +397,23 @@
       from { opacity: 0; transform: translateY(6px);}
       to { opacity: 1; transform: translateY(0);}
     }
+    /* About section new content */
+    .about-text {
+      font-size: 0.76rem;
+      line-height: 1.5;
+      color: #1e293b;
+    }
+    .about-text strong {
+      color: #0f172a;
+    }
+    .about-highlight {
+      background: #fffbea;
+      border-left: 3px solid #f59e0b;
+      padding: 10px 12px;
+      border-radius: 14px;
+      margin: 14px 0;
+      font-size: 0.73rem;
+    }
   </style>
 </head>
 <body>
@@ -386,7 +425,7 @@
       <div class="generator-title">⚡ CaseCraft</div>
       <p style="font-size:0.68rem; color:#475569; margin-bottom:12px;">Random letter case · digits unchanged · auto‑saved</p>
       <label class="label">Base email</label>
-      <input type="email" id="baseEmailInput" value="demo.user99@example.com">
+      <input type="email" id="baseEmailInput" value="demo.user@gmail.com">
       <div class="row-flex">
         <div class="count-wrapper">
           <label class="label">Variants (max 1000)</label>
@@ -414,12 +453,12 @@
       <span style="font-size:0.75rem;"><i class="fas fa-mobile-alt"></i> Install as App</span>
       <button id="installAppBtn" class="install-btn"><i class="fas fa-download"></i> Install Now</button>
     </div>
-    <!-- Sweet watermark above contact -->
     <div class="sweet-watermark">✨ সুইট বয় নয়ন ✨</div>
-    <div style="display: flex; justify-content: center; margin: 4px 0 0px;">
+    <div class="social-links">
       <a href="https://ah-nayon.github.io/web/" target="_blank" rel="noopener noreferrer" class="contact-btn"><i class="fas fa-user-astronaut"></i> Contact</a>
+      <a href="https://www.facebook.com/share/1P7hqLHFBu/" target="_blank" rel="noopener noreferrer" class="contact-btn" style="background:#1877f2;"><i class="fab fa-facebook-f"></i> Facebook</a>
+      <a href="mailto:mdahoshanhabibnayon@gmail.com" class="contact-btn" style="background:#d44638;"><i class="fas fa-envelope"></i> Mail</a>
     </div>
-    <!-- removed the cut line from here, moved to footer -->
     <footer>✂️ Cut = copy + remove from note · All notes saved locally · Ethical use only</footer>
   </div>
 
@@ -433,8 +472,10 @@
       </div>
     </div>
     <div class="sweet-watermark">✨ সুইট বয় নয়ন ✨</div>
-    <div style="display: flex; justify-content: center; margin: 4px 0 0px;">
+    <div class="social-links">
       <a href="https://ah-nayon.github.io/web/" target="_blank" rel="noopener noreferrer" class="contact-btn"><i class="fas fa-user-astronaut"></i> Contact</a>
+      <a href="https://www.facebook.com/share/1P7hqLHFBu/" target="_blank" rel="noopener noreferrer" class="contact-btn" style="background:#1877f2;"><i class="fab fa-facebook-f"></i> Facebook</a>
+      <a href="mailto:mdahoshanhabibnayon@gmail.com" class="contact-btn" style="background:#d44638;"><i class="fas fa-envelope"></i> Mail</a>
     </div>
     <footer>✂️ Cut = copy + remove from note · All notes saved locally · Ethical use only</footer>
   </div>
@@ -443,25 +484,29 @@
   <div id="aboutSection" class="section">
     <div class="card">
       <h2 style="font-weight:700; font-size:1.2rem;">📌 About</h2>
-      <div style="font-size:0.73rem; line-height:1.45; margin-top:10px;">
-        <p>Random email case generator with persistent storage. Each generation creates a note.</p>
-        <p>✔ Up to 1000 variants · Copy & export · Cut = copy+remove from note</p>
-        <div style="background:#fff8e7; border-left:3px solid #facc15; padding:8px 10px; border-radius:14px; margin:12px 0;">
-          <i class="fas fa-heart"></i> Ethical use only — for dev/testing.
+      <div class="about-text" style="margin-top:10px;">
+        <p><strong>Hello Sir,</strong> have a problem? Feel free to reach out via the contact buttons below.</p>
+        <div class="about-highlight">
+          <i class="fas fa-shield-alt"></i> <strong>Private & Secure:</strong> No data is collected or shared. Everything stays in your browser.
         </div>
+        <p><i class="fas fa-copyright"></i> <strong>Copyright Notice:</strong> This application and its code are protected. Unauthorized copying, reproduction, or distribution is strictly prohibited and will result in legal action.</p>
+        <p style="margin-top:8px;"><i class="fas fa-check-circle" style="color:#16a34a;"></i> Ethical use only — intended for development and testing purposes.</p>
+        <p style="margin-top:6px; font-size:0.7rem; color:#475569;">Random email case generator with persistent storage. Each generation creates a note. Up to 1000 variants · Copy & export · Cut = copy+remove from note</p>
       </div>
     </div>
     <div class="sweet-watermark">✨ সুইট বয় নয়ন ✨</div>
-    <div style="display: flex; justify-content: center; margin: 4px 0 0px;">
+    <div class="social-links">
       <a href="https://ah-nayon.github.io/web/" target="_blank" rel="noopener noreferrer" class="contact-btn"><i class="fas fa-user-astronaut"></i> Contact</a>
+      <a href="https://www.facebook.com/share/1P7hqLHFBu/" target="_blank" rel="noopener noreferrer" class="contact-btn" style="background:#1877f2;"><i class="fab fa-facebook-f"></i> Facebook</a>
+      <a href="mailto:mdahoshanhabibnayon@gmail.com" class="contact-btn" style="background:#d44638;"><i class="fas fa-envelope"></i> Mail</a>
     </div>
     <footer>✂️ Cut = copy + remove from note · All notes saved locally · Ethical use only</footer>
   </div>
 </div>
 
 <div class="bottom-nav">
-  <button class="nav-item" data-section="generator"><i class="fas fa-magic"></i><span>Forge</span></button>
-  <button class="nav-item" data-section="allCreat"><i class="fas fa-folder-open"></i><span>Creat Mail</span></button>
+  <button class="nav-item active" data-section="generator"><i class="fas fa-magic"></i><span>Forge</span></button>
+  <button class="nav-item" data-section="allCreat"><i class="fas fa-folder-open"></i><span>Creat</span></button>
   <button class="nav-item" data-section="about"><i class="fas fa-info-circle"></i><span>About</span></button>
 </div>
 
@@ -567,11 +612,16 @@
       });
     }
 
+    // Modal with back‑button handling
     let activeModalNoteId = null;
     const modal = document.getElementById('noteModal');
     const modalTitle = document.getElementById('modalTitle');
     const modalBody = document.getElementById('modalBody');
     const closeModalBtn = document.getElementById('closeModalBtn');
+
+    let modalOpenHistory = false;
+    let ignorePopState = false;
+
     function refreshModal(noteId) {
       const note = savedNotes.find(n => n.id === noteId);
       if (!note) { closeModal(); return; }
@@ -595,19 +645,49 @@
         modalBody.appendChild(row);
       });
     }
+
     function openNoteModal(noteId) {
       const note = savedNotes.find(n => n.id === noteId);
       if (!note) return;
       activeModalNoteId = noteId;
       refreshModal(noteId);
       modal.classList.add('active');
+      if (!modalOpenHistory) {
+        history.pushState({modal: true}, '');
+        modalOpenHistory = true;
+      }
     }
+
     function closeModal() {
-      modal.classList.remove('active');
-      activeModalNoteId = null;
+      if (modal.classList.contains('active')) {
+        if (modalOpenHistory) {
+          ignorePopState = true;
+          history.back();
+          modalOpenHistory = false;
+        }
+        modal.classList.remove('active');
+        activeModalNoteId = null;
+      }
     }
+
+    window.addEventListener('popstate', (e) => {
+      if (ignorePopState) {
+        ignorePopState = false;
+        return;
+      }
+      if (modal.classList.contains('active')) {
+        // user pressed back button while modal open → close it, stay on page
+        modal.classList.remove('active');
+        activeModalNoteId = null;
+        modalOpenHistory = false;
+        history.pushState({modal: false}, '');
+        e.preventDefault();
+      }
+    });
+
     closeModalBtn.addEventListener('click', closeModal);
     modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+
     function escapeHtml(str) {
       return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]));
     }
