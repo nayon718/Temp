@@ -8,7 +8,6 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="CaseForge">
   <title>CaseForge · Email Case Studio</title>
-  <!-- Root folder favicon (app icon) – file must be in root directory -->
   <link rel="icon" type="image/png" href="genarator.png">
   <link rel="apple-touch-icon" href="genarator.png">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -40,7 +39,6 @@
       from { opacity: 0; transform: translateY(3px);}
       to { opacity: 1; transform: translateY(0);}
     }
-    /* cards */
     .card {
       background: white;
       border-radius: 20px;
@@ -48,6 +46,46 @@
       padding: 14px 16px;
       margin-bottom: 14px;
       border: 1px solid #eef2f8;
+    }
+    /* Dashboard card animation */
+    .dashboard-card {
+      background: linear-gradient(135deg, #ffffff, #f9fbfd);
+      border-radius: 22px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.04), 0 2px 6px rgba(0,0,0,0.02);
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 12px;
+      animation: dashFadeIn 0.6s ease-out;
+    }
+    @keyframes dashFadeIn {
+      from { opacity: 0; transform: translateY(-12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .dashboard-stat {
+      text-align: center;
+      flex: 1;
+      min-width: 70px;
+    }
+    .dashboard-stat i {
+      font-size: 1.3rem;
+      color: #16a34a;
+      margin-bottom: 4px;
+    }
+    .dashboard-stat .stat-value {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #0f172a;
+      line-height: 1.2;
+    }
+    .dashboard-stat .stat-label {
+      font-size: 0.65rem;
+      color: #475569;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
     }
     .generator-title {
       font-size: 1.4rem;
@@ -168,7 +206,6 @@
       padding: 22px 12px;
       font-size: 0.77rem;
     }
-    /* Notes */
     .notes-grid {
       display: flex;
       flex-direction: column;
@@ -198,7 +235,6 @@
     }
     .delete-note-btn:hover { color: #ef4444; background: #fee2e2; }
     .empty-notes { text-align: center; padding: 30px 12px; color: #94a3b8; font-size: 0.78rem; }
-    /* Modal */
     .full-modal {
       position: fixed;
       top: 0;
@@ -261,7 +297,6 @@
       cursor: pointer;
       color: #b91c1c;
     }
-    /* bottom nav */
     .bottom-nav {
       position: fixed;
       bottom: 12px;
@@ -330,7 +365,6 @@
       cursor: pointer;
     }
     .install-btn:hover { background: #15803d; }
-    /* Contact & social buttons */
     .contact-btn {
       background: #16a34a;
       border: none;
@@ -355,7 +389,6 @@
       margin: 10px 0 4px;
       flex-wrap: wrap;
     }
-    /* App links in About – new style */
     .app-links-grid {
       display: flex;
       flex-wrap: wrap;
@@ -363,37 +396,58 @@
       margin-top: 14px;
     }
     .app-link-item {
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
-      border-radius: 16px;
-      padding: 12px 10px;
+      background: #ffffff;
+      border: none;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03), 0 1px 4px rgba(0,0,0,0.05);
+      border-radius: 20px;
+      padding: 16px 10px 12px;
       flex: 1 1 130px;
       text-align: center;
       text-decoration: none;
       color: #0f172a;
-      transition: background 0.2s;
+      transition: all 0.25s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
     }
     .app-link-item:hover {
-      background: #eef2ff;
-      border-color: #cbd5e1;
+      box-shadow: 0 12px 24px rgba(0,0,0,0.08), 0 4px 8px rgba(0,0,0,0.04);
+      transform: translateY(-3px);
+      background: #f8fcff;
     }
     .app-link-item img {
-      width: 36px;
-      height: 36px;
+      width: 40px;
+      height: 40px;
       object-fit: contain;
-      margin-bottom: 6px;
+      transition: transform 0.2s;
+    }
+    .app-link-item:hover img {
+      transform: scale(1.05);
     }
     .app-link-item .link-label {
       font-weight: 700;
-      font-size: 0.72rem;
+      font-size: 0.74rem;
       display: block;
     }
     .app-link-item .link-desc {
       font-size: 0.62rem;
       color: #475569;
-      margin-top: 2px;
     }
-    /* Sweet watermark */
+    .app-links-grid.animate-in .app-link-item {
+      opacity: 0;
+      transform: translateY(16px);
+      animation: appLinkFadeUp 0.4s ease forwards;
+    }
+    @keyframes appLinkFadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .app-links-grid.animate-in .app-link-item:nth-child(1) { animation-delay: 0.05s; }
+    .app-links-grid.animate-in .app-link-item:nth-child(2) { animation-delay: 0.1s; }
+    .app-links-grid.animate-in .app-link-item:nth-child(3) { animation-delay: 0.15s; }
+    .app-links-grid.animate-in .app-link-item:nth-child(4) { animation-delay: 0.2s; }
+    .app-links-grid.animate-in .app-link-item:nth-child(5) { animation-delay: 0.25s; }
+    .app-links-grid.animate-in .app-link-item:nth-child(6) { animation-delay: 0.3s; }
     .sweet-watermark {
       text-align: center;
       font-size: 0.75rem;
@@ -401,6 +455,10 @@
       color: #2d6a4f;
       margin: 12px 0 6px;
       letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
     }
     footer {
       font-size: 0.6rem;
@@ -435,7 +493,6 @@
       from { opacity: 0; transform: translateY(6px);}
       to { opacity: 1; transform: translateY(0);}
     }
-    /* About section new content */
     .about-text {
       font-size: 0.76rem;
       line-height: 1.5;
@@ -459,6 +516,24 @@
 <div class="app-container">
   <!-- GENERATOR SECTION -->
   <div id="generatorSection" class="section active-section">
+    <!-- DASHBOARD CARD (appears above watermark) -->
+    <div class="dashboard-card" id="dashboardCard">
+      <div class="dashboard-stat">
+        <i class="fas fa-envelope-open-text"></i>
+        <div class="stat-value" id="totalEmailsStat">0</div>
+        <div class="stat-label">Total Emails</div>
+      </div>
+      <div class="dashboard-stat">
+        <i class="fas fa-sticky-note"></i>
+        <div class="stat-value" id="notesCountStat">0</div>
+        <div class="stat-label">Notes</div>
+      </div>
+      <div class="dashboard-stat">
+        <i class="fas fa-cut"></i>
+        <div class="stat-value" id="cutCountStat">0</div>
+        <div class="stat-label">Use Emails</div>
+      </div>
+    </div>
     <div class="card">
       <div class="generator-title">⚡ CaseCraft</div>
       <p style="font-size:0.68rem; color:#475569; margin-bottom:12px;">Random letter case · digits unchanged · auto‑saved</p>
@@ -491,7 +566,10 @@
       <span style="font-size:0.75rem;"><i class="fas fa-mobile-alt"></i> Install as App</span>
       <button id="installAppBtn" class="install-btn"><i class="fas fa-download"></i> Install Now</button>
     </div>
-    <div class="sweet-watermark">✨ সুইট বয় নয়ন ✨</div>
+    <!-- Watermark with single verified icon on left only -->
+    <div class="sweet-watermark">
+      <i class="fas fa-check-circle" style="color:#16a34a;"></i> সুইট বয় নয়ন
+    </div>
     <div class="social-links">
       <a href="https://ah-nayon.github.io/web/" target="_blank" rel="noopener noreferrer" class="contact-btn"><i class="fas fa-user-astronaut"></i> Contact</a>
       <a href="https://www.facebook.com/share/1P7hqLHFBu/" target="_blank" rel="noopener noreferrer" class="contact-btn" style="background:#1877f2;"><i class="fab fa-facebook-f"></i> Facebook</a>
@@ -509,7 +587,9 @@
         <div class="empty-notes">No saved notes. Generate emails first.</div>
       </div>
     </div>
-    <div class="sweet-watermark">✨ সুইট বয় নয়ন ✨</div>
+    <div class="sweet-watermark">
+      <i class="fas fa-check-circle" style="color:#16a34a;"></i> সুইট বয় নয়ন
+    </div>
     <div class="social-links">
       <a href="https://ah-nayon.github.io/web/" target="_blank" rel="noopener noreferrer" class="contact-btn"><i class="fas fa-user-astronaut"></i> Contact</a>
       <a href="https://www.facebook.com/share/1P7hqLHFBu/" target="_blank" rel="noopener noreferrer" class="contact-btn" style="background:#1877f2;"><i class="fab fa-facebook-f"></i> Facebook</a>
@@ -521,7 +601,7 @@
   <!-- ABOUT -->
   <div id="aboutSection" class="section">
     <div class="card">
-      <h2 style="font-weight:700; font-size:1.2rem;">📌 About</h2>
+      <h2 style="font-weight:700; font-size:1.2rem;"><i class="fas fa-info-circle"></i> About</h2>
       <div class="about-text" style="margin-top:10px;">
         <p><strong>Hello Users,</strong> have a problem? Feel free to reach out via the contact buttons below.</p>
         <div class="about-highlight">
@@ -529,48 +609,49 @@
         </div>
         <p><i class="fas fa-copyright"></i> <strong>Copyright Notice:</strong> This application and its code are protected. Unauthorized copying, reproduction, or distribution is strictly prohibited and will result in legal action.</p>
         <p style="margin-top:8px;"><i class="fas fa-check-circle" style="color:#16a34a;"></i> Ethical use only — intended for development and testing purposes.</p>
-        <p style="margin-top:6px; font-size:0.7rem; color:#475569;">Random email case generator with persistent storage. Each generation creates a note. Up to 1000 variants · Copy & export · Cut = copy+remove from note</p>
+        <p style="margin-top:6px; font-size:0.7rem; color:#475569;"> </p>
         
-        <!-- ★ NEW: Telegram & app links ★ -->
         <div style="margin-top:18px; border-top:1px solid #e2e8f0; padding-top:14px;">
-          <h3 style="font-size:0.9rem; font-weight:700; margin-bottom:8px;">📲 Telegram & Groups</h3>
-          <div class="app-links-grid">
-            <!-- Telegram Main -->
+          <h3 style="font-size:0.9rem; font-weight:700; margin-bottom:8px;"><i class="fas fa-paper-plane"></i> Telegram & Groups</h3>
+          <div class="app-links-grid" id="appLinksGrid">
             <a href="https://play.google.com/store/apps/details?id=org.telegram.messenger" target="_blank" rel="noopener noreferrer" class="app-link-item">
               <img src="telegram.png" alt="Telegram Main" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 36 36\'%3E%3Ccircle cx=\'18\' cy=\'18\' r=\'18\' fill=\'%2327a7e7\'/%3E%3Ctext x=\'18\' y=\'24\' text-anchor=\'middle\' fill=\'white\' font-size=\'20\' font-weight=\'bold\'%3ET%3C/text%3E%3C/svg%3E'">
               <span class="link-label">Telegram</span>
               <span class="link-desc">Play Store</span>
             </a>
-            <!-- Telegram X -->
             <a href="https://play.google.com/store/apps/details?id=org.thunderdog.challegram" target="_blank" rel="noopener noreferrer" class="app-link-item">
               <img src="telegramx.png" alt="Telegram X" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 36 36\'%3E%3Ccircle cx=\'18\' cy=\'18\' r=\'18\' fill=\'%232196f3\'/%3E%3Ctext x=\'18\' y=\'24\' text-anchor=\'middle\' fill=\'white\' font-size=\'18\' font-weight=\'bold\'%3EX%3C/text%3E%3C/svg%3E'">
               <span class="link-label">Telegram X</span>
               <span class="link-desc">Play Store</span>
             </a>
-            <!-- Telegram APK -->
             <a href="https://telegram.org/dl/android/apk" download class="app-link-item">
               <img src="telegramapk.png" alt="Telegram APK" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 36 36\'%3E%3Ccircle cx=\'18\' cy=\'18\' r=\'18\' fill=\'%2334b7f1\'/%3E%3Ctext x=\'18\' y=\'24\' text-anchor=\'middle\' fill=\'white\' font-size=\'18\' font-weight=\'bold\'%3E↓%3C/text%3E%3C/svg%3E'">
               <span class="link-label">Telegram APK</span>
               <span class="link-desc">Download</span>
             </a>
-            <!-- All Premium App Tg Channels -->
-            <a href="https://t.me/spdadnan" target="_blank" rel="noopener noreferrer" class="app-link-item">
+            <a href="tg://resolve?domain=spdadnan" class="app-link-item">
               <img src="group.png" alt="Group" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 36 36\'%3E%3Ccircle cx=\'18\' cy=\'18\' r=\'18\' fill=\'%23f5a623\'/%3E%3Ctext x=\'18\' y=\'24\' text-anchor=\'middle\' fill=\'white\' font-size=\'18\' font-weight=\'bold\'%3EG%3C/text%3E%3C/svg%3E'">
-              <span class="link-label">Premium Channels</span>
+              <span class="link-label">Premuim Apps</span>
               <span class="link-desc">t.me/spdadnan</span>
             </a>
-            <!-- Temp Mail -->
-            <a href="https://t.me/TempMail_org_bot" target="_blank" rel="noopener noreferrer" class="app-link-item">
+            <a href="tg://resolve?domain=TempMail_org_bot" class="app-link-item">
               <img src="temp.png" alt="Temp Mail" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 36 36\'%3E%3Ccircle cx=\'18\' cy=\'18\' r=\'18\' fill=\'%234caf50\'/%3E%3Ctext x=\'18\' y=\'24\' text-anchor=\'middle\' fill=\'white\' font-size=\'18\' font-weight=\'bold\'%3E@%3C/text%3E%3C/svg%3E'">
               <span class="link-label">Temp Mail</span>
               <span class="link-desc">t.me/TempMail_org_bot</span>
             </a>
+            <a href="https://play.google.com/store/apps/details?id=ir.ilmili.telegraph" target="_blank" rel="noopener noreferrer" class="app-link-item">
+              <img src="tggraph.png" alt="Telegraph" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 36 36\'%3E%3Ccircle cx=\'18\' cy=\'18\' r=\'18\' fill=\'%23333\'/%3E%3Ctext x=\'18\' y=\'24\' text-anchor=\'middle\' fill=\'white\' font-size=\'18\' font-weight=\'bold\'%3ETG%3C/text%3E%3C/svg%3E'">
+              <span class="link-label">Telegraph</span>
+              <span class="link-desc">Play Store</span>
+            </a>
           </div>
-          <p style="font-size:0.65rem; color:#64748b; margin-top:10px;">📂 Place the icon files (<code>telegram.png</code>, <code>telegramx.png</code>, <code>telegramapk.png</code>, <code>group.png</code>, <code>temp.png</code>) in your website’s root folder.</p>
+          <p style="font-size:0.65rem; color:#64748b; margin-top:10px;"></p>
         </div>
       </div>
     </div>
-    <div class="sweet-watermark">✨ সুইট বয় নয়ন ✨</div>
+    <div class="sweet-watermark">
+      <i class="fas fa-check-circle" style="color:#16a34a;"></i> সুইট বয় নয়ন
+    </div>
     <div class="social-links">
       <a href="https://ah-nayon.github.io/web/" target="_blank" rel="noopener noreferrer" class="contact-btn"><i class="fas fa-user-astronaut"></i> Contact</a>
       <a href="https://www.facebook.com/share/1P7hqLHFBu/" target="_blank" rel="noopener noreferrer" class="contact-btn" style="background:#1877f2;"><i class="fab fa-facebook-f"></i> Facebook</a>
@@ -607,17 +688,22 @@
       setTimeout(() => t.remove(), 2200);
     }
 
-    // ----- localStorage notes -----
-    let savedNotes = [];
+    // ----- localStorage keys -----
     const STORAGE_KEY = 'caseforge_notes';
+    const CUT_COUNT_KEY = 'caseforge_cutcount';
+
+    // ----- saved notes -----
+    let savedNotes = [];
     function loadNotes() {
       const stored = localStorage.getItem(STORAGE_KEY);
       savedNotes = stored ? JSON.parse(stored) : [];
       renderNotesList();
+      updateDashboardStats();
     }
     function saveNotes() {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(savedNotes));
       renderNotesList();
+      updateDashboardStats();
     }
     function addNote(emails, baseHint) {
       const newNote = {
@@ -636,9 +722,32 @@
       saveNotes();
       toast('Note deleted', 'success');
       if (activeModalNoteId === id) closeModal();
+      updateDashboardStats();
     }
 
-    // cut (copy + remove from note)
+    // ----- cut count (lifetime) -----
+    function getCutCount() {
+      const val = localStorage.getItem(CUT_COUNT_KEY);
+      return val ? parseInt(val, 10) : 0;
+    }
+    function increaseCutCount(amount = 1) {
+      const current = getCutCount();
+      localStorage.setItem(CUT_COUNT_KEY, current + amount);
+      updateDashboardStats();
+    }
+
+    // ----- dashboard update -----
+    function updateDashboardStats() {
+      const totalEmails = savedNotes.reduce((sum, note) => sum + note.count, 0);
+      const notesCount = savedNotes.length;
+      const cutCount = getCutCount();
+
+      document.getElementById('totalEmailsStat').textContent = totalEmails;
+      document.getElementById('notesCountStat').textContent = notesCount;
+      document.getElementById('cutCountStat').textContent = cutCount;
+    }
+
+    // cut email from note
     async function cutEmailFromNote(noteId, emailIndex) {
       const note = savedNotes.find(n => n.id === noteId);
       if (!note) return;
@@ -648,6 +757,7 @@
         await navigator.clipboard.writeText(email);
         note.emails.splice(emailIndex, 1);
         note.count = note.emails.length;
+        increaseCutCount(1); // lifetime use count
         if (note.emails.length === 0) {
           deleteNote(noteId);
           toast(`✂️ Cut last email — note removed`, 'success');
@@ -688,13 +798,12 @@
       });
     }
 
-    // Modal with back‑button handling
+    // Modal logic (same as before)
     let activeModalNoteId = null;
     const modal = document.getElementById('noteModal');
     const modalTitle = document.getElementById('modalTitle');
     const modalBody = document.getElementById('modalBody');
     const closeModalBtn = document.getElementById('closeModalBtn');
-
     let modalOpenHistory = false;
     let ignorePopState = false;
 
@@ -747,10 +856,7 @@
     }
 
     window.addEventListener('popstate', (e) => {
-      if (ignorePopState) {
-        ignorePopState = false;
-        return;
-      }
+      if (ignorePopState) { ignorePopState = false; return; }
       if (modal.classList.contains('active')) {
         modal.classList.remove('active');
         activeModalNoteId = null;
@@ -895,8 +1001,62 @@
     manifestLink.rel = 'manifest';
     manifestLink.href = manifestURL;
     document.head.appendChild(manifestLink);
+
+    // ----- service worker with offline caching -----
     if ('serviceWorker' in navigator) {
-      const swCode = `self.addEventListener('fetch', e => e.respondWith(fetch(e.request))); self.addEventListener('install', e => self.skipWaiting()); self.addEventListener('activate', e => e.waitUntil(clients.claim()));`;
+      const swCode = `
+        const CACHE_NAME = 'caseforge-offline-v1';
+        const urlsToCache = [
+          '.',
+          'index.html',
+          'genarator.png',
+          'telegram.png',
+          'telegramx.png',
+          'telegramapk.png',
+          'group.png',
+          'temp.png',
+          'tggraph.png',
+          'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css',
+          'https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js',
+          'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js',
+          'https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.6.0/jspdf.plugin.autotable.min.js'
+        ];
+
+        self.addEventListener('install', (event) => {
+          event.waitUntil(
+            caches.open(CACHE_NAME).then((cache) => {
+              return cache.addAll(urlsToCache);
+            })
+          );
+        });
+
+        self.addEventListener('fetch', (event) => {
+          event.respondWith(
+            caches.match(event.request).then((response) => {
+              return response || fetch(event.request).then((fetchResponse) => {
+                return caches.open(CACHE_NAME).then((cache) => {
+                  cache.put(event.request, fetchResponse.clone());
+                  return fetchResponse;
+                });
+              });
+            })
+          );
+        });
+
+        self.addEventListener('activate', (event) => {
+          event.waitUntil(
+            caches.keys().then((cacheNames) => {
+              return Promise.all(
+                cacheNames.map((cache) => {
+                  if (cache !== CACHE_NAME) {
+                    return caches.delete(cache);
+                  }
+                })
+              );
+            })
+          );
+        });
+      `;
       const swBlob = new Blob([swCode], {type: 'application/javascript'});
       const swURL = URL.createObjectURL(swBlob);
       navigator.serviceWorker.register(swURL).catch(e => console.log("SW error", e));
@@ -935,29 +1095,41 @@
     const creatSec = document.getElementById('allCreatSection');
     const aboutSec = document.getElementById('aboutSection');
     const navs = document.querySelectorAll('.nav-item');
+    const appLinksGrid = document.getElementById('appLinksGrid');
+
     function switchSection(section) {
       genSec.classList.remove('active-section');
       creatSec.classList.remove('active-section');
       aboutSec.classList.remove('active-section');
       if (section === 'generator') genSec.classList.add('active-section');
       if (section === 'allCreat') creatSec.classList.add('active-section');
-      if (section === 'about') aboutSec.classList.add('active-section');
+      if (section === 'about') {
+        aboutSec.classList.add('active-section');
+        if (appLinksGrid) {
+          appLinksGrid.classList.remove('animate-in');
+          void appLinksGrid.offsetWidth;
+          appLinksGrid.classList.add('animate-in');
+        }
+      }
       navs.forEach(btn => {
         const s = btn.getAttribute('data-section');
         if (s === section) btn.classList.add('active');
         else btn.classList.remove('active');
       });
       if (section === 'allCreat') renderNotesList();
+      updateDashboardStats(); // refresh dashboard on section switch
     }
+
     navs.forEach(btn => btn.addEventListener('click', () => switchSection(btn.getAttribute('data-section'))));
 
-    // initial data
+    // initial load
     loadNotes();
     const demoBase = baseInput.value.trim();
     const demoGen = generateVariants(demoBase, 4);
     currentEmails = demoGen;
     renderCurrent();
     switchSection('generator');
+    updateDashboardStats();
   })();
 </script>
 </body>
