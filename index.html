@@ -1,1136 +1,1322 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-  <meta name="theme-color" content="#0f172a">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="CaseForge">
-  <title>CaseForge · Email Case Studio</title>
-  <link rel="icon" type="image/png" href="genarator.png">
-  <link rel="apple-touch-icon" href="genarator.png">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.6.0/jspdf.plugin.autotable.min.js"></script>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    body {
-      background: #f4f7fb;
-      padding-bottom: 70px;
-      font-family: system-ui, -apple-system, 'Segoe UI', 'Inter', sans-serif;
-    }
-    .app-container {
-      max-width: 700px;
-      margin: 0 auto;
-      padding: 12px 14px 20px;
-    }
-    .section {
-      display: none;
-      animation: fade 0.2s;
-    }
-    .section.active-section { display: block; }
-    @keyframes fade {
-      from { opacity: 0; transform: translateY(3px);}
-      to { opacity: 1; transform: translateY(0);}
-    }
-    .card {
-      background: white;
-      border-radius: 20px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.02), 0 1px 2px rgba(0,0,0,0.03);
-      padding: 14px 16px;
-      margin-bottom: 14px;
-      border: 1px solid #eef2f8;
-    }
-    /* Dashboard card animation */
-    .dashboard-card {
-      background: linear-gradient(135deg, #ffffff, #f9fbfd);
-      border-radius: 22px;
-      padding: 16px;
-      margin-bottom: 16px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.04), 0 2px 6px rgba(0,0,0,0.02);
-      display: flex;
-      justify-content: space-around;
-      flex-wrap: wrap;
-      gap: 12px;
-      animation: dashFadeIn 0.6s ease-out;
-    }
-    @keyframes dashFadeIn {
-      from { opacity: 0; transform: translateY(-12px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .dashboard-stat {
-      text-align: center;
-      flex: 1;
-      min-width: 70px;
-    }
-    .dashboard-stat i {
-      font-size: 1.3rem;
-      color: #16a34a;
-      margin-bottom: 4px;
-    }
-    .dashboard-stat .stat-value {
-      font-size: 1.6rem;
-      font-weight: 700;
-      color: #0f172a;
-      line-height: 1.2;
-    }
-    .dashboard-stat .stat-label {
-      font-size: 0.65rem;
-      color: #475569;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.3px;
-    }
-    .generator-title {
-      font-size: 1.4rem;
-      font-weight: 700;
-      letter-spacing: -0.2px;
-      background: linear-gradient(135deg, #1e2b3c, #2c4a6e);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      margin-bottom: 4px;
-    }
-    .label {
-      font-weight: 600;
-      color: #1f2a3e;
-      margin-bottom: 5px;
-      display: block;
-      font-size: 0.75rem;
-      letter-spacing: 0.3px;
-    }
-    input, .count-input {
-      width: 100%;
-      padding: 9px 14px;
-      border: 1.5px solid #e2e8f0;
-      border-radius: 22px;
-      font-size: 0.85rem;
-      background: white;
-      outline: none;
-    }
-    input:focus {
-      border-color: #22c55e;
-      box-shadow: 0 0 0 2px rgba(34,197,94,0.1);
-    }
-    .row-flex {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      align-items: flex-end;
-      margin-top: 8px;
-    }
-    .count-wrapper {
-      flex: 2;
-      min-width: 110px;
-    }
-    .generate-btn {
-      background: #16a34a;
-      color: white;
-      border: none;
-      padding: 0 24px;
-      border-radius: 34px;
-      font-weight: 600;
-      font-size: 0.88rem;
-      cursor: pointer;
-      height: 48px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      transition: 0.2s;
-    }
-    .generate-btn:hover { background: #15803d; transform: scale(0.97);}
-    .action-buttons {
-      display: flex;
-      gap: 12px;
-      margin: 14px 0 12px;
-      border-top: 1px solid #edf2f7;
-      padding-top: 14px;
-    }
-    .small-btn {
-      background: #f0fdf4;
-      border: 1px solid #bbf7d0;
-      padding: 7px 16px;
-      border-radius: 32px;
-      font-size: 0.78rem;
-      font-weight: 600;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      color: #166534;
-      transition: 0.2s;
-    }
-    .small-btn:hover { background: #dcfce7; border-color: #86efac; }
-    .download-group {
-      display: flex;
-      gap: 10px;
-      margin-top: 8px;
-      flex-wrap: wrap;
-    }
-    .download-btn {
-      background: #f0fdf4;
-      border: 1px solid #bbf7d0;
-      border-radius: 28px;
-      padding: 5px 16px;
-      font-size: 0.72rem;
-      font-weight: 600;
-      cursor: pointer;
-      color: #166534;
-      transition: 0.2s;
-    }
-    .download-btn:hover { background: #dcfce7; }
-    .result-area {
-      background: #fafcff;
-      border-radius: 18px;
-      border: 1px solid #eef2ff;
-      max-height: 270px;
-      overflow-y: auto;
-      padding: 4px 2px;
-    }
-    .email-item {
-      font-family: 'SF Mono', monospace;
-      padding: 7px 12px;
-      border-bottom: 1px solid #ecf3fa;
-      font-size: 0.72rem;
-      word-break: break-all;
-    }
-    .empty-msg {
-      text-align: center;
-      color: #94a3b8;
-      padding: 22px 12px;
-      font-size: 0.77rem;
-    }
-    .notes-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-top: 8px;
-    }
-    .note-card {
-      background: white;
-      border-radius: 18px;
-      padding: 10px 14px;
-      border: 1px solid #eef2ff;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      cursor: pointer;
-    }
-    .note-title { font-weight: 700; font-size: 0.85rem; }
-    .note-meta { font-size: 0.63rem; color: #5b6e8c; margin-top: 3px; display: flex; gap: 10px; }
-    .delete-note-btn {
-      background: transparent;
-      border: none;
-      font-size: 1rem;
-      color: #cbd5e1;
-      cursor: pointer;
-      padding: 6px;
-      border-radius: 30px;
-    }
-    .delete-note-btn:hover { color: #ef4444; background: #fee2e2; }
-    .empty-notes { text-align: center; padding: 30px 12px; color: #94a3b8; font-size: 0.78rem; }
-    .full-modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: white;
-      z-index: 2000;
-      display: flex;
-      flex-direction: column;
-      transform: translateY(100%);
-      transition: transform 0.25s ease;
-    }
-    .full-modal.active { transform: translateY(0); }
-    .modal-header {
-      padding: 14px 16px;
-      border-bottom: 1px solid #eef2ff;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .modal-header h3 { font-size: 1.05rem; font-weight: 600; }
-    .close-modal {
-      background: #f1f5f9;
-      border: none;
-      width: 36px;
-      height: 36px;
-      border-radius: 30px;
-      cursor: pointer;
-    }
-    .modal-body {
-      flex: 1;
-      overflow-y: auto;
-      padding: 12px 14px;
-    }
-    .modal-email-row {
-      background: #fafcff;
-      border-radius: 16px;
-      padding: 8px 12px;
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border: 1px solid #eef2ff;
-    }
-    .modal-email-text {
-      font-family: monospace;
-      font-size: 0.73rem;
-      word-break: break-all;
-      flex: 1;
-      margin-right: 10px;
-    }
-    .cut-single-btn {
-      background: #fee2e2;
-      border: none;
-      padding: 5px 12px;
-      border-radius: 28px;
-      font-size: 0.68rem;
-      font-weight: 600;
-      cursor: pointer;
-      color: #b91c1c;
-    }
-    .bottom-nav {
-      position: fixed;
-      bottom: 12px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: calc(100% - 32px);
-      max-width: 400px;
-      background: rgba(255,255,255,0.92);
-      backdrop-filter: blur(20px);
-      border-radius: 40px;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.06), 0 2px 8px rgba(0,0,0,0.04);
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      padding: 8px 6px;
-      z-index: 1000;
-      border: 1px solid rgba(255,255,255,0.6);
-    }
-    .nav-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 3px;
-      padding: 8px 14px;
-      border-radius: 30px;
-      border: none;
-      background: transparent;
-      font-size: 0.6rem;
-      font-weight: 600;
-      color: #6b7280;
-      cursor: pointer;
-      transition: 0.2s ease;
-      min-width: 70px;
-    }
-    .nav-item i {
-      font-size: 1.2rem;
-      transition: 0.2s;
-    }
-    .nav-item.active {
-      background: #0f172a;
-      color: white;
-      box-shadow: 0 4px 12px rgba(15,23,42,0.2);
-    }
-    .nav-item.active i {
-      color: white;
-    }
-    .install-panel {
-      background: #eef2ff;
-      border-radius: 44px;
-      padding: 8px 14px;
-      margin-top: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-    }
-    .install-btn {
-      background: #16a34a;
-      border: none;
-      color: white;
-      padding: 7px 20px;
-      border-radius: 34px;
-      font-weight: 600;
-      font-size: 0.78rem;
-      cursor: pointer;
-    }
-    .install-btn:hover { background: #15803d; }
-    .contact-btn {
-      background: #16a34a;
-      border: none;
-      color: white;
-      padding: 7px 20px;
-      border-radius: 34px;
-      font-weight: 600;
-      font-size: 0.8rem;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      transition: 0.2s;
-      text-decoration: none;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-    }
-    .contact-btn:hover { background: #15803d; transform: scale(0.97); }
-    .social-links {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      margin: 10px 0 4px;
-      flex-wrap: wrap;
-    }
-    .app-links-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 14px;
-    }
-    .app-link-item {
-      background: #ffffff;
-      border: none;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.03), 0 1px 4px rgba(0,0,0,0.05);
-      border-radius: 20px;
-      padding: 16px 10px 12px;
-      flex: 1 1 130px;
-      text-align: center;
-      text-decoration: none;
-      color: #0f172a;
-      transition: all 0.25s ease;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 6px;
-    }
-    .app-link-item:hover {
-      box-shadow: 0 12px 24px rgba(0,0,0,0.08), 0 4px 8px rgba(0,0,0,0.04);
-      transform: translateY(-3px);
-      background: #f8fcff;
-    }
-    .app-link-item img {
-      width: 40px;
-      height: 40px;
-      object-fit: contain;
-      transition: transform 0.2s;
-    }
-    .app-link-item:hover img {
-      transform: scale(1.05);
-    }
-    .app-link-item .link-label {
-      font-weight: 700;
-      font-size: 0.74rem;
-      display: block;
-    }
-    .app-link-item .link-desc {
-      font-size: 0.62rem;
-      color: #475569;
-    }
-    .app-links-grid.animate-in .app-link-item {
-      opacity: 0;
-      transform: translateY(16px);
-      animation: appLinkFadeUp 0.4s ease forwards;
-    }
-    @keyframes appLinkFadeUp {
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .app-links-grid.animate-in .app-link-item:nth-child(1) { animation-delay: 0.05s; }
-    .app-links-grid.animate-in .app-link-item:nth-child(2) { animation-delay: 0.1s; }
-    .app-links-grid.animate-in .app-link-item:nth-child(3) { animation-delay: 0.15s; }
-    .app-links-grid.animate-in .app-link-item:nth-child(4) { animation-delay: 0.2s; }
-    .app-links-grid.animate-in .app-link-item:nth-child(5) { animation-delay: 0.25s; }
-    .app-links-grid.animate-in .app-link-item:nth-child(6) { animation-delay: 0.3s; }
-    .sweet-watermark {
-      text-align: center;
-      font-size: 0.75rem;
-      font-weight: 500;
-      color: #2d6a4f;
-      margin: 12px 0 6px;
-      letter-spacing: 0.5px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-    }
-    footer {
-      font-size: 0.6rem;
-      text-align: center;
-      color: #6c8b7a;
-      margin-top: 12px;
-      padding-bottom: 4px;
-      border-top: 1px dashed #d1e7dd;
-      padding-top: 10px;
-    }
-    .toast-container {
-      position: fixed;
-      bottom: 80px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 3000;
-      pointer-events: none;
-    }
-    .toast {
-      background: #1e293b;
-      color: white;
-      padding: 7px 16px;
-      border-radius: 32px;
-      font-size: 0.73rem;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      animation: fadeUp 0.2s;
-    }
-    .toast.success { background: #0f3b2c; }
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(6px);}
-      to { opacity: 1; transform: translateY(0);}
-    }
-    .about-text {
-      font-size: 0.76rem;
-      line-height: 1.5;
-      color: #1e293b;
-    }
-    .about-text strong {
-      color: #0f172a;
-    }
-    .about-highlight {
-      background: #fffbea;
-      border-left: 3px solid #f59e0b;
-      padding: 10px 12px;
-      border-radius: 14px;
-      margin: 14px 0;
-      font-size: 0.73rem;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="CaseForge">
+    <title>CaseForge · Email Case Studio</title>
+    <link rel="icon" type="image/png" href="genarator.png">
+    <link rel="apple-touch-icon" href="genarator.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.6.0/jspdf.plugin.autotable.min.js">
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f4f7fb;
+            padding-bottom: 70px;
+            font-family: system-ui, -apple-system, 'Segoe UI', 'Inter', sans-serif;
+        }
+
+        .app-container {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 12px 14px 20px;
+        }
+
+        .section {
+            display: none;
+            animation: fade 0.2s;
+        }
+        .section.active-section {
+            display: block;
+        }
+
+        @keyframes fade {
+            from {
+                opacity: 0;
+                transform: translateY(3px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02), 0 1px 2px rgba(0, 0, 0, 0.03);
+            padding: 14px 16px;
+            margin-bottom: 14px;
+            border: 1px solid #eef2f8;
+        }
+
+        /* ============ ABOUT PAGE ONE‑LINE PROMO ============ */
+        .about-proton-line {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #ecfdf5;
+            border-radius: 16px;
+            padding: 10px 14px;
+            margin-top: 16px;
+            border: 1px solid #a7f3d0;
+            flex-wrap: wrap;
+        }
+
+        .about-proton-line img {
+            width: 30px;
+            height: 30px;
+            object-fit: contain;
+            border-radius: 8px;
+            flex-shrink: 0;
+        }
+
+        .about-proton-line .proton-text {
+            flex: 1;
+            font-weight: 700;
+            font-size: 0.78rem;
+            color: #064e3b;
+            min-width: 140px;
+            letter-spacing: -0.2px;
+        }
+
+        .about-proton-line .proton-mini-btn {
+            background: #1d8c5e;
+            color: white;
+            padding: 8px 18px;
+            border-radius: 28px;
+            font-weight: 700;
+            font-size: 0.73rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+            transition: background 0.2s;
+            box-shadow: 0 4px 12px rgba(29, 140, 94, 0.25);
+        }
+
+        .about-proton-line .proton-mini-btn:hover {
+            background: #16784e;
+        }
+
+        @media (max-width: 400px) {
+            .about-proton-line {
+                gap: 6px;
+                padding: 8px 10px;
+            }
+            .about-proton-line .proton-text {
+                font-size: 0.7rem;
+            }
+        }
+
+        /* Dashboard card animation */
+        .dashboard-card {
+            background: linear-gradient(135deg, #ffffff, #f9fbfd);
+            border-radius: 22px;
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04), 0 2px 6px rgba(0, 0, 0, 0.02);
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 12px;
+            animation: dashFadeIn 0.6s ease-out;
+        }
+
+        @keyframes dashFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .dashboard-stat {
+            text-align: center;
+            flex: 1;
+            min-width: 70px;
+        }
+        .dashboard-stat i {
+            font-size: 1.3rem;
+            color: #16a34a;
+            margin-bottom: 4px;
+        }
+        .dashboard-stat .stat-value {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #0f172a;
+            line-height: 1.2;
+        }
+        .dashboard-stat .stat-label {
+            font-size: 0.65rem;
+            color: #475569;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .generator-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: -0.2px;
+            background: linear-gradient(135deg, #1e2b3c, #2c4a6e);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 4px;
+        }
+        .label {
+            font-weight: 600;
+            color: #1f2a3e;
+            margin-bottom: 5px;
+            display: block;
+            font-size: 0.75rem;
+            letter-spacing: 0.3px;
+        }
+        input,
+        .count-input {
+            width: 100%;
+            padding: 9px 14px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 22px;
+            font-size: 0.85rem;
+            background: white;
+            outline: none;
+        }
+        input:focus {
+            border-color: #22c55e;
+            box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.1);
+        }
+        .row-flex {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: flex-end;
+            margin-top: 8px;
+        }
+        .count-wrapper {
+            flex: 2;
+            min-width: 110px;
+        }
+        .generate-btn {
+            background: #16a34a;
+            color: white;
+            border: none;
+            padding: 0 24px;
+            border-radius: 34px;
+            font-weight: 600;
+            font-size: 0.88rem;
+            cursor: pointer;
+            height: 48px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.2s;
+        }
+        .generate-btn:hover {
+            background: #15803d;
+            transform: scale(0.97);
+        }
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            margin: 14px 0 12px;
+            border-top: 1px solid #edf2f7;
+            padding-top: 14px;
+        }
+        .small-btn {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            padding: 7px 16px;
+            border-radius: 32px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #166534;
+            transition: 0.2s;
+        }
+        .small-btn:hover {
+            background: #dcfce7;
+            border-color: #86efac;
+        }
+        .download-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+        .download-btn {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 28px;
+            padding: 5px 16px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            cursor: pointer;
+            color: #166534;
+            transition: 0.2s;
+        }
+        .download-btn:hover {
+            background: #dcfce7;
+        }
+        .result-area {
+            background: #fafcff;
+            border-radius: 18px;
+            border: 1px solid #eef2ff;
+            max-height: 270px;
+            overflow-y: auto;
+            padding: 4px 2px;
+        }
+        .email-item {
+            font-family: 'SF Mono', monospace;
+            padding: 7px 12px;
+            border-bottom: 1px solid #ecf3fa;
+            font-size: 0.72rem;
+            word-break: break-all;
+        }
+        .empty-msg {
+            text-align: center;
+            color: #94a3b8;
+            padding: 22px 12px;
+            font-size: 0.77rem;
+        }
+        .notes-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 8px;
+        }
+        .note-card {
+            background: white;
+            border-radius: 18px;
+            padding: 10px 14px;
+            border: 1px solid #eef2ff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+        .note-title {
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+        .note-meta {
+            font-size: 0.63rem;
+            color: #5b6e8c;
+            margin-top: 3px;
+            display: flex;
+            gap: 10px;
+        }
+        .delete-note-btn {
+            background: transparent;
+            border: none;
+            font-size: 1rem;
+            color: #cbd5e1;
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 30px;
+        }
+        .delete-note-btn:hover {
+            color: #ef4444;
+            background: #fee2e2;
+        }
+        .empty-notes {
+            text-align: center;
+            padding: 30px 12px;
+            color: #94a3b8;
+            font-size: 0.78rem;
+        }
+        .full-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            transform: translateY(100%);
+            transition: transform 0.25s ease;
+        }
+        .full-modal.active {
+            transform: translateY(0);
+        }
+        .modal-header {
+            padding: 14px 16px;
+            border-bottom: 1px solid #eef2ff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .modal-header h3 {
+            font-size: 1.05rem;
+            font-weight: 600;
+        }
+        .close-modal {
+            background: #f1f5f9;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 30px;
+            cursor: pointer;
+        }
+        .modal-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px 14px;
+        }
+        .modal-email-row {
+            background: #fafcff;
+            border-radius: 16px;
+            padding: 8px 12px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid #eef2ff;
+        }
+        .modal-email-text {
+            font-family: monospace;
+            font-size: 0.73rem;
+            word-break: break-all;
+            flex: 1;
+            margin-right: 10px;
+        }
+        .cut-single-btn {
+            background: #fee2e2;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 28px;
+            font-size: 0.68rem;
+            font-weight: 600;
+            cursor: pointer;
+            color: #b91c1c;
+        }
+        .bottom-nav {
+            position: fixed;
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 32px);
+            max-width: 400px;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(20px);
+            border-radius: 40px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.04);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 8px 6px;
+            z-index: 1000;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            padding: 8px 14px;
+            border-radius: 30px;
+            border: none;
+            background: transparent;
+            font-size: 0.6rem;
+            font-weight: 600;
+            color: #6b7280;
+            cursor: pointer;
+            transition: 0.2s ease;
+            min-width: 70px;
+        }
+        .nav-item i {
+            font-size: 1.2rem;
+            transition: 0.2s;
+        }
+        .nav-item.active {
+            background: #0f172a;
+            color: white;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.2);
+        }
+        .nav-item.active i {
+            color: white;
+        }
+        .install-panel {
+            background: #eef2ff;
+            border-radius: 44px;
+            padding: 8px 14px;
+            margin-top: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+        .install-btn {
+            background: #16a34a;
+            border: none;
+            color: white;
+            padding: 7px 20px;
+            border-radius: 34px;
+            font-weight: 600;
+            font-size: 0.78rem;
+            cursor: pointer;
+        }
+        .install-btn:hover {
+            background: #15803d;
+        }
+        .contact-btn {
+            background: #16a34a;
+            border: none;
+            color: white;
+            padding: 7px 20px;
+            border-radius: 34px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.2s;
+            text-decoration: none;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        }
+        .contact-btn:hover {
+            background: #15803d;
+            transform: scale(0.97);
+        }
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin: 10px 0 4px;
+            flex-wrap: wrap;
+        }
+        .app-links-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 14px;
+        }
+        .app-link-item {
+            background: #ffffff;
+            border: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03), 0 1px 4px rgba(0, 0, 0, 0.05);
+            border-radius: 20px;
+            padding: 16px 10px 12px;
+            flex: 1 1 130px;
+            text-align: center;
+            text-decoration: none;
+            color: #0f172a;
+            transition: all 0.25s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+        .app-link-item:hover {
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.04);
+            transform: translateY(-3px);
+            background: #f8fcff;
+        }
+        .app-link-item img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            transition: transform 0.2s;
+        }
+        .app-link-item:hover img {
+            transform: scale(1.05);
+        }
+        .app-link-item .link-label {
+            font-weight: 700;
+            font-size: 0.74rem;
+            display: block;
+        }
+        .app-link-item .link-desc {
+            font-size: 0.62rem;
+            color: #475569;
+        }
+        .app-links-grid.animate-in .app-link-item {
+            opacity: 0;
+            transform: translateY(16px);
+            animation: appLinkFadeUp 0.4s ease forwards;
+        }
+        @keyframes appLinkFadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .app-links-grid.animate-in .app-link-item:nth-child(1) {
+            animation-delay: 0.05s;
+        }
+        .app-links-grid.animate-in .app-link-item:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+        .app-links-grid.animate-in .app-link-item:nth-child(3) {
+            animation-delay: 0.15s;
+        }
+        .app-links-grid.animate-in .app-link-item:nth-child(4) {
+            animation-delay: 0.2s;
+        }
+        .app-links-grid.animate-in .app-link-item:nth-child(5) {
+            animation-delay: 0.25s;
+        }
+        .app-links-grid.animate-in .app-link-item:nth-child(6) {
+            animation-delay: 0.3s;
+        }
+        .sweet-watermark {
+            text-align: center;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #2d6a4f;
+            margin: 12px 0 6px;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        footer {
+            font-size: 0.6rem;
+            text-align: center;
+            color: #6c8b7a;
+            margin-top: 12px;
+            padding-bottom: 4px;
+            border-top: 1px dashed #d1e7dd;
+            padding-top: 10px;
+        }
+        .toast-container {
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3000;
+            pointer-events: none;
+        }
+        .toast {
+            background: #1e293b;
+            color: white;
+            padding: 7px 16px;
+            border-radius: 32px;
+            font-size: 0.73rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            animation: fadeUp 0.2s;
+        }
+        .toast.success {
+            background: #0f3b2c;
+        }
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .about-text {
+            font-size: 0.76rem;
+            line-height: 1.5;
+            color: #1e293b;
+        }
+        .about-text strong {
+            color: #0f172a;
+        }
+        .about-highlight {
+            background: #fffbea;
+            border-left: 3px solid #f59e0b;
+            padding: 10px 12px;
+            border-radius: 14px;
+            margin: 14px 0;
+            font-size: 0.73rem;
+        }
+    </style>
 </head>
 <body>
 
-<div class="app-container">
-  <!-- GENERATOR SECTION -->
-  <div id="generatorSection" class="section active-section">
-    <!-- DASHBOARD CARD (appears above watermark) -->
-    <div class="dashboard-card" id="dashboardCard">
-      <div class="dashboard-stat">
-        <i class="fas fa-envelope-open-text"></i>
-        <div class="stat-value" id="totalEmailsStat">0</div>
-        <div class="stat-label">Total Emails</div>
-      </div>
-      <div class="dashboard-stat">
-        <i class="fas fa-sticky-note"></i>
-        <div class="stat-value" id="notesCountStat">0</div>
-        <div class="stat-label">Notes</div>
-      </div>
-      <div class="dashboard-stat">
-        <i class="fas fa-cut"></i>
-        <div class="stat-value" id="cutCountStat">0</div>
-        <div class="stat-label">Use Emails</div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="generator-title">⚡ CaseCraft</div>
-      <p style="font-size:0.68rem; color:#475569; margin-bottom:12px;">Random letter case · digits unchanged · auto‑saved</p>
-      <label class="label">Base email</label>
-      <input type="email" id="baseEmailInput" value="demo.user@gmail.com">
-      <div class="row-flex">
-        <div class="count-wrapper">
-          <label class="label">Variants (max 1000)</label>
-          <input type="number" id="countInput" min="1" max="1000" value="8">
-        </div>
-        <button id="generateBtn" class="generate-btn"><i class="fas fa-magic"></i> Generate</button>
-      </div>
-      <div class="action-buttons">
-        <button id="copyAllBtn" class="small-btn"><i class="far fa-copy"></i> Copy all</button>
-        <button id="clearAllBtn" class="small-btn"><i class="fas fa-trash-alt"></i> Clear</button>
-      </div>
-      <div id="resultContainer" class="result-area">
-        <div class="empty-msg">✨ Generate emails → auto‑saved to "All Creat Mail"</div>
-      </div>
-      <div style="margin-top: 12px;">
-        <div class="label">Export current</div>
-        <div class="download-group">
-          <button id="downloadCsvBtn" class="download-btn"><i class="fas fa-file-csv"></i> CSV</button>
-          <button id="downloadExcelBtn" class="download-btn"><i class="fas fa-file-excel"></i> Excel</button>
-          <button id="downloadPdfBtn" class="download-btn"><i class="fas fa-file-pdf"></i> PDF</button>
-        </div>
-      </div>
-    </div>
-    <div class="install-panel">
-      <span style="font-size:0.75rem;"><i class="fas fa-mobile-alt"></i> Install as App</span>
-      <button id="installAppBtn" class="install-btn"><i class="fas fa-download"></i> Install Now</button>
-    </div>
-    <!-- Watermark with single verified icon on left only -->
-    <div class="sweet-watermark">
-      <i class="fas fa-check-circle" style="color:#16a34a;"></i> সুইট বয় নয়ন
-    </div>
-    <div class="social-links">
-      <a href="https://ah-nayon.github.io/web/" target="_blank" rel="noopener noreferrer" class="contact-btn"><i class="fas fa-user-astronaut"></i> Contact</a>
-      <a href="https://www.facebook.com/share/1P7hqLHFBu/" target="_blank" rel="noopener noreferrer" class="contact-btn" style="background:#1877f2;"><i class="fab fa-facebook-f"></i> Facebook</a>
-      <a href="mailto:mdahoshanhabibnayon@gmail.com" class="contact-btn" style="background:#d44638;"><i class="fas fa-envelope"></i> Mail</a>
-    </div>
-    <footer>✂️ Cut = copy + remove from note · All Notes Saved Server · Ethical use only</footer>
-  </div>
+    <div class="app-container">
+        <!-- GENERATOR SECTION (কোনো প্রমো কার্ড নেই) -->
+        <div id="generatorSection" class="section active-section">
 
-  <!-- ALL CREAT MAIL -->
-  <div id="allCreatSection" class="section">
-    <div class="card">
-      <div class="generator-title">📁 All Creat Mail</div>
-      <p style="font-size:0.68rem; color:#475569; margin-bottom:8px;">Tap a note → cut emails (copy & delete)</p>
-      <div id="notesListContainer" class="notes-grid">
-        <div class="empty-notes">No saved notes. Generate emails first.</div>
-      </div>
-    </div>
-    <div class="sweet-watermark">
-      <i class="fas fa-check-circle" style="color:#16a34a;"></i> সুইট বয় নয়ন
-    </div>
-    <div class="social-links">
-      <a href="https://ah-nayon.github.io/web/" target="_blank" rel="noopener noreferrer" class="contact-btn"><i class="fas fa-user-astronaut"></i> Contact</a>
-      <a href="https://www.facebook.com/share/1P7hqLHFBu/" target="_blank" rel="noopener noreferrer" class="contact-btn" style="background:#1877f2;"><i class="fab fa-facebook-f"></i> Facebook</a>
-      <a href="mailto:mdahoshanhabibnayon@gmail.com" class="contact-btn" style="background:#d44638;"><i class="fas fa-envelope"></i> Mail</a>
-    </div>
-    <footer>✂️ Cut = copy + remove from note · All Notes Saved Server · Ethical use only</footer>
-  </div>
+            <div class="dashboard-card" id="dashboardCard">
+                <div class="dashboard-stat">
+                    <i class="fas fa-envelope-open-text"></i>
+                    <div class="stat-value" id="totalEmailsStat">0</div>
+                    <div class="stat-label">Total Emails</div>
+                </div>
+                <div class="dashboard-stat">
+                    <i class="fas fa-sticky-note"></i>
+                    <div class="stat-value" id="notesCountStat">0</div>
+                    <div class="stat-label">Notes</div>
+                </div>
+                <div class="dashboard-stat">
+                    <i class="fas fa-cut"></i>
+                    <div class="stat-value" id="cutCountStat">0</div>
+                    <div class="stat-label">Use Emails</div>
+                </div>
+            </div>
 
-  <!-- ABOUT -->
-  <div id="aboutSection" class="section">
-    <div class="card">
-      <h2 style="font-weight:700; font-size:1.2rem;"><i class="fas fa-info-circle"></i> About</h2>
-      <div class="about-text" style="margin-top:10px;">
-        <p><strong>Hello Users,</strong> have a problem? Feel free to reach out via the contact buttons below.</p>
-        <div class="about-highlight">
-          <i class="fas fa-shield-alt"></i> <strong>Private & Secure:</strong> No data is collected or shared. Everything stays in your browser server.
+            <div class="card">
+                <div class="generator-title">⚡ CaseCraft</div>
+                <p style="font-size:0.68rem; color:#475569; margin-bottom:12px;">Random letter case · digits unchanged · auto‑saved</p>
+                <label class="label">Base email</label>
+                <input type="email" id="baseEmailInput" value="demo.user@gmail.com">
+                <div class="row-flex">
+                    <div class="count-wrapper">
+                        <label class="label">Variants (max 1000)</label>
+                        <input type="number" id="countInput" min="1" max="1000" value="8">
+                    </div>
+                    <button id="generateBtn" class="generate-btn"><i class="fas fa-magic"></i> Generate</button>
+                </div>
+                <div class="action-buttons">
+                    <button id="copyAllBtn" class="small-btn"><i class="far fa-copy"></i> Copy all</button>
+                    <button id="clearAllBtn" class="small-btn"><i class="fas fa-trash-alt"></i> Clear</button>
+                </div>
+                <div id="resultContainer" class="result-area">
+                    <div class="empty-msg">✨ Generate emails → auto‑saved to "All Creat Mail"</div>
+                </div>
+                <div style="margin-top: 12px;">
+                    <div class="label">Export current</div>
+                    <div class="download-group">
+                        <button id="downloadCsvBtn" class="download-btn"><i class="fas fa-file-csv"></i> CSV</button>
+                        <button id="downloadExcelBtn" class="download-btn"><i class="fas fa-file-excel"></i> Excel</button>
+                        <button id="downloadPdfBtn" class="download-btn"><i class="fas fa-file-pdf"></i> PDF</button>
+                    </div>
+                </div>
+            </div>
+            <div class="install-panel">
+                <span style="font-size:0.75rem;"><i class="fas fa-mobile-alt"></i> Install as App</span>
+                <button id="installAppBtn" class="install-btn"><i class="fas fa-download"></i> Install Now</button>
+            </div>
+            <div class="sweet-watermark">
+                <i class="fas fa-check-circle" style="color:#16a34a;"></i> সুইট বয় নয়ন
+            </div>
+            <div class="social-links">
+                <a href="https://ah-nayon.github.io/web/" target="_blank" rel="noopener noreferrer" class="contact-btn"><i class="fas fa-user-astronaut"></i> Contact</a>
+                <a href="https://www.facebook.com/share/1P7hqLHFBu/" target="_blank" rel="noopener noreferrer" class="contact-btn" style="background:#1877f2;"><i class="fab fa-facebook-f"></i> Facebook</a>
+                <a href="mailto:mdahoshanhabibnayon@gmail.com" class="contact-btn" style="background:#d44638;"><i class="fas fa-envelope"></i> Mail</a>
+            </div>
+            <footer>✂️ Cut = copy + remove from note · All Notes Saved Server · Ethical use only</footer>
         </div>
-        <p><i class="fas fa-copyright"></i> <strong>Copyright Notice:</strong> This application and its code are protected. Unauthorized copying, reproduction, or distribution is strictly prohibited and will result in legal action.</p>
-        <p style="margin-top:8px;"><i class="fas fa-check-circle" style="color:#16a34a;"></i> Ethical use only — intended for development and testing purposes.</p>
-        <p style="margin-top:6px; font-size:0.7rem; color:#475569;"> </p>
-        
-        <div style="margin-top:18px; border-top:1px solid #e2e8f0; padding-top:14px;">
-          <h3 style="font-size:0.9rem; font-weight:700; margin-bottom:8px;"><i class="fas fa-paper-plane"></i> Telegram & Groups</h3>
-          <div class="app-links-grid" id="appLinksGrid">
-            <a href="https://play.google.com/store/apps/details?id=org.telegram.messenger" target="_blank" rel="noopener noreferrer" class="app-link-item">
-              <img src="telegram.png" alt="Telegram Main" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 36 36\'%3E%3Ccircle cx=\'18\' cy=\'18\' r=\'18\' fill=\'%2327a7e7\'/%3E%3Ctext x=\'18\' y=\'24\' text-anchor=\'middle\' fill=\'white\' font-size=\'20\' font-weight=\'bold\'%3ET%3C/text%3E%3C/svg%3E'">
-              <span class="link-label">Telegram</span>
-              <span class="link-desc">Play Store</span>
-            </a>
-            <a href="https://play.google.com/store/apps/details?id=org.thunderdog.challegram" target="_blank" rel="noopener noreferrer" class="app-link-item">
-              <img src="telegramx.png" alt="Telegram X" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 36 36\'%3E%3Ccircle cx=\'18\' cy=\'18\' r=\'18\' fill=\'%232196f3\'/%3E%3Ctext x=\'18\' y=\'24\' text-anchor=\'middle\' fill=\'white\' font-size=\'18\' font-weight=\'bold\'%3EX%3C/text%3E%3C/svg%3E'">
-              <span class="link-label">Telegram X</span>
-              <span class="link-desc">Play Store</span>
-            </a>
-            <a href="https://telegram.org/dl/android/apk" download class="app-link-item">
-              <img src="telegramapk.png" alt="Telegram APK" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 36 36\'%3E%3Ccircle cx=\'18\' cy=\'18\' r=\'18\' fill=\'%2334b7f1\'/%3E%3Ctext x=\'18\' y=\'24\' text-anchor=\'middle\' fill=\'white\' font-size=\'18\' font-weight=\'bold\'%3E↓%3C/text%3E%3C/svg%3E'">
-              <span class="link-label">Telegram APK</span>
-              <span class="link-desc">Download</span>
-            </a>
-            <a href="tg://resolve?domain=spdadnan" class="app-link-item">
-              <img src="group.png" alt="Group" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 36 36\'%3E%3Ccircle cx=\'18\' cy=\'18\' r=\'18\' fill=\'%23f5a623\'/%3E%3Ctext x=\'18\' y=\'24\' text-anchor=\'middle\' fill=\'white\' font-size=\'18\' font-weight=\'bold\'%3EG%3C/text%3E%3C/svg%3E'">
-              <span class="link-label">Premuim Apps</span>
-              <span class="link-desc">t.me/spdadnan</span>
-            </a>
-            <a href="tg://resolve?domain=TempMail_org_bot" class="app-link-item">
-              <img src="temp.png" alt="Temp Mail" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 36 36\'%3E%3Ccircle cx=\'18\' cy=\'18\' r=\'18\' fill=\'%234caf50\'/%3E%3Ctext x=\'18\' y=\'24\' text-anchor=\'middle\' fill=\'white\' font-size=\'18\' font-weight=\'bold\'%3E@%3C/text%3E%3C/svg%3E'">
-              <span class="link-label">Temp Mail</span>
-              <span class="link-desc">t.me/TempMail_org_bot</span>
-            </a>
-            <a href="https://play.google.com/store/apps/details?id=ir.ilmili.telegraph" target="_blank" rel="noopener noreferrer" class="app-link-item">
-              <img src="tggraph.png" alt="Telegraph" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 36 36\'%3E%3Ccircle cx=\'18\' cy=\'18\' r=\'18\' fill=\'%23333\'/%3E%3Ctext x=\'18\' y=\'24\' text-anchor=\'middle\' fill=\'white\' font-size=\'18\' font-weight=\'bold\'%3ETG%3C/text%3E%3C/svg%3E'">
-              <span class="link-label">Telegraph</span>
-              <span class="link-desc">Play Store</span>
-            </a>
-          </div>
-          <p style="font-size:0.65rem; color:#64748b; margin-top:10px;"></p>
+
+        <!-- ALL CREAT MAIL -->
+        <div id="allCreatSection" class="section">
+            <div class="card">
+                <div class="generator-title">📁 All Creat Mail</div>
+                <p style="font-size:0.68rem; color:#475569; margin-bottom:8px;">Tap a note → cut emails (copy & delete)</p>
+                <div id="notesListContainer" class="notes-grid">
+                    <div class="empty-notes">No saved notes. Generate emails first.</div>
+                </div>
+            </div>
+            <div class="sweet-watermark">
+                <i class="fas fa-check-circle" style="color:#16a34a;"></i> সুইট বয় নয়ন
+            </div>
+            <div class="social-links">
+                <a href="https://ah-nayon.github.io/web/" target="_blank" rel="noopener noreferrer" class="contact-btn"><i class="fas fa-user-astronaut"></i> Contact</a>
+                <a href="https://www.facebook.com/share/1P7hqLHFBu/" target="_blank" rel="noopener noreferrer" class="contact-btn" style="background:#1877f2;"><i class="fab fa-facebook-f"></i> Facebook</a>
+                <a href="mailto:mdahoshanhabibnayon@gmail.com" class="contact-btn" style="background:#d44638;"><i class="fas fa-envelope"></i> Mail</a>
+            </div>
+            <footer>✂️ Cut = copy + remove from note · All Notes Saved Server · Ethical use only</footer>
         </div>
-      </div>
+
+        <!-- ABOUT (শুধু এখানেই এক লাইনের প্রমোশন) -->
+        <div id="aboutSection" class="section">
+            <div class="card">
+                <h2 style="font-weight:700; font-size:1.2rem;"><i class="fas fa-info-circle"></i> About</h2>
+                <div class="about-text" style="margin-top:10px;">
+                    <p><strong>Hello Users,</strong> have a problem? Feel free to reach out via the contact buttons below.</p>
+                    <div class="about-highlight">
+                        <i class="fas fa-shield-alt"></i> <strong>Private & Secure:</strong> No data is collected or shared. Everything stays in your browser server.
+                    </div>
+                    <p><i class="fas fa-copyright"></i> <strong>Copyright Notice:</strong> This application and its code are protected. Unauthorized copying, reproduction, or distribution is strictly prohibited and will result in legal action.</p>
+                    <p style="margin-top:8px;"><i class="fas fa-check-circle" style="color:#16a34a;"></i> Ethical use only — intended for development and testing purposes.</p>
+                    <p style="margin-top:6px; font-size:0.7rem; color:#475569;"></p>
+                    <div style="margin-top:18px; border-top:1px solid #e2e8f0; padding-top:14px;">
+                        <h3 style="font-size:0.9rem; font-weight:700; margin-bottom:8px;"><i class="fas fa-paper-plane"></i> Telegram & Groups</h3>
+                        <div class="app-links-grid" id="appLinksGrid">
+                            <a href="https://play.google.com/store/apps/details?id=org.telegram.messenger" target="_blank" rel="noopener noreferrer" class="app-link-item">
+                                <img src="telegram.png" alt="Telegram Main" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 36 36%27%3E%3Ccircle cx=%2718%27 cy=%2718%27 r=%2718%27 fill=%27%2327a7e7%27/%3E%3Ctext x=%2718%27 y=%2724%27 text-anchor=%27middle%27 fill=%27white%27 font-size=%2720%27 font-weight=%27bold%27%3ET%3C/text%3E%3C/svg%3E'">
+                                <span class="link-label">Telegram</span>
+                                <span class="link-desc">Play Store</span>
+                            </a>
+                            <a href="https://play.google.com/store/apps/details?id=org.thunderdog.challegram" target="_blank" rel="noopener noreferrer" class="app-link-item">
+                                <img src="telegramx.png" alt="Telegram X" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 36 36%27%3E%3Ccircle cx=%2718%27 cy=%2718%27 r=%2718%27 fill=%27%232196f3%27/%3E%3Ctext x=%2718%27 y=%2724%27 text-anchor=%27middle%27 fill=%27white%27 font-size=%2718%27 font-weight=%27bold%27%3EX%3C/text%3E%3C/svg%3E'">
+                                <span class="link-label">Telegram X</span>
+                                <span class="link-desc">Play Store</span>
+                            </a>
+                            <a href="https://telegram.org/dl/android/apk" download class="app-link-item">
+                                <img src="telegramapk.png" alt="Telegram APK" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 36 36%27%3E%3Ccircle cx=%2718%27 cy=%2718%27 r=%2718%27 fill=%27%2334b7f1%27/%3E%3Ctext x=%2718%27 y=%2724%27 text-anchor=%27middle%27 fill=%27white%27 font-size=%2718%27 font-weight=%27bold%27%3E↓%3C/text%3E%3C/svg%3E'">
+                                <span class="link-label">Telegram APK</span>
+                                <span class="link-desc">Download</span>
+                            </a>
+                            <a href="tg://resolve?domain=spdadnan" class="app-link-item">
+                                <img src="group.png" alt="Group" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 36 36%27%3E%3Ccircle cx=%2718%27 cy=%2718%27 r=%2718%27 fill=%27%23f5a623%27/%3E%3Ctext x=%2718%27 y=%2724%27 text-anchor=%27middle%27 fill=%27white%27 font-size=%2718%27 font-weight=%27bold%27%3EG%3C/text%3E%3C/svg%3E'">
+                                <span class="link-label">Premuim Apps</span>
+                                <span class="link-desc">t.me/spdadnan</span>
+                            </a>
+                            <a href="tg://resolve?domain=TempMail_org_bot" class="app-link-item">
+                                <img src="temp.png" alt="Temp Mail" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 36 36%27%3E%3Ccircle cx=%2718%27 cy=%2718%27 r=%2718%27 fill=%27%234caf50%27/%3E%3Ctext x=%2718%27 y=%2724%27 text-anchor=%27middle%27 fill=%27white%27 font-size=%2718%27 font-weight=%27bold%27%3E@%3C/text%3E%3C/svg%3E'">
+                                <span class="link-label">Temp Mail</span>
+                                <span class="link-desc">t.me/TempMail_org_bot</span>
+                            </a>
+                            <a href="https://play.google.com/store/apps/details?id=ir.ilmili.telegraph" target="_blank" rel="noopener noreferrer" class="app-link-item">
+                                <img src="tggraph.png" alt="Telegraph" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 36 36%27%3E%3Ccircle cx=%2718%27 cy=%2718%27 r=%2718%27 fill=%27%23333%27/%3E%3Ctext x=%2718%27 y=%2724%27 text-anchor=%27middle%27 fill=%27white%27 font-size=%2718%27 font-weight=%27bold%27%3ETG%3C/text%3E%3C/svg%3E'">
+                                <span class="link-label">Telegraph</span>
+                                <span class="link-desc">Play Store</span>
+                            </a>
+                        </div>
+                        <p style="font-size:0.65rem; color:#64748b; margin-top:10px;"></p>
+                    </div>
+
+                    <!-- ============ শুধুমাত্র এখানে এক লাইনের প্রমোশন ============ -->
+                    <div class="about-proton-line">
+                        <img src="proton.png"
+                        alt="Proton VPN"
+                        onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 36 36%22%3E%3Ccircle cx=%2218%22 cy=%2218%22 r=%2218%22 fill=%22%231d8c5e%22/%3E%3Ctext x=%2218%22 y=%2225%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2218%22 font-weight=%22bold%22%3EP%3C/text%3E%3C/svg%3E'">
+                        <span class="proton-text">🔒 Proton VPN 3 Months · 250 TK</span>
+                        <a href="https://wa.me/8801757827996?text=Assalamu%20Alaikum%20%F0%9F%98%8A%2C%20%E0%A6%86%E0%A6%AE%E0%A6%BF%20Proton%20VPN%203%20Months%20(250%20TK)%20%E0%A6%A8%E0%A6%BF%E0%A6%A4%E0%A7%87%20%E0%A6%9A%E0%A6%BE%E0%A6%87%E0%A5%A4%20bKash%20%E0%A6%8F%20%E0%A6%AA%E0%A7%87%E0%A6%AE%E0%A7%87%E0%A6%A8%E0%A7%8D%E0%A6%9F%20%E0%A6%95%E0%A6%B0%E0%A6%AC%E0%A7%8B%20%E2%80%94%20%E0%A6%A8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AC%E0%A6%BE%E0%A6%B0%3A%2001757827996%E0%A5%A4%20%E0%A6%A6%E0%A7%9F%E0%A6%BE%20%E0%A6%95%E0%A6%B0%E0%A7%87%20%E0%A6%AC%E0%A6%B2%E0%A7%81%E0%A6%A8%20%E0%A6%95%E0%A6%BF%E0%A6%AD%E0%A6%BE%E0%A6%AC%E0%A7%87%20%E0%A6%A8%E0%A7%87%E0%A6%AC%E0%A7%8B%20%E2%9C%8C%EF%B8%8F"
+                        class="proton-mini-btn" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-whatsapp"></i> Buy Now
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="sweet-watermark">
+            <i class="fas fa-check-circle" style="color:#16a34a;"></i> সুইট বয় নয়ন
+        </div>
+        <div class="social-links">
+            <a href="https://ah-nayon.github.io/web/" target="_blank" rel="noopener noreferrer" class="contact-btn"><i class="fas fa-user-astronaut"></i> Contact</a>
+            <a href="https://www.facebook.com/share/1P7hqLHFBu/" target="_blank" rel="noopener noreferrer" class="contact-btn" style="background:#1877f2;"><i class="fab fa-facebook-f"></i> Facebook</a>
+            <a href="mailto:mdahoshanhabibnayon@gmail.com" class="contact-btn" style="background:#d44638;"><i class="fas fa-envelope"></i> Mail</a>
+        </div>
+        <footer>✂️ Cut = copy + remove from note · All Notes Saved Server · Ethical use only</footer>
     </div>
-    <div class="sweet-watermark">
-      <i class="fas fa-check-circle" style="color:#16a34a;"></i> সুইট বয় নয়ন
-    </div>
-    <div class="social-links">
-      <a href="https://ah-nayon.github.io/web/" target="_blank" rel="noopener noreferrer" class="contact-btn"><i class="fas fa-user-astronaut"></i> Contact</a>
-      <a href="https://www.facebook.com/share/1P7hqLHFBu/" target="_blank" rel="noopener noreferrer" class="contact-btn" style="background:#1877f2;"><i class="fab fa-facebook-f"></i> Facebook</a>
-      <a href="mailto:mdahoshanhabibnayon@gmail.com" class="contact-btn" style="background:#d44638;"><i class="fas fa-envelope"></i> Mail</a>
-    </div>
-    <footer>✂️ Cut = copy + remove from note · All Notes Saved Server · Ethical use only</footer>
-  </div>
 </div>
 
 <div class="bottom-nav">
-  <button class="nav-item active" data-section="generator"><i class="fas fa-magic"></i><span>Creats</span></button>
-  <button class="nav-item" data-section="allCreat"><i class="fas fa-folder-open"></i><span>Emails</span></button>
-  <button class="nav-item" data-section="about"><i class="fas fa-info-circle"></i><span>About</span></button>
+    <button class="nav-item active" data-section="generator"><i class="fas fa-magic"></i><span>Creats</span></button>
+    <button class="nav-item" data-section="allCreat"><i class="fas fa-folder-open"></i><span>Emails</span></button>
+    <button class="nav-item" data-section="about"><i class="fas fa-info-circle"></i><span>About</span></button>
 </div>
 
 <div id="noteModal" class="full-modal">
-  <div class="modal-header">
-    <h3 id="modalTitle">📄 Emails</h3>
-    <button class="close-modal" id="closeModalBtn"><i class="fas fa-times"></i></button>
-  </div>
-  <div class="modal-body" id="modalBody"></div>
+    <div class="modal-header">
+        <h3 id="modalTitle">📄 Emails</h3>
+        <button class="close-modal" id="closeModalBtn"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
 </div>
 <div class="toast-container" id="toastContainer"></div>
 
 <script>
-  (function(){
-    // ----- toast -----
-    const toastContainer = document.getElementById('toastContainer');
-    function toast(msg, type='info') {
-      const t = document.createElement('div');
-      t.className = `toast ${type}`;
-      t.innerHTML = `<i class="fas ${type==='success'?'fa-check-circle':'fa-info-circle'}"></i><span>${msg}</span>`;
-      toastContainer.appendChild(t);
-      setTimeout(() => t.remove(), 2200);
-    }
+    (function() {
+        // ----- toast -----
+        const toastContainer = document.getElementById('toastContainer');
 
-    // ----- localStorage keys -----
-    const STORAGE_KEY = 'caseforge_notes';
-    const CUT_COUNT_KEY = 'caseforge_cutcount';
-
-    // ----- saved notes -----
-    let savedNotes = [];
-    function loadNotes() {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      savedNotes = stored ? JSON.parse(stored) : [];
-      renderNotesList();
-      updateDashboardStats();
-    }
-    function saveNotes() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(savedNotes));
-      renderNotesList();
-      updateDashboardStats();
-    }
-    function addNote(emails, baseHint) {
-      const newNote = {
-        id: Date.now(),
-        timestamp: new Date().toLocaleString(),
-        emails: [...emails],
-        baseHint: baseHint.substring(0, 30),
-        count: emails.length
-      };
-      savedNotes.unshift(newNote);
-      saveNotes();
-      toast(`✅ Saved ${emails.length} emails as note`, 'success');
-    }
-    function deleteNote(id) {
-      savedNotes = savedNotes.filter(n => n.id !== id);
-      saveNotes();
-      toast('Note deleted', 'success');
-      if (activeModalNoteId === id) closeModal();
-      updateDashboardStats();
-    }
-
-    // ----- cut count (lifetime) -----
-    function getCutCount() {
-      const val = localStorage.getItem(CUT_COUNT_KEY);
-      return val ? parseInt(val, 10) : 0;
-    }
-    function increaseCutCount(amount = 1) {
-      const current = getCutCount();
-      localStorage.setItem(CUT_COUNT_KEY, current + amount);
-      updateDashboardStats();
-    }
-
-    // ----- dashboard update -----
-    function updateDashboardStats() {
-      const totalEmails = savedNotes.reduce((sum, note) => sum + note.count, 0);
-      const notesCount = savedNotes.length;
-      const cutCount = getCutCount();
-
-      document.getElementById('totalEmailsStat').textContent = totalEmails;
-      document.getElementById('notesCountStat').textContent = notesCount;
-      document.getElementById('cutCountStat').textContent = cutCount;
-    }
-
-    // cut email from note
-    async function cutEmailFromNote(noteId, emailIndex) {
-      const note = savedNotes.find(n => n.id === noteId);
-      if (!note) return;
-      const email = note.emails[emailIndex];
-      if (!email) return;
-      try {
-        await navigator.clipboard.writeText(email);
-        note.emails.splice(emailIndex, 1);
-        note.count = note.emails.length;
-        increaseCutCount(1); // lifetime use count
-        if (note.emails.length === 0) {
-          deleteNote(noteId);
-          toast(`✂️ Cut last email — note removed`, 'success');
-        } else {
-          saveNotes();
-          if (activeModalNoteId === noteId) refreshModal(noteId);
-          toast(`✂️ Cut: "${email.substring(0, 35)}..."`, 'success');
+        function toast(msg, type = 'info') {
+            const t = document.createElement('div');
+            t.className = `toast ${type}`;
+            t.innerHTML =
+                `<i class="fas ${type==='success'?'fa-check-circle':'fa-info-circle'}"></i><span>${msg}</span>`;
+            toastContainer.appendChild(t);
+            setTimeout(() => t.remove(), 2200);
         }
-      } catch(e) { toast('Copy failed', 'error'); }
-    }
 
-    function renderNotesList() {
-      const container = document.getElementById('notesListContainer');
-      if (!container) return;
-      if (savedNotes.length === 0) {
-        container.innerHTML = '<div class="empty-notes"><i class="far fa-save"></i> No saved notes. Generate emails.</div>';
-        return;
-      }
-      container.innerHTML = '';
-      savedNotes.forEach(note => {
-        const div = document.createElement('div');
-        div.className = 'note-card';
-        div.innerHTML = `
-          <div class="note-info">
-            <div class="note-title">📧 ${note.count} variant${note.count!==1?'s':''}</div>
-            <div class="note-meta"><span>${note.timestamp}</span><span>${note.baseHint}</span></div>
-          </div>
-          <button class="delete-note-btn" data-id="${note.id}"><i class="fas fa-trash-alt"></i></button>
-        `;
-        const infoDiv = div.querySelector('.note-info');
-        const delBtn = div.querySelector('.delete-note-btn');
-        infoDiv.addEventListener('click', () => openNoteModal(note.id));
-        delBtn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          deleteNote(note.id);
-        });
-        container.appendChild(div);
-      });
-    }
+        // ----- localStorage keys -----
+        const STORAGE_KEY = 'caseforge_notes';
+        const CUT_COUNT_KEY = 'caseforge_cutcount';
 
-    // Modal logic (same as before)
-    let activeModalNoteId = null;
-    const modal = document.getElementById('noteModal');
-    const modalTitle = document.getElementById('modalTitle');
-    const modalBody = document.getElementById('modalBody');
-    const closeModalBtn = document.getElementById('closeModalBtn');
-    let modalOpenHistory = false;
-    let ignorePopState = false;
+        // ----- saved notes -----
+        let savedNotes = [];
 
-    function refreshModal(noteId) {
-      const note = savedNotes.find(n => n.id === noteId);
-      if (!note) { closeModal(); return; }
-      modalTitle.innerText = `📄 ${note.count} email${note.count!==1?'s':''} · ${note.timestamp}`;
-      modalBody.innerHTML = '';
-      if (note.emails.length === 0) {
-        modalBody.innerHTML = '<div class="empty-notes">Empty note will be removed.</div>';
-        return;
-      }
-      note.emails.forEach((email, idx) => {
-        const row = document.createElement('div');
-        row.className = 'modal-email-row';
-        row.innerHTML = `
-          <div class="modal-email-text">${escapeHtml(email)}</div>
-          <button class="cut-single-btn" data-idx="${idx}"><i class="fas fa-cut"></i> Cut</button>
-        `;
-        row.querySelector('.cut-single-btn').addEventListener('click', (e) => {
-          e.stopPropagation();
-          cutEmailFromNote(noteId, idx);
-        });
-        modalBody.appendChild(row);
-      });
-    }
-
-    function openNoteModal(noteId) {
-      const note = savedNotes.find(n => n.id === noteId);
-      if (!note) return;
-      activeModalNoteId = noteId;
-      refreshModal(noteId);
-      modal.classList.add('active');
-      if (!modalOpenHistory) {
-        history.pushState({modal: true}, '');
-        modalOpenHistory = true;
-      }
-    }
-
-    function closeModal() {
-      if (modal.classList.contains('active')) {
-        if (modalOpenHistory) {
-          ignorePopState = true;
-          history.back();
-          modalOpenHistory = false;
+        function loadNotes() {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            savedNotes = stored ? JSON.parse(stored) : [];
+            renderNotesList();
+            updateDashboardStats();
         }
-        modal.classList.remove('active');
-        activeModalNoteId = null;
-      }
-    }
 
-    window.addEventListener('popstate', (e) => {
-      if (ignorePopState) { ignorePopState = false; return; }
-      if (modal.classList.contains('active')) {
-        modal.classList.remove('active');
-        activeModalNoteId = null;
-        modalOpenHistory = false;
-        history.pushState({modal: false}, '');
-        e.preventDefault();
-      }
-    });
-
-    closeModalBtn.addEventListener('click', closeModal);
-    modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
-
-    function escapeHtml(str) {
-      return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]));
-    }
-
-    // ----- generator -----
-    let currentEmails = [];
-    function randomCaseVariant(base) {
-      let out = '';
-      for (let i = 0; i < base.length; i++) {
-        const ch = base[i];
-        if (/[A-Za-z]/.test(ch)) {
-          out += Math.random() < 0.5 ? ch.toUpperCase() : ch.toLowerCase();
-        } else {
-          out += ch;
+        function saveNotes() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(savedNotes));
+            renderNotesList();
+            updateDashboardStats();
         }
-      }
-      return out;
-    }
-    function generateVariants(base, count) {
-      const arr = [];
-      for (let i = 0; i < count; i++) arr.push(randomCaseVariant(base));
-      return arr;
-    }
-    function renderCurrent() {
-      const container = document.getElementById('resultContainer');
-      if (!currentEmails.length) {
-        container.innerHTML = '<div class="empty-msg">✨ No emails yet. Click Generate.</div>';
-        return;
-      }
-      container.innerHTML = currentEmails.map(e => `<div class="email-item"><i class="far fa-envelope" style="margin-right:6px; color:#3b82f6;"></i>${escapeHtml(e)}</div>`).join('');
-    }
 
-    const baseInput = document.getElementById('baseEmailInput');
-    const countInput = document.getElementById('countInput');
-    const genBtn = document.getElementById('generateBtn');
-    const copyBtn = document.getElementById('copyAllBtn');
-    const clearBtn = document.getElementById('clearAllBtn');
+        function addNote(emails, baseHint) {
+            const newNote = {
+                id: Date.now(),
+                timestamp: new Date().toLocaleString(),
+                emails: [...emails],
+                baseHint: baseHint.substring(0, 30),
+                count: emails.length
+            };
+            savedNotes.unshift(newNote);
+            saveNotes();
+            toast(`✅ Saved ${emails.length} emails as note`, 'success');
+        }
 
-    genBtn.addEventListener('click', () => {
-      let base = baseInput.value.trim();
-      if (!base) { toast("Enter base email", "error"); return; }
-      let count = parseInt(countInput.value, 10);
-      if (isNaN(count) || count < 1) count = 1;
-      if (count > 1000) { toast("Max 1000, capped", "info"); count = 1000; countInput.value = 1000; }
-      const generated = generateVariants(base, count);
-      currentEmails = generated;
-      renderCurrent();
-      addNote(generated, base);
-      toast(`✨ ${generated.length} variants generated & saved`, 'success');
-    });
+        function deleteNote(id) {
+            savedNotes = savedNotes.filter(n => n.id !== id);
+            saveNotes();
+            toast('Note deleted', 'success');
+            if (activeModalNoteId === id) closeModal();
+            updateDashboardStats();
+        }
 
-    clearBtn.addEventListener('click', () => {
-      if (!currentEmails.length) { toast("Nothing to clear", "info"); return; }
-      currentEmails = [];
-      renderCurrent();
-      toast("Current list cleared (saved notes remain)", "info");
-    });
+        // ----- cut count (lifetime) -----
+        function getCutCount() {
+            const val = localStorage.getItem(CUT_COUNT_KEY);
+            return val ? parseInt(val, 10) : 0;
+        }
 
-    copyBtn.addEventListener('click', async () => {
-      if (!currentEmails.length) { toast("No emails to copy", "error"); return; }
-      await navigator.clipboard.writeText(currentEmails.join('\n'));
-      toast(`📋 Copied ${currentEmails.length} emails`, 'success');
-    });
+        function increaseCutCount(amount = 1) {
+            const current = getCutCount();
+            localStorage.setItem(CUT_COUNT_KEY, current + amount);
+            updateDashboardStats();
+        }
 
-    // exports
-    function getCurrentExport() {
-      if (!currentEmails.length) { toast("Generate emails first", "error"); return null; }
-      return currentEmails;
-    }
-    function exportCSV() {
-      const arr = getCurrentExport();
-      if (!arr) return;
-      const rows = [["Generated Emails"], ...arr.map(e=>[e])];
-      const csv = rows.map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(",")).join("\n");
-      const blob = new Blob(["\uFEFF"+csv], {type:"text/csv"});
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = `emails_${Date.now()}.csv`;
-      a.click();
-      URL.revokeObjectURL(a.href);
-      toast("CSV exported", "success");
-    }
-    function exportExcel() {
-      const arr = getCurrentExport();
-      if (!arr) return;
-      const ws = XLSX.utils.aoa_to_sheet([["Generated Emails"], ...arr.map(e=>[e])]);
-      const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, "Emails");
-      XLSX.writeFile(wb, `emails_${Date.now()}.xlsx`);
-      toast("Excel saved", "success");
-    }
-    async function exportPDF() {
-      const arr = getCurrentExport();
-      if (!arr) return;
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF();
-      doc.setFontSize(12);
-      doc.text("Email Variants", 14, 12);
-      doc.setFontSize(8);
-      doc.text(`Total: ${arr.length} | Base: ${baseInput.value}`, 14, 20);
-      doc.autoTable({ startY: 26, head: [["Emails"]], body: arr.map(e=>[e]), styles:{ fontSize:7 } });
-      doc.save(`emails_${Date.now()}.pdf`);
-      toast("PDF exported", "success");
-    }
-    document.getElementById('downloadCsvBtn').addEventListener('click', exportCSV);
-    document.getElementById('downloadExcelBtn').addEventListener('click', exportExcel);
-    document.getElementById('downloadPdfBtn').addEventListener('click', exportPDF);
+        // ----- dashboard update -----
+        function updateDashboardStats() {
+            const totalEmails = savedNotes.reduce((sum, note) => sum + note.count, 0);
+            const notesCount = savedNotes.length;
+            const cutCount = getCutCount();
+            document.getElementById('totalEmailsStat').textContent = totalEmails;
+            document.getElementById('notesCountStat').textContent = notesCount;
+            document.getElementById('cutCountStat').textContent = cutCount;
+        }
 
-    // ========== PWA INSTALL ==========
-    let deferredPrompt = null;
-    const installBtnEl = document.getElementById('installAppBtn');
-    const installPanel = document.querySelector('.install-panel');
-    function isStandalone() {
-      return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-    }
-    if (isStandalone()) installPanel.style.display = 'none';
+        // cut email from note
+        async function cutEmailFromNote(noteId, emailIndex) {
+            const note = savedNotes.find(n => n.id === noteId);
+            if (!note) return;
+            const email = note.emails[emailIndex];
+            if (!email) return;
+            try {
+                await navigator.clipboard.writeText(email);
+                note.emails.splice(emailIndex, 1);
+                note.count = note.emails.length;
+                increaseCutCount(1);
+                if (note.emails.length === 0) {
+                    deleteNote(noteId);
+                    toast(`✂️ Cut last email — note removed`, 'success');
+                } else {
+                    saveNotes();
+                    if (activeModalNoteId === noteId) refreshModal(noteId);
+                    toast(`✂️ Cut: "${email.substring(0, 35)}..."`, 'success');
+                }
+            } catch (e) {
+                toast('Copy failed', 'error');
+            }
+        }
 
-    const manifestObj = {
-      name: "CaseForge Email Studio",
-      short_name: "CaseForge",
-      start_url: ".",
-      display: "standalone",
-      theme_color: "#0f172a",
-      background_color: "#ffffff",
-      icons: [{ src: "genarator.png", sizes: "192x192", type: "image/png" }, { src: "genarator.png", sizes: "512x512", type: "image/png" }]
-    };
-    const manifestBlob = new Blob([JSON.stringify(manifestObj)], {type: 'application/json'});
-    const manifestURL = URL.createObjectURL(manifestBlob);
-    const manifestLink = document.createElement('link');
-    manifestLink.rel = 'manifest';
-    manifestLink.href = manifestURL;
-    document.head.appendChild(manifestLink);
-
-    // ----- service worker with offline caching -----
-    if ('serviceWorker' in navigator) {
-      const swCode = `
-        const CACHE_NAME = 'caseforge-offline-v1';
-        const urlsToCache = [
-          '.',
-          'index.html',
-          'genarator.png',
-          'telegram.png',
-          'telegramx.png',
-          'telegramapk.png',
-          'group.png',
-          'temp.png',
-          'tggraph.png',
-          'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css',
-          'https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js',
-          'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js',
-          'https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.6.0/jspdf.plugin.autotable.min.js'
-        ];
-
-        self.addEventListener('install', (event) => {
-          event.waitUntil(
-            caches.open(CACHE_NAME).then((cache) => {
-              return cache.addAll(urlsToCache);
-            })
-          );
-        });
-
-        self.addEventListener('fetch', (event) => {
-          event.respondWith(
-            caches.match(event.request).then((response) => {
-              return response || fetch(event.request).then((fetchResponse) => {
-                return caches.open(CACHE_NAME).then((cache) => {
-                  cache.put(event.request, fetchResponse.clone());
-                  return fetchResponse;
+        function renderNotesList() {
+            const container = document.getElementById('notesListContainer');
+            if (!container) return;
+            if (savedNotes.length === 0) {
+                container.innerHTML =
+                    '<div class="empty-notes"><i class="far fa-save"></i> No saved notes. Generate emails.</div>';
+                return;
+            }
+            container.innerHTML = '';
+            savedNotes.forEach(note => {
+                const div = document.createElement('div');
+                div.className = 'note-card';
+                div.innerHTML = `
+                    <div class="note-info">
+                        <div class="note-title">📧 ${note.count} variant${note.count!==1?'s':''}</div>
+                        <div class="note-meta"><span>${note.timestamp}</span><span>${note.baseHint}</span></div>
+                    </div>
+                    <button class="delete-note-btn" data-id="${note.id}"><i class="fas fa-trash-alt"></i></button>
+                `;
+                const infoDiv = div.querySelector('.note-info');
+                const delBtn = div.querySelector('.delete-note-btn');
+                infoDiv.addEventListener('click', () => openNoteModal(note.id));
+                delBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    deleteNote(note.id);
                 });
-              });
-            })
-          );
+                container.appendChild(div);
+            });
+        }
+
+        // Modal logic
+        let activeModalNoteId = null;
+        const modal = document.getElementById('noteModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalBody = document.getElementById('modalBody');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        let modalOpenHistory = false;
+        let ignorePopState = false;
+
+        function refreshModal(noteId) {
+            const note = savedNotes.find(n => n.id === noteId);
+            if (!note) { closeModal(); return; }
+            modalTitle.innerText =
+                `📄 ${note.count} email${note.count!==1?'s':''} · ${note.timestamp}`;
+            modalBody.innerHTML = '';
+            if (note.emails.length === 0) {
+                modalBody.innerHTML = '<div class="empty-notes">Empty note will be removed.</div>';
+                return;
+            }
+            note.emails.forEach((email, idx) => {
+                const row = document.createElement('div');
+                row.className = 'modal-email-row';
+                row.innerHTML = `
+                    <div class="modal-email-text">${escapeHtml(email)}</div>
+                    <button class="cut-single-btn" data-idx="${idx}"><i class="fas fa-cut"></i> Cut</button>
+                `;
+                row.querySelector('.cut-single-btn').addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    cutEmailFromNote(noteId, idx);
+                });
+                modalBody.appendChild(row);
+            });
+        }
+
+        function openNoteModal(noteId) {
+            const note = savedNotes.find(n => n.id === noteId);
+            if (!note) return;
+            activeModalNoteId = noteId;
+            refreshModal(noteId);
+            modal.classList.add('active');
+            if (!modalOpenHistory) {
+                history.pushState({ modal: true }, '');
+                modalOpenHistory = true;
+            }
+        }
+
+        function closeModal() {
+            if (modal.classList.contains('active')) {
+                if (modalOpenHistory) {
+                    ignorePopState = true;
+                    history.back();
+                    modalOpenHistory = false;
+                }
+                modal.classList.remove('active');
+                activeModalNoteId = null;
+            }
+        }
+
+        window.addEventListener('popstate', (e) => {
+            if (ignorePopState) { ignorePopState = false; return; }
+            if (modal.classList.contains('active')) {
+                modal.classList.remove('active');
+                activeModalNoteId = null;
+                modalOpenHistory = false;
+                history.pushState({ modal: false }, '');
+                e.preventDefault();
+            }
         });
 
-        self.addEventListener('activate', (event) => {
-          event.waitUntil(
-            caches.keys().then((cacheNames) => {
-              return Promise.all(
-                cacheNames.map((cache) => {
-                  if (cache !== CACHE_NAME) {
-                    return caches.delete(cache);
-                  }
-                })
-              );
-            })
-          );
+        closeModalBtn.addEventListener('click', closeModal);
+        modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+
+        function escapeHtml(str) {
+            return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
+        }
+
+        // ----- generator -----
+        let currentEmails = [];
+
+        function randomCaseVariant(base) {
+            let out = '';
+            for (let i = 0; i < base.length; i++) {
+                const ch = base[i];
+                if (/[A-Za-z]/.test(ch)) {
+                    out += Math.random() < 0.5 ? ch.toUpperCase() : ch.toLowerCase();
+                } else {
+                    out += ch;
+                }
+            }
+            return out;
+        }
+
+        function generateVariants(base, count) {
+            const arr = [];
+            for (let i = 0; i < count; i++) arr.push(randomCaseVariant(base));
+            return arr;
+        }
+
+        function renderCurrent() {
+            const container = document.getElementById('resultContainer');
+            if (!currentEmails.length) {
+                container.innerHTML = '<div class="empty-msg">✨ No emails yet. Click Generate.</div>';
+                return;
+            }
+            container.innerHTML = currentEmails.map(e =>
+                `<div class="email-item"><i class="far fa-envelope" style="margin-right:6px; color:#3b82f6;"></i>${escapeHtml(e)}</div>`
+            ).join('');
+        }
+
+        const baseInput = document.getElementById('baseEmailInput');
+        const countInput = document.getElementById('countInput');
+        const genBtn = document.getElementById('generateBtn');
+        const copyBtn = document.getElementById('copyAllBtn');
+        const clearBtn = document.getElementById('clearAllBtn');
+
+        genBtn.addEventListener('click', () => {
+            let base = baseInput.value.trim();
+            if (!base) { toast("Enter base email", "error"); return; }
+            let count = parseInt(countInput.value, 10);
+            if (isNaN(count) || count < 1) count = 1;
+            if (count > 1000) { toast("Max 1000, capped", "info");
+                count = 1000;
+                countInput.value = 1000; }
+            const generated = generateVariants(base, count);
+            currentEmails = generated;
+            renderCurrent();
+            addNote(generated, base);
+            toast(`✨ ${generated.length} variants generated & saved`, 'success');
         });
-      `;
-      const swBlob = new Blob([swCode], {type: 'application/javascript'});
-      const swURL = URL.createObjectURL(swBlob);
-      navigator.serviceWorker.register(swURL).catch(e => console.log("SW error", e));
-    }
 
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-      if (!isStandalone()) installPanel.style.display = 'flex';
-    });
+        clearBtn.addEventListener('click', () => {
+            if (!currentEmails.length) { toast("Nothing to clear", "info"); return; }
+            currentEmails = [];
+            renderCurrent();
+            toast("Current list cleared (saved notes remain)", "info");
+        });
 
-    installBtnEl.addEventListener('click', async () => {
-      if (deferredPrompt) {
-        deferredPrompt.prompt();
-        const { outcome } = await deferredPrompt.userChoice;
-        if (outcome === 'accepted') {
-          toast("Installing app...", "success");
-          installPanel.style.display = 'none';
-        } else {
-          toast("Install cancelled", "info");
+        copyBtn.addEventListener('click', async () => {
+            if (!currentEmails.length) { toast("No emails to copy", "error"); return; }
+            await navigator.clipboard.writeText(currentEmails.join('\n'));
+            toast(`📋 Copied ${currentEmails.length} emails`, 'success');
+        });
+
+        // exports
+        function getCurrentExport() {
+            if (!currentEmails.length) { toast("Generate emails first", "error"); return null; }
+            return currentEmails;
         }
-        deferredPrompt = null;
-      } else {
-        toast("Tap browser menu → Add to Home Screen", "info");
-      }
-    });
 
-    window.addEventListener('appinstalled', () => {
-      deferredPrompt = null;
-      installPanel.style.display = 'none';
-      toast("✅ App installed! Launch from home screen.", "success");
-    });
-
-    // section switching
-    const genSec = document.getElementById('generatorSection');
-    const creatSec = document.getElementById('allCreatSection');
-    const aboutSec = document.getElementById('aboutSection');
-    const navs = document.querySelectorAll('.nav-item');
-    const appLinksGrid = document.getElementById('appLinksGrid');
-
-    function switchSection(section) {
-      genSec.classList.remove('active-section');
-      creatSec.classList.remove('active-section');
-      aboutSec.classList.remove('active-section');
-      if (section === 'generator') genSec.classList.add('active-section');
-      if (section === 'allCreat') creatSec.classList.add('active-section');
-      if (section === 'about') {
-        aboutSec.classList.add('active-section');
-        if (appLinksGrid) {
-          appLinksGrid.classList.remove('animate-in');
-          void appLinksGrid.offsetWidth;
-          appLinksGrid.classList.add('animate-in');
+        function exportCSV() {
+            const arr = getCurrentExport();
+            if (!arr) return;
+            const rows = [
+                ["Generated Emails"],
+                ...arr.map(e => [e])
+            ];
+            const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(",")).join("\n");
+            const blob = new Blob(["\uFEFF" + csv], { type: "text/csv" });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `emails_${Date.now()}.csv`;
+            a.click();
+            URL.revokeObjectURL(a.href);
+            toast("CSV exported", "success");
         }
-      }
-      navs.forEach(btn => {
-        const s = btn.getAttribute('data-section');
-        if (s === section) btn.classList.add('active');
-        else btn.classList.remove('active');
-      });
-      if (section === 'allCreat') renderNotesList();
-      updateDashboardStats(); // refresh dashboard on section switch
-    }
 
-    navs.forEach(btn => btn.addEventListener('click', () => switchSection(btn.getAttribute('data-section'))));
+        function exportExcel() {
+            const arr = getCurrentExport();
+            if (!arr) return;
+            const ws = XLSX.utils.aoa_to_sheet([
+                ["Generated Emails"],
+                ...arr.map(e => [e])
+            ]);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Emails");
+            XLSX.writeFile(wb, `emails_${Date.now()}.xlsx`);
+            toast("Excel saved", "success");
+        }
 
-    // initial load
-    loadNotes();
-    const demoBase = baseInput.value.trim();
-    const demoGen = generateVariants(demoBase, 4);
-    currentEmails = demoGen;
-    renderCurrent();
-    switchSection('generator');
-    updateDashboardStats();
-  })();
+        async function exportPDF() {
+            const arr = getCurrentExport();
+            if (!arr) return;
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            doc.setFontSize(12);
+            doc.text("Email Variants", 14, 12);
+            doc.setFontSize(8);
+            doc.text(`Total: ${arr.length} | Base: ${baseInput.value}`, 14, 20);
+            doc.autoTable({ startY: 26, head: [
+                    ["Emails"]
+                ], body: arr.map(e => [e]), styles: { fontSize: 7 } });
+            doc.save(`emails_${Date.now()}.pdf`);
+            toast("PDF exported", "success");
+        }
+        document.getElementById('downloadCsvBtn').addEventListener('click', exportCSV);
+        document.getElementById('downloadExcelBtn').addEventListener('click', exportExcel);
+        document.getElementById('downloadPdfBtn').addEventListener('click', exportPDF);
+
+        // ========== PWA INSTALL ==========
+        let deferredPrompt = null;
+        const installBtnEl = document.getElementById('installAppBtn');
+        const installPanel = document.querySelector('.install-panel');
+
+        function isStandalone() {
+            return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone ===
+                true;
+        }
+        if (isStandalone()) installPanel.style.display = 'none';
+
+        const manifestObj = {
+            name: "CaseForge Email Studio",
+            short_name: "CaseForge",
+            start_url: ".",
+            display: "standalone",
+            theme_color: "#0f172a",
+            background_color: "#ffffff",
+            icons: [{ src: "genarator.png", sizes: "192x192", type: "image/png" }, { src: "genarator.png",
+                sizes: "512x512", type: "image/png" }]
+        };
+        const manifestBlob = new Blob([JSON.stringify(manifestObj)], { type: 'application/json' });
+        const manifestURL = URL.createObjectURL(manifestBlob);
+        const manifestLink = document.createElement('link');
+        manifestLink.rel = 'manifest';
+        manifestLink.href = manifestURL;
+        document.head.appendChild(manifestLink);
+
+        // ----- service worker with offline caching -----
+        if ('serviceWorker' in navigator) {
+            const swCode = `
+                const CACHE_NAME = 'caseforge-offline-v1';
+                const urlsToCache = [
+                    '.',
+                    'index.html',
+                    'genarator.png',
+                    'proton.png',
+                    'telegram.png',
+                    'telegramx.png',
+                    'telegramapk.png',
+                    'group.png',
+                    'temp.png',
+                    'tggraph.png',
+                    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css',
+                    'https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js',
+                    'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js',
+                    'https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.6.0/jspdf.plugin.autotable.min.js'
+                ];
+
+                self.addEventListener('install', (event) => {
+                    event.waitUntil(
+                        caches.open(CACHE_NAME).then((cache) => {
+                            return cache.addAll(urlsToCache);
+                        })
+                    );
+                });
+
+                self.addEventListener('fetch', (event) => {
+                    event.respondWith(
+                        caches.match(event.request).then((response) => {
+                            return response || fetch(event.request).then((fetchResponse) => {
+                                return caches.open(CACHE_NAME).then((cache) => {
+                                    cache.put(event.request, fetchResponse.clone());
+                                    return fetchResponse;
+                                });
+                            });
+                        })
+                    );
+                });
+
+                self.addEventListener('activate', (event) => {
+                    event.waitUntil(
+                        caches.keys().then((cacheNames) => {
+                            return Promise.all(
+                                cacheNames.map((cache) => {
+                                    if (cache !== CACHE_NAME) {
+                                        return caches.delete(cache);
+                                    }
+                                })
+                            );
+                        })
+                    );
+                });
+            `;
+            const swBlob = new Blob([swCode], { type: 'application/javascript' });
+            const swURL = URL.createObjectURL(swBlob);
+            navigator.serviceWorker.register(swURL).catch(e => console.log("SW error", e));
+        }
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            if (!isStandalone()) installPanel.style.display = 'flex';
+        });
+
+        installBtnEl.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    toast("Installing app...", "success");
+                    installPanel.style.display = 'none';
+                } else {
+                    toast("Install cancelled", "info");
+                }
+                deferredPrompt = null;
+            } else {
+                toast("Tap browser menu → Add to Home Screen", "info");
+            }
+        });
+
+        window.addEventListener('appinstalled', () => {
+            deferredPrompt = null;
+            installPanel.style.display = 'none';
+            toast("✅ App installed! Launch from home screen.", "success");
+        });
+
+        // section switching
+        const genSec = document.getElementById('generatorSection');
+        const creatSec = document.getElementById('allCreatSection');
+        const aboutSec = document.getElementById('aboutSection');
+        const navs = document.querySelectorAll('.nav-item');
+        const appLinksGrid = document.getElementById('appLinksGrid');
+
+        function switchSection(section) {
+            genSec.classList.remove('active-section');
+            creatSec.classList.remove('active-section');
+            aboutSec.classList.remove('active-section');
+            if (section === 'generator') genSec.classList.add('active-section');
+            if (section === 'allCreat') creatSec.classList.add('active-section');
+            if (section === 'about') {
+                aboutSec.classList.add('active-section');
+                if (appLinksGrid) {
+                    appLinksGrid.classList.remove('animate-in');
+                    void appLinksGrid.offsetWidth;
+                    appLinksGrid.classList.add('animate-in');
+                }
+            }
+            navs.forEach(btn => {
+                const s = btn.getAttribute('data-section');
+                if (s === section) btn.classList.add('active');
+                else btn.classList.remove('active');
+            });
+            if (section === 'allCreat') renderNotesList();
+            updateDashboardStats();
+        }
+
+        navs.forEach(btn => btn.addEventListener('click', () => switchSection(btn.getAttribute('data-section'))));
+
+        // initial load
+        loadNotes();
+        const demoBase = baseInput.value.trim();
+        const demoGen = generateVariants(demoBase, 4);
+        currentEmails = demoGen;
+        renderCurrent();
+        switchSection('generator');
+        updateDashboardStats();
+    })();
 </script>
 </body>
 </html>
