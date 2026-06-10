@@ -64,20 +64,32 @@
             border: 1px solid #eef2f8;
         }
 
-        /* ============ ABOUT PAGE ONE‑LINE PROMO ============ */
-        .about-proton-line {
+        /* ============ VPN section এ এক লাইনের প্রমোশন ============ */
+        .vpn-promo-line {
             display: flex;
             align-items: center;
             gap: 10px;
             background: #ecfdf5;
             border-radius: 16px;
             padding: 10px 14px;
-            margin-top: 16px;
+            margin-top: 10px;
             border: 1px solid #a7f3d0;
             flex-wrap: wrap;
+            animation: protonSlideIn 0.5s ease;
         }
 
-        .about-proton-line img {
+        @keyframes protonSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .vpn-promo-line img {
             width: 30px;
             height: 30px;
             object-fit: contain;
@@ -85,7 +97,7 @@
             flex-shrink: 0;
         }
 
-        .about-proton-line .proton-text {
+        .vpn-promo-line .promo-text {
             flex: 1;
             font-weight: 700;
             font-size: 0.78rem;
@@ -94,7 +106,7 @@
             letter-spacing: -0.2px;
         }
 
-        .about-proton-line .proton-mini-btn {
+        .vpn-promo-line .promo-btn {
             background: #1d8c5e;
             color: white;
             padding: 8px 18px;
@@ -110,16 +122,16 @@
             box-shadow: 0 4px 12px rgba(29, 140, 94, 0.25);
         }
 
-        .about-proton-line .proton-mini-btn:hover {
+        .vpn-promo-line .promo-btn:hover {
             background: #16784e;
         }
 
         @media (max-width: 400px) {
-            .about-proton-line {
+            .vpn-promo-line {
                 gap: 6px;
                 padding: 8px 10px;
             }
-            .about-proton-line .proton-text {
+            .vpn-promo-line .promo-text {
                 font-size: 0.7rem;
             }
         }
@@ -326,6 +338,8 @@
             display: flex;
             gap: 10px;
         }
+
+        /* ========== DELETE BUTTON ANIMATION (PURPLE PULSE) ========== */
         .delete-note-btn {
             background: transparent;
             border: none;
@@ -334,11 +348,34 @@
             cursor: pointer;
             padding: 6px;
             border-radius: 30px;
+            animation: deletePurplePulse 2s ease-in-out infinite;
         }
+
+        @keyframes deletePurplePulse {
+            0% {
+                color: #cbd5e1;
+                transform: scale(1);
+            }
+            30% {
+                color: #a78bfa;
+                transform: scale(1.15);
+            }
+            60% {
+                color: #8b5cf6;
+                transform: scale(0.95);
+            }
+            100% {
+                color: #cbd5e1;
+                transform: scale(1);
+            }
+        }
+
         .delete-note-btn:hover {
             color: #ef4444;
             background: #fee2e2;
+            animation: none; /* hover এ animation off */
         }
+
         .empty-notes {
             text-align: center;
             padding: 30px 12px;
@@ -402,6 +439,8 @@
             flex: 1;
             margin-right: 10px;
         }
+
+        /* ========== CUT BUTTON ANIMATION (RED PULSE) ========== */
         .cut-single-btn {
             background: #fee2e2;
             border: none;
@@ -411,14 +450,40 @@
             font-weight: 600;
             cursor: pointer;
             color: #b91c1c;
+            animation: cutRedPulse 2s ease-in-out infinite;
         }
+
+        @keyframes cutRedPulse {
+            0% {
+                background-color: #fee2e2;
+                transform: scale(1);
+            }
+            30% {
+                background-color: #fecaca;
+                transform: scale(1.06);
+            }
+            60% {
+                background-color: #fca5a5;
+                transform: scale(0.96);
+            }
+            100% {
+                background-color: #fee2e2;
+                transform: scale(1);
+            }
+        }
+
+        .cut-single-btn:hover {
+            animation: none; /* hover এ animation থামবে */
+            background: #fecaca;
+        }
+
         .bottom-nav {
             position: fixed;
             bottom: 12px;
             left: 50%;
             transform: translateX(-50%);
             width: calc(100% - 32px);
-            max-width: 400px;
+            max-width: 450px;
             background: rgba(255, 255, 255, 0.92);
             backdrop-filter: blur(20px);
             border-radius: 40px;
@@ -426,7 +491,7 @@
             display: flex;
             justify-content: space-around;
             align-items: center;
-            padding: 8px 6px;
+            padding: 8px 4px;
             z-index: 1000;
             border: 1px solid rgba(255, 255, 255, 0.6);
         }
@@ -436,7 +501,7 @@
             align-items: center;
             justify-content: center;
             gap: 3px;
-            padding: 8px 14px;
+            padding: 8px 12px;
             border-radius: 30px;
             border: none;
             background: transparent;
@@ -445,7 +510,7 @@
             color: #6b7280;
             cursor: pointer;
             transition: 0.2s ease;
-            min-width: 70px;
+            min-width: 60px;
         }
         .nav-item i {
             font-size: 1.2rem;
@@ -657,9 +722,8 @@
 <body>
 
     <div class="app-container">
-        <!-- GENERATOR SECTION (কোনো প্রমো কার্ড নেই) -->
+        <!-- GENERATOR SECTION (ফুটার, ওয়াটারমার্ক, সোশ্যাল লিংক সহ) -->
         <div id="generatorSection" class="section active-section">
-
             <div class="dashboard-card" id="dashboardCard">
                 <div class="dashboard-stat">
                     <i class="fas fa-envelope-open-text"></i>
@@ -710,6 +774,7 @@
                 <span style="font-size:0.75rem;"><i class="fas fa-mobile-alt"></i> Install as App</span>
                 <button id="installAppBtn" class="install-btn"><i class="fas fa-download"></i> Install Now</button>
             </div>
+            <!-- ফুটার, ওয়াটারমার্ক, সোশ্যাল -->
             <div class="sweet-watermark">
                 <i class="fas fa-check-circle" style="color:#16a34a;"></i> সুইট বয় নয়ন
             </div>
@@ -721,7 +786,7 @@
             <footer>✂️ Cut = copy + remove from note · All Notes Saved Server · Ethical use only</footer>
         </div>
 
-        <!-- ALL CREAT MAIL -->
+        <!-- ALL CREAT MAIL (ফুটার, ওয়াটারমার্ক, সোশ্যাল লিংক সহ) -->
         <div id="allCreatSection" class="section">
             <div class="card">
                 <div class="generator-title">📁 All Creat Mail</div>
@@ -741,65 +806,70 @@
             <footer>✂️ Cut = copy + remove from note · All Notes Saved Server · Ethical use only</footer>
         </div>
 
-        <!-- ABOUT (শুধু এখানেই এক লাইনের প্রমোশন) -->
-        <div id="aboutSection" class="section">
+        <!-- ============ VPN SECTION (শুধু প্রমোশন, কোনো ফুটার/ওয়াটারমার্ক/সোশ্যাল নেই) ============ -->
+        <div id="vpnSection" class="section">
             <div class="card">
-                <h2 style="font-weight:700; font-size:1.2rem;"><i class="fas fa-info-circle"></i> About</h2>
-                <div class="about-text" style="margin-top:10px;">
-                    <p><strong>Hello Users,</strong> have a problem? Feel free to reach out via the contact buttons below.</p>
-                    <div class="about-highlight">
-                        <i class="fas fa-shield-alt"></i> <strong>Private & Secure:</strong> No data is collected or shared. Everything stays in your browser server.
-                    </div>
-                    <p><i class="fas fa-copyright"></i> <strong>Copyright Notice:</strong> This application and its code are protected. Unauthorized copying, reproduction, or distribution is strictly prohibited and will result in legal action.</p>
-                    <p style="margin-top:8px;"><i class="fas fa-check-circle" style="color:#16a34a;"></i> Ethical use only — intended for development and testing purposes.</p>
-                    <p style="margin-top:6px; font-size:0.7rem; color:#475569;"></p>
-                    <div style="margin-top:18px; border-top:1px solid #e2e8f0; padding-top:14px;">
-                        <h3 style="font-size:0.9rem; font-weight:700; margin-bottom:8px;"><i class="fas fa-paper-plane"></i> Telegram & Groups</h3>
-                        <div class="app-links-grid" id="appLinksGrid">
-                            <a href="https://play.google.com/store/apps/details?id=org.telegram.messenger" target="_blank" rel="noopener noreferrer" class="app-link-item">
-                                <img src="telegram.png" alt="Telegram Main" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 36 36%27%3E%3Ccircle cx=%2718%27 cy=%2718%27 r=%2718%27 fill=%27%2327a7e7%27/%3E%3Ctext x=%2718%27 y=%2724%27 text-anchor=%27middle%27 fill=%27white%27 font-size=%2720%27 font-weight=%27bold%27%3ET%3C/text%3E%3C/svg%3E'">
-                                <span class="link-label">Telegram</span>
-                                <span class="link-desc">Play Store</span>
-                            </a>
-                            <a href="https://play.google.com/store/apps/details?id=org.thunderdog.challegram" target="_blank" rel="noopener noreferrer" class="app-link-item">
-                                <img src="telegramx.png" alt="Telegram X" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 36 36%27%3E%3Ccircle cx=%2718%27 cy=%2718%27 r=%2718%27 fill=%27%232196f3%27/%3E%3Ctext x=%2718%27 y=%2724%27 text-anchor=%27middle%27 fill=%27white%27 font-size=%2718%27 font-weight=%27bold%27%3EX%3C/text%3E%3C/svg%3E'">
-                                <span class="link-label">Telegram X</span>
-                                <span class="link-desc">Play Store</span>
-                            </a>
-                            <a href="https://telegram.org/dl/android/apk" download class="app-link-item">
-                                <img src="telegramapk.png" alt="Telegram APK" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 36 36%27%3E%3Ccircle cx=%2718%27 cy=%2718%27 r=%2718%27 fill=%27%2334b7f1%27/%3E%3Ctext x=%2718%27 y=%2724%27 text-anchor=%27middle%27 fill=%27white%27 font-size=%2718%27 font-weight=%27bold%27%3E↓%3C/text%3E%3C/svg%3E'">
-                                <span class="link-label">Telegram APK</span>
-                                <span class="link-desc">Download</span>
-                            </a>
-                            <a href="tg://resolve?domain=spdadnan" class="app-link-item">
-                                <img src="group.png" alt="Group" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 36 36%27%3E%3Ccircle cx=%2718%27 cy=%2718%27 r=%2718%27 fill=%27%23f5a623%27/%3E%3Ctext x=%2718%27 y=%2724%27 text-anchor=%27middle%27 fill=%27white%27 font-size=%2718%27 font-weight=%27bold%27%3EG%3C/text%3E%3C/svg%3E'">
-                                <span class="link-label">Premuim Apps</span>
-                                <span class="link-desc">t.me/spdadnan</span>
-                            </a>
-                            <a href="tg://resolve?domain=TempMail_org_bot" class="app-link-item">
-                                <img src="temp.png" alt="Temp Mail" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 36 36%27%3E%3Ccircle cx=%2718%27 cy=%2718%27 r=%2718%27 fill=%27%234caf50%27/%3E%3Ctext x=%2718%27 y=%2724%27 text-anchor=%27middle%27 fill=%27white%27 font-size=%2718%27 font-weight=%27bold%27%3E@%3C/text%3E%3C/svg%3E'">
-                                <span class="link-label">Temp Mail</span>
-                                <span class="link-desc">t.me/TempMail_org_bot</span>
-                            </a>
-                            <a href="https://play.google.com/store/apps/details?id=ir.ilmili.telegraph" target="_blank" rel="noopener noreferrer" class="app-link-item">
-                                <img src="tggraph.png" alt="Telegraph" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 36 36%27%3E%3Ccircle cx=%2718%27 cy=%2718%27 r=%2718%27 fill=%27%23333%27/%3E%3Ctext x=%2718%27 y=%2724%27 text-anchor=%27middle%27 fill=%27white%27 font-size=%2718%27 font-weight=%27bold%27%3ETG%3C/text%3E%3C/svg%3E'">
-                                <span class="link-label">Telegraph</span>
-                                <span class="link-desc">Play Store</span>
-                            </a>
-                        </div>
-                        <p style="font-size:0.65rem; color:#64748b; margin-top:10px;"></p>
-                    </div>
+                <h2 style="font-weight:700; font-size:1.1rem; margin-bottom:4px;"><i class="fas fa-lock" style="color:#1d8c5e;"></i> Proton VPN</h2>
+                <div class="vpn-promo-line">
+                    <img src="proton.png"
+                    alt="Proton VPN"
+                    onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 36 36%22%3E%3Ccircle cx=%2218%22 cy=%2218%22 r=%2218%22 fill=%22%231d8c5e%22/%3E%3Ctext x=%2218%22 y=%2225%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2218%22 font-weight=%22bold%22%3EP%3C/text%3E%3C/svg%3E'">
+                    <span class="promo-text">🔒 Proton VPN 3 Months · 250 TK</span>
+                    <a href="https://wa.me/8801757827996?text=Assalamu%20Alaikum%20%F0%9F%98%8A%2C%20%E0%A6%86%E0%A6%AE%E0%A6%BF%20Proton%20VPN%203%20Months%20(250%20TK)%20%E0%A6%A8%E0%A6%BF%E0%A6%A4%E0%A7%87%20%E0%A6%9A%E0%A6%BE%E0%A6%87%E0%A5%A4%20bKash%20%E0%A6%8F%20%E0%A6%AA%E0%A7%87%E0%A6%AE%E0%A7%87%E0%A6%A8%E0%A7%8D%E0%A6%9F%20%E0%A6%95%E0%A6%B0%E0%A6%AC%E0%A7%8B%20%E2%80%94%20%E0%A6%A8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AC%E0%A6%BE%E0%A6%B0%3A%2001757827996%E0%A5%A4%20%E0%A6%A6%E0%A7%9F%E0%A6%BE%20%E0%A6%95%E0%A6%B0%E0%A7%87%20%E0%A6%AC%E0%A6%B2%E0%A7%81%E0%A6%A8%20%E0%A6%95%E0%A6%BF%E0%A6%AD%E0%A6%BE%E0%A6%AC%E0%A7%87%20%E0%A6%A8%E0%A7%87%E0%A6%AC%E0%A7%8B%20%E2%9C%8C%EF%B8%8F"
+                    class="promo-btn" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-whatsapp"></i> Buy Now
+                </a>
+            </div>
+        </div>
+    </div>
 
-                    <!-- ============ শুধুমাত্র এখানে এক লাইনের প্রমোশন ============ -->
-                    <div class="about-proton-line">
-                        <img src="proton.png"
-                        alt="Proton VPN"
-                        onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 36 36%22%3E%3Ccircle cx=%2218%22 cy=%2218%22 r=%2218%22 fill=%22%231d8c5e%22/%3E%3Ctext x=%2218%22 y=%2225%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2218%22 font-weight=%22bold%22%3EP%3C/text%3E%3C/svg%3E'">
-                        <span class="proton-text">🔒 Proton VPN 3 Months · 250 TK</span>
-                        <a href="https://wa.me/8801757827996?text=Assalamu%20Alaikum%20%F0%9F%98%8A%2C%20%E0%A6%86%E0%A6%AE%E0%A6%BF%20Proton%20VPN%203%20Months%20(250%20TK)%20%E0%A6%A8%E0%A6%BF%E0%A6%A4%E0%A7%87%20%E0%A6%9A%E0%A6%BE%E0%A6%87%E0%A5%A4%20bKash%20%E0%A6%8F%20%E0%A6%AA%E0%A7%87%E0%A6%AE%E0%A7%87%E0%A6%A8%E0%A7%8D%E0%A6%9F%20%E0%A6%95%E0%A6%B0%E0%A6%AC%E0%A7%8B%20%E2%80%94%20%E0%A6%A8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AC%E0%A6%BE%E0%A6%B0%3A%2001757827996%E0%A5%A4%20%E0%A6%A6%E0%A7%9F%E0%A6%BE%20%E0%A6%95%E0%A6%B0%E0%A7%87%20%E0%A6%AC%E0%A6%B2%E0%A7%81%E0%A6%A8%20%E0%A6%95%E0%A6%BF%E0%A6%AD%E0%A6%BE%E0%A6%AC%E0%A7%87%20%E0%A6%A8%E0%A7%87%E0%A6%AC%E0%A7%8B%20%E2%9C%8C%EF%B8%8F"
-                        class="proton-mini-btn" target="_blank" rel="noopener noreferrer">
-                        <i class="fab fa-whatsapp"></i> Buy Now
-                    </a>
+    <!-- ABOUT (ফুটার, ওয়াটারমার্ক, সোশ্যাল লিংক সহ) -->
+    <div id="aboutSection" class="section">
+        <div class="card">
+            <h2 style="font-weight:700; font-size:1.2rem;"><i class="fas fa-info-circle"></i> About</h2>
+            <div class="about-text" style="margin-top:10px;">
+                <p><strong>Hello Users,</strong> have a problem? Feel free to reach out via the contact buttons below.</p>
+                <div class="about-highlight">
+                    <i class="fas fa-shield-alt"></i> <strong>Private & Secure:</strong> No data is collected or shared. Everything stays in your browser server.
+                </div>
+                <p><i class="fas fa-copyright"></i> <strong>Copyright Notice:</strong> This application and its code are protected. Unauthorized copying, reproduction, or distribution is strictly prohibited and will result in legal action.</p>
+                <p style="margin-top:8px;"><i class="fas fa-check-circle" style="color:#16a34a;"></i> Ethical use only — intended for development and testing purposes.</p>
+                <p style="margin-top:6px; font-size:0.7rem; color:#475569;"></p>
+                <div style="margin-top:18px; border-top:1px solid #e2e8f0; padding-top:14px;">
+                    <h3 style="font-size:0.9rem; font-weight:700; margin-bottom:8px;"><i class="fas fa-paper-plane"></i> Telegram & Groups</h3>
+                    <div class="app-links-grid" id="appLinksGrid">
+                        <a href="https://play.google.com/store/apps/details?id=org.telegram.messenger" target="_blank" rel="noopener noreferrer" class="app-link-item">
+                            <img src="telegram.png" alt="Telegram Main" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 36 36%27%3E%3Ccircle cx=%2718%27 cy=%2718%27 r=%2718%27 fill=%27%2327a7e7%27/%3E%3Ctext x=%2718%27 y=%2724%27 text-anchor=%27middle%27 fill=%27white%27 font-size=%2720%27 font-weight=%27bold%27%3ET%3C/text%3E%3C/svg%3E'">
+                            <span class="link-label">Telegram</span>
+                            <span class="link-desc">Play Store</span>
+                        </a>
+                        <a href="https://play.google.com/store/apps/details?id=org.thunderdog.challegram" target="_blank" rel="noopener noreferrer" class="app-link-item">
+                            <img src="telegramx.png" alt="Telegram X" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 36 36%27%3E%3Ccircle cx=%2718%27 cy=%2718%27 r=%2718%27 fill=%27%232196f3%27/%3E%3Ctext x=%2718%27 y=%2724%27 text-anchor=%27middle%27 fill=%27white%27 font-size=%2718%27 font-weight=%27bold%27%3EX%3C/text%3E%3C/svg%3E'">
+                            <span class="link-label">Telegram X</span>
+                            <span class="link-desc">Play Store</span>
+                        </a>
+                        <a href="https://telegram.org/dl/android/apk" download class="app-link-item">
+                            <img src="telegramapk.png" alt="Telegram APK" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 36 36%27%3E%3Ccircle cx=%2718%27 cy=%2718%27 r=%2718%27 fill=%27%2334b7f1%27/%3E%3Ctext x=%2718%27 y=%2724%27 text-anchor=%27middle%27 fill=%27white%27 font-size=%2718%27 font-weight=%27bold%27%3E↓%3C/text%3E%3C/svg%3E'">
+                            <span class="link-label">Telegram APK</span>
+                            <span class="link-desc">Download</span>
+                        </a>
+                        <a href="tg://resolve?domain=spdadnan" class="app-link-item">
+                            <img src="group.png" alt="Group" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 36 36%27%3E%3Ccircle cx=%2718%27 cy=%2718%27 r=%2718%27 fill=%27%23f5a623%27/%3E%3Ctext x=%2718%27 y=%2724%27 text-anchor=%27middle%27 fill=%27white%27 font-size=%2718%27 font-weight=%27bold%27%3EG%3C/text%3E%3C/svg%3E'">
+                            <span class="link-label">Premuim Apps</span>
+                            <span class="link-desc">t.me/spdadnan</span>
+                        </a>
+                        <a href="tg://resolve?domain=TempMail_org_bot" class="app-link-item">
+                            <img src="temp.png" alt="Temp Mail" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 36 36%27%3E%3Ccircle cx=%2718%27 cy=%2718%27 r=%2718%27 fill=%27%234caf50%27/%3E%3Ctext x=%2718%27 y=%2724%27 text-anchor=%27middle%27 fill=%27white%27 font-size=%2718%27 font-weight=%27bold%27%3E@%3C/text%3E%3C/svg%3E'">
+                            <span class="link-label">Temp Mail</span>
+                            <span class="link-desc">t.me/TempMail_org_bot</span>
+                        </a>
+                        <a href="https://play.google.com/store/apps/details?id=ir.ilmili.telegraph" target="_blank" rel="noopener noreferrer" class="app-link-item">
+                            <img src="tggraph.png" alt="Telegraph" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 36 36%27%3E%3Ccircle cx=%2718%27 cy=%2718%27 r=%2718%27 fill=%27%23333%27/%3E%3Ctext x=%2718%27 y=%2724%27 text-anchor=%27middle%27 fill=%27white%27 font-size=%2718%27 font-weight=%27bold%27%3ETG%3C/text%3E%3C/svg%3E'">
+                            <span class="link-label">Telegraph</span>
+                            <span class="link-desc">Play Store</span>
+                        </a>
+                    </div>
+                    <p style="font-size:0.65rem; color:#64748b; margin-top:10px;"></p>
                 </div>
             </div>
         </div>
@@ -815,9 +885,11 @@
     </div>
 </div>
 
+<!-- বটম নেভিগেশন (VPN সহ) -->
 <div class="bottom-nav">
     <button class="nav-item active" data-section="generator"><i class="fas fa-magic"></i><span>Creats</span></button>
     <button class="nav-item" data-section="allCreat"><i class="fas fa-folder-open"></i><span>Emails</span></button>
+    <button class="nav-item" data-section="vpn"><i class="fas fa-lock"></i><span>VPN</span></button>
     <button class="nav-item" data-section="about"><i class="fas fa-info-circle"></i><span>About</span></button>
 </div>
 
@@ -1276,9 +1348,10 @@
             toast("✅ App installed! Launch from home screen.", "success");
         });
 
-        // section switching
+        // ========== SECTION SWITCHING (VPN সহ) ==========
         const genSec = document.getElementById('generatorSection');
         const creatSec = document.getElementById('allCreatSection');
+        const vpnSec = document.getElementById('vpnSection');
         const aboutSec = document.getElementById('aboutSection');
         const navs = document.querySelectorAll('.nav-item');
         const appLinksGrid = document.getElementById('appLinksGrid');
@@ -1286,10 +1359,13 @@
         function switchSection(section) {
             genSec.classList.remove('active-section');
             creatSec.classList.remove('active-section');
+            vpnSec.classList.remove('active-section');
             aboutSec.classList.remove('active-section');
+
             if (section === 'generator') genSec.classList.add('active-section');
-            if (section === 'allCreat') creatSec.classList.add('active-section');
-            if (section === 'about') {
+            else if (section === 'allCreat') creatSec.classList.add('active-section');
+            else if (section === 'vpn') vpnSec.classList.add('active-section');
+            else if (section === 'about') {
                 aboutSec.classList.add('active-section');
                 if (appLinksGrid) {
                     appLinksGrid.classList.remove('animate-in');
@@ -1297,11 +1373,13 @@
                     appLinksGrid.classList.add('animate-in');
                 }
             }
+
             navs.forEach(btn => {
                 const s = btn.getAttribute('data-section');
                 if (s === section) btn.classList.add('active');
                 else btn.classList.remove('active');
             });
+
             if (section === 'allCreat') renderNotesList();
             updateDashboardStats();
         }
