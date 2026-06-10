@@ -916,6 +916,60 @@
             setTimeout(() => t.remove(), 2200);
         }
 
+        // ----- SOUND ENGINE (জাভাস্ক্রিপ্ট অডিও) -----
+        let audioCtx = null;
+
+        function getAudioContext() {
+            if (!audioCtx) {
+                audioCtx = new(window.AudioContext || window.webkitAudioContext)();
+            }
+            return audioCtx;
+        }
+
+        function playCutSound() {
+            try {
+                const ctx = getAudioContext();
+                const now = ctx.currentTime;
+
+                // Oscillator for "snip" sound: quick high-pitched descending tone
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(1200, now);
+                osc.frequency.exponentialRampToValueAtTime(400, now + 0.12);
+                gain.gain.setValueAtTime(0.3, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.18);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start(now);
+                osc.stop(now + 0.2);
+            } catch (e) {
+                console.log('Cut sound play error:', e);
+            }
+        }
+
+        function playDeleteSound() {
+            try {
+                const ctx = getAudioContext();
+                const now = ctx.currentTime;
+
+                // Oscillator for "thud" sound: low pitched quick bump
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(200, now);
+                osc.frequency.exponentialRampToValueAtTime(80, now + 0.15);
+                gain.gain.setValueAtTime(0.4, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start(now);
+                osc.stop(now + 0.3);
+            } catch (e) {
+                console.log('Delete sound play error:', e);
+            }
+        }
+
         // ----- localStorage keys -----
         const STORAGE_KEY = 'caseforge_notes';
         const CUT_COUNT_KEY = 'caseforge_cutcount';
@@ -950,6 +1004,7 @@
         }
 
         function deleteNote(id) {
+            playDeleteSound(); // delete sound
             savedNotes = savedNotes.filter(n => n.id !== id);
             saveNotes();
             toast('Note deleted', 'success');
@@ -990,6 +1045,7 @@
                 note.emails.splice(emailIndex, 1);
                 note.count = note.emails.length;
                 increaseCutCount(1);
+                playCutSound(); // cut sound
                 if (note.emails.length === 0) {
                     deleteNote(noteId);
                     toast(`✂️ Cut last email — note removed`, 'success');
