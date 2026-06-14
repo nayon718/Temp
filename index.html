@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <meta name="theme-color" content="#0f172a">
+    <meta name="theme-color" content="#ffffff">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="CaseForge">
     <title>CaseForge · Email Case Studio</title>
     <link rel="icon" type="image/png" href="genarator.png">
@@ -18,6 +18,18 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.6.0/jspdf.plugin.autotable.min.js">
     </script>
     <style>
+        :root {
+            --premium-gold: #f0a500;
+            --premium-rose: #e11d48;
+            --premium-teal: #0d9488;
+            --premium-indigo: #4f46e5;
+            --premium-emerald: #059669;
+            --premium-amber: #d97706;
+            --surface-glass: rgba(255, 255, 255, 0.85);
+            --shadow-premium: 0 8px 32px rgba(0, 0, 0, 0.07), 0 2px 8px rgba(0, 0, 0, 0.04);
+            --vpn-glow: #10b981;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -26,74 +38,57 @@
 
         body {
             background: #f4f7fb;
-            padding-bottom: 70px;
+            padding-bottom: 90px;
             font-family: system-ui, -apple-system, 'Segoe UI', 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .app-container {
             max-width: 700px;
             margin: 0 auto;
-            padding: 12px 14px 20px;
+            padding: 12px 14px 24px;
         }
 
         .section {
             display: none;
-            animation: fade 0.2s;
+            animation: fade 0.25s ease;
         }
         .section.active-section {
             display: block;
         }
 
         @keyframes fade {
-            from {
-                opacity: 0;
-                transform: translateY(3px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .card {
             background: white;
             border-radius: 20px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02), 0 1px 2px rgba(0, 0, 0, 0.03);
-            padding: 14px 16px;
+            box-shadow: var(--shadow-premium);
+            padding: 16px 18px;
             margin-bottom: 14px;
             border: 1px solid #eef2f8;
         }
 
-        /* ============ VPN section এ এক লাইনের প্রমোশন ============ */
         .vpn-promo-line {
             display: flex;
             align-items: center;
             gap: 10px;
-            background: #ecfdf5;
+            background: linear-gradient(135deg, #ecfdf5, #d1fae5);
             border-radius: 16px;
             padding: 10px 14px;
             margin-top: 10px;
-            border: 1px solid #a7f3d0;
+            border: 2px solid #6ee7b7;
             flex-wrap: wrap;
-            animation: protonSlideIn 0.5s ease;
-        }
-
-        @keyframes protonSlideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-8px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.15);
         }
 
         .vpn-promo-line img {
-            width: 30px;
-            height: 30px;
+            width: 36px;
+            height: 36px;
             object-fit: contain;
-            border-radius: 8px;
+            border-radius: 10px;
             flex-shrink: 0;
         }
 
@@ -103,11 +98,10 @@
             font-size: 0.78rem;
             color: #064e3b;
             min-width: 140px;
-            letter-spacing: -0.2px;
         }
 
         .vpn-promo-line .promo-btn {
-            background: #1d8c5e;
+            background: linear-gradient(135deg, #10b981, #059669);
             color: white;
             padding: 8px 18px;
             border-radius: 28px;
@@ -118,102 +112,83 @@
             align-items: center;
             gap: 6px;
             white-space: nowrap;
-            transition: background 0.2s;
-            box-shadow: 0 4px 12px rgba(29, 140, 94, 0.25);
+            box-shadow: 0 4px 18px rgba(16, 185, 129, 0.4);
         }
 
-        .vpn-promo-line .promo-btn:hover {
-            background: #16784e;
-        }
-
-        @media (max-width: 400px) {
-            .vpn-promo-line {
-                gap: 6px;
-                padding: 8px 10px;
-            }
-            .vpn-promo-line .promo-text {
-                font-size: 0.7rem;
-            }
-        }
-
-        /* Dashboard card animation */
         .dashboard-card {
             background: linear-gradient(135deg, #ffffff, #f9fbfd);
             border-radius: 22px;
-            padding: 16px;
+            padding: 18px 12px;
             margin-bottom: 16px;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04), 0 2px 6px rgba(0, 0, 0, 0.02);
+            box-shadow: var(--shadow-premium);
             display: flex;
             justify-content: space-around;
             flex-wrap: wrap;
             gap: 12px;
-            animation: dashFadeIn 0.6s ease-out;
+            border: 1px solid #eef2f8;
         }
 
-        @keyframes dashFadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-12px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
         .dashboard-stat {
             text-align: center;
             flex: 1;
             min-width: 70px;
         }
         .dashboard-stat i {
-            font-size: 1.3rem;
-            color: #16a34a;
-            margin-bottom: 4px;
+            font-size: 1.5rem;
+            margin-bottom: 5px;
         }
+        .dashboard-stat .icon-envelope { color: #6366f1; }
+        .dashboard-stat .icon-note { color: #f59e0b; }
+        .dashboard-stat .icon-cut { color: #ef4444; }
         .dashboard-stat .stat-value {
-            font-size: 1.6rem;
+            font-size: 1.7rem;
             font-weight: 700;
             color: #0f172a;
-            line-height: 1.2;
         }
         .dashboard-stat .stat-label {
             font-size: 0.65rem;
             color: #475569;
             font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
         }
+
         .generator-title {
-            font-size: 1.4rem;
+            font-size: 1.45rem;
             font-weight: 700;
-            letter-spacing: -0.2px;
-            background: linear-gradient(135deg, #1e2b3c, #2c4a6e);
+            background: linear-gradient(135deg, #1e2b3c, #3b5998);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
             margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
+        .generator-title i {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-size: 1.3rem;
+        }
+
         .label {
             font-weight: 600;
             color: #1f2a3e;
             margin-bottom: 5px;
             display: block;
             font-size: 0.75rem;
-            letter-spacing: 0.3px;
         }
-        input,
-        .count-input {
+        input {
             width: 100%;
-            padding: 9px 14px;
+            padding: 10px 16px;
             border: 1.5px solid #e2e8f0;
-            border-radius: 22px;
+            border-radius: 24px;
             font-size: 0.85rem;
-            background: white;
             outline: none;
         }
         input:focus {
-            border-color: #22c55e;
-            box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.1);
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.08);
         }
         .row-flex {
             display: flex;
@@ -222,29 +197,24 @@
             align-items: flex-end;
             margin-top: 8px;
         }
-        .count-wrapper {
-            flex: 2;
-            min-width: 110px;
-        }
+        .count-wrapper { flex: 2; min-width: 110px; }
         .generate-btn {
-            background: #16a34a;
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
             color: white;
             border: none;
-            padding: 0 24px;
+            padding: 0 26px;
             border-radius: 34px;
             font-weight: 600;
             font-size: 0.88rem;
             cursor: pointer;
-            height: 48px;
+            height: 50px;
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            transition: 0.2s;
+            box-shadow: 0 4px 16px rgba(99, 102, 241, 0.3);
+            white-space: nowrap;
         }
-        .generate-btn:hover {
-            background: #15803d;
-            transform: scale(0.97);
-        }
+
         .action-buttons {
             display: flex;
             gap: 12px;
@@ -255,41 +225,25 @@
         .small-btn {
             background: #f0fdf4;
             border: 1px solid #bbf7d0;
-            padding: 7px 16px;
+            padding: 8px 18px;
             border-radius: 32px;
             font-size: 0.78rem;
             font-weight: 600;
             cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
             color: #166534;
-            transition: 0.2s;
         }
-        .small-btn:hover {
-            background: #dcfce7;
-            border-color: #86efac;
-        }
-        .download-group {
-            display: flex;
-            gap: 10px;
-            margin-top: 8px;
-            flex-wrap: wrap;
-        }
+
+        .download-group { display: flex; gap: 10px; margin-top: 8px; flex-wrap: wrap; }
         .download-btn {
-            background: #f0fdf4;
-            border: 1px solid #bbf7d0;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
             border-radius: 28px;
-            padding: 5px 16px;
+            padding: 6px 18px;
             font-size: 0.72rem;
-            font-weight: 600;
             cursor: pointer;
-            color: #166534;
-            transition: 0.2s;
+            color: #334155;
         }
-        .download-btn:hover {
-            background: #dcfce7;
-        }
+
         .result-area {
             background: #fafcff;
             border-radius: 18px;
@@ -299,18 +253,17 @@
             padding: 4px 2px;
         }
         .email-item {
-            font-family: 'SF Mono', monospace;
-            padding: 7px 12px;
+            font-family: monospace;
+            padding: 8px 14px;
             border-bottom: 1px solid #ecf3fa;
             font-size: 0.72rem;
             word-break: break-all;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-        .empty-msg {
-            text-align: center;
-            color: #94a3b8;
-            padding: 22px 12px;
-            font-size: 0.77rem;
-        }
+        .email-item i { color: #818cf8; font-size: 0.7rem; }
+
         .notes-grid {
             display: flex;
             flex-direction: column;
@@ -320,68 +273,26 @@
         .note-card {
             background: white;
             border-radius: 18px;
-            padding: 10px 14px;
+            padding: 12px 16px;
             border: 1px solid #eef2ff;
             display: flex;
             justify-content: space-between;
             align-items: center;
             cursor: pointer;
         }
-        .note-title {
-            font-weight: 700;
-            font-size: 0.85rem;
-        }
-        .note-meta {
-            font-size: 0.63rem;
-            color: #5b6e8c;
-            margin-top: 3px;
-            display: flex;
-            gap: 10px;
-        }
+        .note-title { font-weight: 700; font-size: 0.85rem; color: #1e293b; }
+        .note-meta { font-size: 0.63rem; color: #5b6e8c; margin-top: 3px; }
 
-        /* ========== DELETE BUTTON ANIMATION (PURPLE PULSE) ========== */
         .delete-note-btn {
             background: transparent;
             border: none;
-            font-size: 1rem;
+            font-size: 1.05rem;
             color: #cbd5e1;
             cursor: pointer;
-            padding: 6px;
-            border-radius: 30px;
-            animation: deletePurplePulse 2s ease-in-out infinite;
+            padding: 8px;
+            border-radius: 50%;
         }
 
-        @keyframes deletePurplePulse {
-            0% {
-                color: #cbd5e1;
-                transform: scale(1);
-            }
-            30% {
-                color: #a78bfa;
-                transform: scale(1.15);
-            }
-            60% {
-                color: #8b5cf6;
-                transform: scale(0.95);
-            }
-            100% {
-                color: #cbd5e1;
-                transform: scale(1);
-            }
-        }
-
-        .delete-note-btn:hover {
-            color: #ef4444;
-            background: #fee2e2;
-            animation: none; /* hover এ animation off */
-        }
-
-        .empty-notes {
-            text-align: center;
-            padding: 30px 12px;
-            color: #94a3b8;
-            font-size: 0.78rem;
-        }
         .full-modal {
             position: fixed;
             top: 0;
@@ -393,187 +304,147 @@
             display: flex;
             flex-direction: column;
             transform: translateY(100%);
-            transition: transform 0.25s ease;
+            transition: transform 0.3s;
         }
-        .full-modal.active {
-            transform: translateY(0);
-        }
+        .full-modal.active { transform: translateY(0); }
         .modal-header {
             padding: 14px 16px;
             border-bottom: 1px solid #eef2ff;
             display: flex;
             justify-content: space-between;
             align-items: center;
-        }
-        .modal-header h3 {
-            font-size: 1.05rem;
-            font-weight: 600;
+            background: #fafcff;
         }
         .close-modal {
             background: #f1f5f9;
             border: none;
-            width: 36px;
-            height: 36px;
-            border-radius: 30px;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
             cursor: pointer;
         }
-        .modal-body {
-            flex: 1;
-            overflow-y: auto;
-            padding: 12px 14px;
-        }
+        .modal-body { flex: 1; overflow-y: auto; padding: 12px 14px; }
         .modal-email-row {
             background: #fafcff;
             border-radius: 16px;
-            padding: 8px 12px;
+            padding: 10px 14px;
             margin-bottom: 10px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             border: 1px solid #eef2ff;
         }
-        .modal-email-text {
-            font-family: monospace;
-            font-size: 0.73rem;
-            word-break: break-all;
-            flex: 1;
-            margin-right: 10px;
-        }
-
-        /* ========== CUT BUTTON ANIMATION (RED PULSE) ========== */
+        .modal-email-text { font-family: monospace; font-size: 0.73rem; word-break: break-all; flex: 1; margin-right: 10px; }
         .cut-single-btn {
             background: #fee2e2;
             border: none;
-            padding: 5px 12px;
+            padding: 6px 14px;
             border-radius: 28px;
             font-size: 0.68rem;
             font-weight: 600;
             cursor: pointer;
             color: #b91c1c;
-            animation: cutRedPulse 2s ease-in-out infinite;
         }
 
-        @keyframes cutRedPulse {
-            0% {
-                background-color: #fee2e2;
-                transform: scale(1);
-            }
-            30% {
-                background-color: #fecaca;
-                transform: scale(1.06);
-            }
-            60% {
-                background-color: #fca5a5;
-                transform: scale(0.96);
-            }
-            100% {
-                background-color: #fee2e2;
-                transform: scale(1);
-            }
-        }
-
-        .cut-single-btn:hover {
-            animation: none; /* hover এ animation থামবে */
-            background: #fecaca;
-        }
-
+        /* ===== Bottom Navigation ===== */
         .bottom-nav {
             position: fixed;
-            bottom: 12px;
+            bottom: 14px;
             left: 50%;
             transform: translateX(-50%);
-            width: calc(100% - 32px);
-            max-width: 450px;
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(20px);
-            border-radius: 40px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.04);
+            width: calc(100% - 28px);
+            max-width: 480px;
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-radius: 44px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.05);
             display: flex;
             justify-content: space-around;
             align-items: center;
-            padding: 8px 4px;
+            padding: 6px 4px;
             z-index: 1000;
-            border: 1px solid rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.7);
         }
         .nav-item {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 3px;
-            padding: 8px 12px;
-            border-radius: 30px;
+            gap: 4px;
+            padding: 10px 14px;
+            border-radius: 34px;
             border: none;
             background: transparent;
             font-size: 0.6rem;
             font-weight: 600;
             color: #6b7280;
             cursor: pointer;
-            transition: 0.2s ease;
-            min-width: 60px;
+            transition: all 0.3s;
+            min-width: 62px;
         }
         .nav-item i {
-            font-size: 1.2rem;
-            transition: 0.2s;
+            font-size: 1.25rem;
+            transition: all 0.3s;
+            filter: drop-shadow(0 1px 2px rgba(0,0,0,0.06));
         }
         .nav-item.active {
-            background: #0f172a;
+            background: linear-gradient(135deg, #1e293b, #0f172a);
             color: white;
-            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.2);
+            box-shadow: 0 6px 20px rgba(15, 23, 42, 0.3);
         }
         .nav-item.active i {
             color: white;
+            filter: drop-shadow(0 2px 6px rgba(255,255,255,0.35));
         }
-        .install-panel {
-            background: #eef2ff;
-            border-radius: 44px;
-            padding: 8px 14px;
-            margin-top: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
+
+        /* VPN আইকন সবসময় সবুজ ও স্পষ্ট */
+        .nav-item[data-section="vpn"] {
+            background: rgba(16, 185, 129, 0.12);
+            color: #047857;
         }
-        .install-btn {
-            background: #16a34a;
-            border: none;
-            color: white;
-            padding: 7px 20px;
-            border-radius: 34px;
-            font-weight: 600;
-            font-size: 0.78rem;
-            cursor: pointer;
+        .nav-item[data-section="vpn"] i {
+            font-size: 1.4rem;  /* একটু বড় */
+            color: #10b981;
+            filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.7));
         }
-        .install-btn:hover {
-            background: #15803d;
+        .nav-item[data-section="vpn"].active {
+            background: linear-gradient(135deg, #064e3b, #065f46);
+            color: #d1fae5;
         }
-        .contact-btn {
-            background: #16a34a;
-            border: none;
-            color: white;
-            padding: 7px 20px;
-            border-radius: 34px;
-            font-weight: 600;
-            font-size: 0.8rem;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: 0.2s;
-            text-decoration: none;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        .nav-item[data-section="vpn"].active i {
+            color: #6ee7b7;
+            filter: drop-shadow(0 0 14px rgba(110, 231, 183, 0.9));
         }
-        .contact-btn:hover {
-            background: #15803d;
-            transform: scale(0.97);
-        }
+
         .social-links {
             display: flex;
             justify-content: center;
-            gap: 12px;
-            margin: 10px 0 4px;
-            flex-wrap: wrap;
+            gap: 18px;
+            margin: 14px 0 8px;
         }
+        .social-icon-round {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            text-decoration: none;
+            font-size: 1.3rem;
+            color: #fff;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        .social-icon-round.contact-icon { background: linear-gradient(135deg, #6366f1, #8b5cf6); }
+        .social-icon-round.facebook-icon { background: linear-gradient(135deg, #1877f2, #0d6efd); }
+        .social-icon-round.mail-icon { background: linear-gradient(135deg, #ea4335, #d44638); }
+        .social-icon-round:hover {
+            transform: translateY(-5px) scale(1.08);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.18);
+        }
+
         .app-links-grid {
             display: flex;
             flex-wrap: wrap;
@@ -582,96 +453,37 @@
         }
         .app-link-item {
             background: #ffffff;
-            border: none;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03), 0 1px 4px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 14px rgba(0,0,0,0.04);
             border-radius: 20px;
             padding: 16px 10px 12px;
             flex: 1 1 130px;
             text-align: center;
             text-decoration: none;
             color: #0f172a;
-            transition: all 0.25s ease;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 6px;
-        }
-        .app-link-item:hover {
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.04);
-            transform: translateY(-3px);
-            background: #f8fcff;
+            border: 1px solid #f1f5f9;
         }
         .app-link-item img {
-            width: 40px;
-            height: 40px;
+            width: 42px;
+            height: 42px;
             object-fit: contain;
-            transition: transform 0.2s;
         }
-        .app-link-item:hover img {
-            transform: scale(1.05);
-        }
-        .app-link-item .link-label {
-            font-weight: 700;
-            font-size: 0.74rem;
-            display: block;
-        }
-        .app-link-item .link-desc {
-            font-size: 0.62rem;
-            color: #475569;
-        }
-        .app-links-grid.animate-in .app-link-item {
-            opacity: 0;
-            transform: translateY(16px);
-            animation: appLinkFadeUp 0.4s ease forwards;
-        }
-        @keyframes appLinkFadeUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        .app-links-grid.animate-in .app-link-item:nth-child(1) {
-            animation-delay: 0.05s;
-        }
-        .app-links-grid.animate-in .app-link-item:nth-child(2) {
-            animation-delay: 0.1s;
-        }
-        .app-links-grid.animate-in .app-link-item:nth-child(3) {
-            animation-delay: 0.15s;
-        }
-        .app-links-grid.animate-in .app-link-item:nth-child(4) {
-            animation-delay: 0.2s;
-        }
-        .app-links-grid.animate-in .app-link-item:nth-child(5) {
-            animation-delay: 0.25s;
-        }
-        .app-links-grid.animate-in .app-link-item:nth-child(6) {
-            animation-delay: 0.3s;
-        }
+        .app-link-item .link-label { font-weight: 700; font-size: 0.74rem; }
+        .app-link-item .link-desc { font-size: 0.62rem; color: #475569; }
+
         .sweet-watermark {
             text-align: center;
-            font-size: 0.75rem;
-            font-weight: 500;
+            font-size: 0.76rem;
+            font-weight: 600;
             color: #2d6a4f;
             margin: 12px 0 6px;
-            letter-spacing: 0.5px;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 6px;
         }
-        footer {
-            font-size: 0.6rem;
-            text-align: center;
-            color: #6c8b7a;
-            margin-top: 12px;
-            padding-bottom: 4px;
-            border-top: 1px dashed #d1e7dd;
-            padding-top: 10px;
-        }
         .toast-container {
             position: fixed;
-            bottom: 80px;
+            bottom: 90px;
             left: 50%;
             transform: translateX(-50%);
             z-index: 3000;
@@ -680,35 +492,21 @@
         .toast {
             background: #1e293b;
             color: white;
-            padding: 7px 16px;
+            padding: 8px 18px;
             border-radius: 32px;
-            font-size: 0.73rem;
+            font-size: 0.74rem;
             display: flex;
             align-items: center;
             gap: 8px;
-            animation: fadeUp 0.2s;
+            animation: fadeUp 0.25s;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
         }
-        .toast.success {
-            background: #0f3b2c;
-        }
+        .toast.success { background: #065f46; }
         @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(6px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        .about-text {
-            font-size: 0.76rem;
-            line-height: 1.5;
-            color: #1e293b;
-        }
-        .about-text strong {
-            color: #0f172a;
-        }
+        .about-text { font-size: 0.76rem; line-height: 1.5; color: #1e293b; }
         .about-highlight {
             background: #fffbea;
             border-left: 3px solid #f59e0b;
@@ -722,47 +520,47 @@
 <body>
 
     <div class="app-container">
-        <!-- GENERATOR SECTION (ফুটার, ওয়াটারমার্ক, সোশ্যাল লিংক সহ) -->
+        <!-- GENERATOR SECTION -->
         <div id="generatorSection" class="section active-section">
             <div class="dashboard-card" id="dashboardCard">
                 <div class="dashboard-stat">
-                    <i class="fas fa-envelope-open-text"></i>
+                    <i class="fas fa-envelope-open-text icon-envelope"></i>
                     <div class="stat-value" id="totalEmailsStat">0</div>
                     <div class="stat-label">Total Emails</div>
                 </div>
                 <div class="dashboard-stat">
-                    <i class="fas fa-sticky-note"></i>
+                    <i class="fas fa-sticky-note icon-note"></i>
                     <div class="stat-value" id="notesCountStat">0</div>
                     <div class="stat-label">Notes</div>
                 </div>
                 <div class="dashboard-stat">
-                    <i class="fas fa-cut"></i>
+                    <i class="fas fa-scissors icon-cut"></i>
                     <div class="stat-value" id="cutCountStat">0</div>
                     <div class="stat-label">Use Emails</div>
                 </div>
             </div>
 
             <div class="card">
-                <div class="generator-title">⚡ CaseCraft</div>
+                <div class="generator-title"><i class="fas fa-wand-magic-sparkles"></i> CaseCraft</div>
                 <p style="font-size:0.68rem; color:#475569; margin-bottom:12px;">Random letter case · digits unchanged · auto‑saved</p>
-                <label class="label">Base email</label>
-                <input type="email" id="baseEmailInput" value="demo.user@gmail.com">
+                <label class="label"><i class="fas fa-at" style="color:#6366f1; margin-right:4px;"></i> Base email</label>
+                <input type="email" id="baseEmailInput" value="demo.user@gmail.com" placeholder="Enter your base email">
                 <div class="row-flex">
                     <div class="count-wrapper">
-                        <label class="label">Variants (max 1000)</label>
-                        <input type="number" id="countInput" min="1" max="1000" value="8">
+                        <label class="label"><i class="fas fa-hashtag" style="color:#6366f1; margin-right:4px;"></i> Variants (max 1000)</label>
+                        <input type="number" id="countInput" min="1" max="1000" value="8" placeholder="Count">
                     </div>
-                    <button id="generateBtn" class="generate-btn"><i class="fas fa-magic"></i> Generate</button>
+                    <button id="generateBtn" class="generate-btn"><i class="fas fa-wand-magic-sparkles"></i> Generate</button>
                 </div>
                 <div class="action-buttons">
-                    <button id="copyAllBtn" class="small-btn"><i class="far fa-copy"></i> Copy all</button>
-                    <button id="clearAllBtn" class="small-btn"><i class="fas fa-trash-alt"></i> Clear</button>
+                    <button id="copyAllBtn" class="small-btn"><i class="fas fa-copy"></i> Copy all</button>
+                    <button id="clearAllBtn" class="small-btn"><i class="fas fa-trash-can"></i> Clear</button>
                 </div>
                 <div id="resultContainer" class="result-area">
-                    <div class="empty-msg">✨ Generate emails → auto‑saved to "All Creat Mail"</div>
+                    <div class="empty-msg"><i class="fas fa-sparkles" style="color:#a78bfa;"></i> Generate emails → auto‑saved to "All Creat Mail"</div>
                 </div>
                 <div style="margin-top: 12px;">
-                    <div class="label">Export current</div>
+                    <div class="label"><i class="fas fa-download" style="color:#6366f1; margin-right:4px;"></i> Export current</div>
                     <div class="download-group">
                         <button id="downloadCsvBtn" class="download-btn"><i class="fas fa-file-csv"></i> CSV</button>
                         <button id="downloadExcelBtn" class="download-btn"><i class="fas fa-file-excel"></i> Excel</button>
@@ -770,51 +568,56 @@
                     </div>
                 </div>
             </div>
-            <div class="install-panel">
-                <span style="font-size:0.75rem;"><i class="fas fa-mobile-alt"></i> Install as App</span>
-                <button id="installAppBtn" class="install-btn"><i class="fas fa-download"></i> Install Now</button>
-            </div>
-            <!-- ফুটার, ওয়াটারমার্ক, সোশ্যাল -->
             <div class="sweet-watermark">
-                <i class="fas fa-check-circle" style="color:#16a34a;"></i> সুইট বয় নয়ন
+                <i class="fas fa-circle-check"></i> সুইট বয় নয়ন
             </div>
             <div class="social-links">
-                <a href="https://ah-nayon.github.io/web/" target="_blank" rel="noopener noreferrer" class="contact-btn"><i class="fas fa-user-astronaut"></i> Contact</a>
-                <a href="https://www.facebook.com/share/1P7hqLHFBu/" target="_blank" rel="noopener noreferrer" class="contact-btn" style="background:#1877f2;"><i class="fab fa-facebook-f"></i> Facebook</a>
-                <a href="mailto:mdahoshanhabibnayon@gmail.com" class="contact-btn" style="background:#d44638;"><i class="fas fa-envelope"></i> Mail</a>
+                <a href="https://ah-nayon.github.io/web/" target="_blank" rel="noopener noreferrer" class="social-icon-round contact-icon" title="Contact">
+                    <i class="fas fa-globe"></i>
+                </a>
+                <a href="https://www.facebook.com/share/1P7hqLHFBu/" target="_blank" rel="noopener noreferrer" class="social-icon-round facebook-icon" title="Facebook">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="mailto:mdahoshanhabibnayon@gmail.com" class="social-icon-round mail-icon" title="Mail">
+                    <i class="fas fa-envelope"></i>
+                </a>
             </div>
-            <footer>✂️ Cut = copy + remove from note · All Notes Saved Server · Ethical use only</footer>
         </div>
 
-        <!-- ALL CREAT MAIL (ফুটার, ওয়াটারমার্ক, সোশ্যাল লিংক সহ) -->
+        <!-- ALL CREAT MAIL -->
         <div id="allCreatSection" class="section">
             <div class="card">
-                <div class="generator-title">📁 All Creat Mail</div>
-                <p style="font-size:0.68rem; color:#475569; margin-bottom:8px;">Tap a note → cut emails (copy & delete)</p>
+                <div class="generator-title"><i class="fas fa-folder-tree"></i> All Creat Mail</div>
+                <p style="font-size:0.68rem; color:#475569; margin-bottom:8px;"><i class="fas fa-hand-pointer" style="color:#6366f1;"></i> Tap a note → cut emails (copy & delete)</p>
                 <div id="notesListContainer" class="notes-grid">
-                    <div class="empty-notes">No saved notes. Generate emails first.</div>
+                    <div class="empty-notes"><i class="far fa-folder-open" style="font-size:1.5rem; display:block; margin-bottom:8px; color:#cbd5e1;"></i> No saved notes. Generate emails first.</div>
                 </div>
             </div>
             <div class="sweet-watermark">
-                <i class="fas fa-check-circle" style="color:#16a34a;"></i> সুইট বয় নয়ন
+                <i class="fas fa-circle-check"></i> সুইট বয় নয়ন
             </div>
             <div class="social-links">
-                <a href="https://ah-nayon.github.io/web/" target="_blank" rel="noopener noreferrer" class="contact-btn"><i class="fas fa-user-astronaut"></i> Contact</a>
-                <a href="https://www.facebook.com/share/1P7hqLHFBu/" target="_blank" rel="noopener noreferrer" class="contact-btn" style="background:#1877f2;"><i class="fab fa-facebook-f"></i> Facebook</a>
-                <a href="mailto:mdahoshanhabibnayon@gmail.com" class="contact-btn" style="background:#d44638;"><i class="fas fa-envelope"></i> Mail</a>
+                <a href="https://ah-nayon.github.io/web/" target="_blank" rel="noopener noreferrer" class="social-icon-round contact-icon" title="Contact">
+                    <i class="fas fa-globe"></i>
+                </a>
+                <a href="https://www.facebook.com/share/1P7hqLHFBu/" target="_blank" rel="noopener noreferrer" class="social-icon-round facebook-icon" title="Facebook">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="mailto:mdahoshanhabibnayon@gmail.com" class="social-icon-round mail-icon" title="Mail">
+                    <i class="fas fa-envelope"></i>
+                </a>
             </div>
-            <footer>✂️ Cut = copy + remove from note · All Notes Saved Server · Ethical use only</footer>
         </div>
 
-        <!-- ============ VPN SECTION (শুধু প্রমোশন, কোনো ফুটার/ওয়াটারমার্ক/সোশ্যাল নেই) ============ -->
+        <!-- VPN SECTION -->
         <div id="vpnSection" class="section">
             <div class="card">
-                <h2 style="font-weight:700; font-size:1.1rem; margin-bottom:4px;"><i class="fas fa-lock" style="color:#1d8c5e;"></i> Proton VPN</h2>
+                <h2 style="font-weight:700; font-size:1.15rem; margin-bottom:4px; display:flex; align-items:center; gap:8px;">
+                    <i class="fas fa-shield" style="color:#10b981; font-size:1.3rem;"></i> Proton VPN
+                </h2>
                 <div class="vpn-promo-line">
-                    <img src="proton.png"
-                    alt="Proton VPN"
-                    onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 36 36%22%3E%3Ccircle cx=%2218%22 cy=%2218%22 r=%2218%22 fill=%22%231d8c5e%22/%3E%3Ctext x=%2218%22 y=%2225%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2218%22 font-weight=%22bold%22%3EP%3C/text%3E%3C/svg%3E'">
-                    <span class="promo-text">🔒 Proton VPN 3 Months · 250 TK</span>
+                    <img src="proton.png" alt="Proton VPN" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 36 36%22%3E%3Ccircle cx=%2218%22 cy=%2218%22 r=%2218%22 fill=%22%2310b981%22/%3E%3Ctext x=%2218%22 y=%2225%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2218%22 font-weight=%22bold%22%3EP%3C/text%3E%3C/svg%3E'">
+                    <span class="promo-text"><i class="fas fa-lock" style="color:#10b981;"></i> Proton VPN 3 Months · 250 TK</span>
                     <a href="https://wa.me/8801757827996?text=Assalamu%20Alaikum%20%F0%9F%98%8A%2C%20%E0%A6%86%E0%A6%AE%E0%A6%BF%20Proton%20VPN%203%20Months%20(250%20TK)%20%E0%A6%A8%E0%A6%BF%E0%A6%A4%E0%A7%87%20%E0%A6%9A%E0%A6%BE%E0%A6%87%E0%A5%A4%20bKash%20%E0%A6%8F%20%E0%A6%AA%E0%A7%87%E0%A6%AE%E0%A7%87%E0%A6%A8%E0%A7%8D%E0%A6%9F%20%E0%A6%95%E0%A6%B0%E0%A6%AC%E0%A7%8B%20%E2%80%94%20%E0%A6%A8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AC%E0%A6%BE%E0%A6%B0%3A%2001757827996%E0%A5%A4%20%E0%A6%A6%E0%A7%9F%E0%A6%BE%20%E0%A6%95%E0%A6%B0%E0%A7%87%20%E0%A6%AC%E0%A6%B2%E0%A7%81%E0%A6%A8%20%E0%A6%95%E0%A6%BF%E0%A6%AD%E0%A6%BE%E0%A6%AC%E0%A7%87%20%E0%A6%A8%E0%A7%87%E0%A6%AC%E0%A7%8B%20%E2%9C%8C%EF%B8%8F"
                     class="promo-btn" target="_blank" rel="noopener noreferrer">
                     <i class="fab fa-whatsapp"></i> Buy Now
@@ -823,20 +626,19 @@
         </div>
     </div>
 
-    <!-- ABOUT (ফুটার, ওয়াটারমার্ক, সোশ্যাল লিংক সহ) -->
+    <!-- ABOUT -->
     <div id="aboutSection" class="section">
         <div class="card">
-            <h2 style="font-weight:700; font-size:1.2rem;"><i class="fas fa-info-circle"></i> About</h2>
+            <h2 style="font-weight:700; font-size:1.2rem; display:flex; align-items:center; gap:8px;"><i class="fas fa-circle-info" style="color:#6366f1;"></i> About</h2>
             <div class="about-text" style="margin-top:10px;">
                 <p><strong>Hello Users,</strong> have a problem? Feel free to reach out via the contact buttons below.</p>
                 <div class="about-highlight">
-                    <i class="fas fa-shield-alt"></i> <strong>Private & Secure:</strong> No data is collected or shared. Everything stays in your browser server.
+                    <i class="fas fa-shield-halved"></i> <strong>Private & Secure:</strong> No data is collected or shared.
                 </div>
-                <p><i class="fas fa-copyright"></i> <strong>Copyright Notice:</strong> This application and its code are protected. Unauthorized copying, reproduction, or distribution is strictly prohibited and will result in legal action.</p>
-                <p style="margin-top:8px;"><i class="fas fa-check-circle" style="color:#16a34a;"></i> Ethical use only — intended for development and testing purposes.</p>
-                <p style="margin-top:6px; font-size:0.7rem; color:#475569;"></p>
+                <p><i class="far fa-copyright"></i> <strong>Copyright Notice:</strong> This application and its code are protected. Unauthorized copying, reproduction, or distribution is strictly prohibited.</p>
+                <p style="margin-top:8px;"><i class="fas fa-circle-check" style="color:#059669;"></i> Ethical use only — intended for development and testing purposes.</p>
                 <div style="margin-top:18px; border-top:1px solid #e2e8f0; padding-top:14px;">
-                    <h3 style="font-size:0.9rem; font-weight:700; margin-bottom:8px;"><i class="fas fa-paper-plane"></i> Telegram & Groups</h3>
+                    <h3 style="font-size:0.9rem; font-weight:700; margin-bottom:8px;"><i class="fab fa-telegram" style="color:#27a7e7;"></i> Telegram & Groups</h3>
                     <div class="app-links-grid" id="appLinksGrid">
                         <a href="https://play.google.com/store/apps/details?id=org.telegram.messenger" target="_blank" rel="noopener noreferrer" class="app-link-item">
                             <img src="telegram.png" alt="Telegram Main" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 36 36%27%3E%3Ccircle cx=%2718%27 cy=%2718%27 r=%2718%27 fill=%27%2327a7e7%27/%3E%3Ctext x=%2718%27 y=%2724%27 text-anchor=%27middle%27 fill=%27white%27 font-size=%2720%27 font-weight=%27bold%27%3ET%3C/text%3E%3C/svg%3E'">
@@ -869,34 +671,39 @@
                             <span class="link-desc">Play Store</span>
                         </a>
                     </div>
-                    <p style="font-size:0.65rem; color:#64748b; margin-top:10px;"></p>
                 </div>
             </div>
         </div>
         <div class="sweet-watermark">
-            <i class="fas fa-check-circle" style="color:#16a34a;"></i> সুইট বয় নয়ন
+            <i class="fas fa-circle-check"></i> সুইট বয় নয়ন
         </div>
         <div class="social-links">
-            <a href="https://ah-nayon.github.io/web/" target="_blank" rel="noopener noreferrer" class="contact-btn"><i class="fas fa-user-astronaut"></i> Contact</a>
-            <a href="https://www.facebook.com/share/1P7hqLHFBu/" target="_blank" rel="noopener noreferrer" class="contact-btn" style="background:#1877f2;"><i class="fab fa-facebook-f"></i> Facebook</a>
-            <a href="mailto:mdahoshanhabibnayon@gmail.com" class="contact-btn" style="background:#d44638;"><i class="fas fa-envelope"></i> Mail</a>
+            <a href="https://ah-nayon.github.io/web/" target="_blank" rel="noopener noreferrer" class="social-icon-round contact-icon" title="Contact">
+                <i class="fas fa-globe"></i>
+            </a>
+            <a href="https://www.facebook.com/share/1P7hqLHFBu/" target="_blank" rel="noopener noreferrer" class="social-icon-round facebook-icon" title="Facebook">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="mailto:mdahoshanhabibnayon@gmail.com" class="social-icon-round mail-icon" title="Mail">
+                <i class="fas fa-envelope"></i>
+            </a>
         </div>
-        <footer>✂️ Cut = copy + remove from note · All Notes Saved Server · Ethical use only</footer>
     </div>
 </div>
 
-<!-- বটম নেভিগেশন (VPN সহ) -->
+<!-- BOTTOM NAVIGATION -->
 <div class="bottom-nav">
-    <button class="nav-item active" data-section="generator"><i class="fas fa-magic"></i><span>Creats</span></button>
-    <button class="nav-item" data-section="allCreat"><i class="fas fa-folder-open"></i><span>Emails</span></button>
-    <button class="nav-item" data-section="vpn"><i class="fas fa-lock"></i><span>VPN</span></button>
-    <button class="nav-item" data-section="about"><i class="fas fa-info-circle"></i><span>About</span></button>
+    <button class="nav-item active" data-section="generator"><i class="fas fa-wand-magic-sparkles"></i><span>Creats</span></button>
+    <button class="nav-item" data-section="allCreat"><i class="fas fa-folder-tree"></i><span>Emails</span></button>
+    <button class="nav-item" data-section="vpn"><i class="fas fa-shield"></i><span>VPN</span></button>
+    <button class="nav-item" data-section="about"><i class="fas fa-circle-info"></i><span>About</span></button>
 </div>
 
+<!-- MODAL -->
 <div id="noteModal" class="full-modal">
     <div class="modal-header">
-        <h3 id="modalTitle">📄 Emails</h3>
-        <button class="close-modal" id="closeModalBtn"><i class="fas fa-times"></i></button>
+        <h3 id="modalTitle"><i class="fas fa-envelopes-bulk"></i> Emails</h3>
+        <button class="close-modal" id="closeModalBtn"><i class="fas fa-xmark"></i></button>
     </div>
     <div class="modal-body" id="modalBody"></div>
 </div>
@@ -904,77 +711,23 @@
 
 <script>
     (function() {
-        // ----- toast -----
         const toastContainer = document.getElementById('toastContainer');
 
         function toast(msg, type = 'info') {
             const t = document.createElement('div');
             t.className = `toast ${type}`;
-            t.innerHTML =
-                `<i class="fas ${type==='success'?'fa-check-circle':'fa-info-circle'}"></i><span>${msg}</span>`;
+            const iconClass = type === 'success' ? 'fa-circle-check' : 'fa-circle-info';
+            t.innerHTML = `<i class="fas ${iconClass}"></i><span>${msg}</span>`;
             toastContainer.appendChild(t);
-            setTimeout(() => t.remove(), 2200);
+            setTimeout(() => {
+                t.style.opacity = '0';
+                t.style.transition = 'opacity 0.3s';
+                setTimeout(() => t.remove(), 300);
+            }, 2200);
         }
 
-        // ----- SOUND ENGINE (জাভাস্ক্রিপ্ট অডিও) -----
-        let audioCtx = null;
-
-        function getAudioContext() {
-            if (!audioCtx) {
-                audioCtx = new(window.AudioContext || window.webkitAudioContext)();
-            }
-            return audioCtx;
-        }
-
-        function playCutSound() {
-            try {
-                const ctx = getAudioContext();
-                const now = ctx.currentTime;
-
-                // Oscillator for "snip" sound: quick high-pitched descending tone
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(1200, now);
-                osc.frequency.exponentialRampToValueAtTime(400, now + 0.12);
-                gain.gain.setValueAtTime(0.3, now);
-                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.18);
-                osc.connect(gain);
-                gain.connect(ctx.destination);
-                osc.start(now);
-                osc.stop(now + 0.2);
-            } catch (e) {
-                console.log('Cut sound play error:', e);
-            }
-        }
-
-        function playDeleteSound() {
-            try {
-                const ctx = getAudioContext();
-                const now = ctx.currentTime;
-
-                // Oscillator for "thud" sound: low pitched quick bump
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-                osc.type = 'triangle';
-                osc.frequency.setValueAtTime(200, now);
-                osc.frequency.exponentialRampToValueAtTime(80, now + 0.15);
-                gain.gain.setValueAtTime(0.4, now);
-                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
-                osc.connect(gain);
-                gain.connect(ctx.destination);
-                osc.start(now);
-                osc.stop(now + 0.3);
-            } catch (e) {
-                console.log('Delete sound play error:', e);
-            }
-        }
-
-        // ----- localStorage keys -----
         const STORAGE_KEY = 'caseforge_notes';
         const CUT_COUNT_KEY = 'caseforge_cutcount';
-
-        // ----- saved notes -----
         let savedNotes = [];
 
         function loadNotes() {
@@ -1004,451 +757,188 @@
         }
 
         function deleteNote(id) {
-            playDeleteSound(); // delete sound
             savedNotes = savedNotes.filter(n => n.id !== id);
             saveNotes();
-            toast('Note deleted', 'success');
+            toast('🗑️ Note deleted', 'success');
             if (activeModalNoteId === id) closeModal();
-            updateDashboardStats();
         }
 
-        // ----- cut count (lifetime) -----
         function getCutCount() {
-            const val = localStorage.getItem(CUT_COUNT_KEY);
-            return val ? parseInt(val, 10) : 0;
+            return parseInt(localStorage.getItem(CUT_COUNT_KEY) || '0');
         }
 
         function increaseCutCount(amount = 1) {
-            const current = getCutCount();
-            localStorage.setItem(CUT_COUNT_KEY, current + amount);
+            localStorage.setItem(CUT_COUNT_KEY, getCutCount() + amount);
             updateDashboardStats();
         }
 
-        // ----- dashboard update -----
         function updateDashboardStats() {
-            const totalEmails = savedNotes.reduce((sum, note) => sum + note.count, 0);
-            const notesCount = savedNotes.length;
-            const cutCount = getCutCount();
-            document.getElementById('totalEmailsStat').textContent = totalEmails;
-            document.getElementById('notesCountStat').textContent = notesCount;
-            document.getElementById('cutCountStat').textContent = cutCount;
+            document.getElementById('totalEmailsStat').textContent = savedNotes.reduce((sum, n) => sum + n.count, 0);
+            document.getElementById('notesCountStat').textContent = savedNotes.length;
+            document.getElementById('cutCountStat').textContent = getCutCount();
         }
 
-        // cut email from note
-        async function cutEmailFromNote(noteId, emailIndex) {
+        async function cutEmailFromNote(noteId, idx) {
             const note = savedNotes.find(n => n.id === noteId);
             if (!note) return;
-            const email = note.emails[emailIndex];
-            if (!email) return;
+            const email = note.emails[idx];
             try {
                 await navigator.clipboard.writeText(email);
-                note.emails.splice(emailIndex, 1);
+                note.emails.splice(idx, 1);
                 note.count = note.emails.length;
                 increaseCutCount(1);
-                playCutSound(); // cut sound
                 if (note.emails.length === 0) {
                     deleteNote(noteId);
-                    toast(`✂️ Cut last email — note removed`, 'success');
                 } else {
                     saveNotes();
                     if (activeModalNoteId === noteId) refreshModal(noteId);
-                    toast(`✂️ Cut: "${email.substring(0, 35)}..."`, 'success');
                 }
+                toast(`✂️ Cut: "${email.substring(0, 30)}..."`, 'success');
             } catch (e) {
-                toast('Copy failed', 'error');
+                toast('❌ Copy failed', 'error');
             }
         }
 
         function renderNotesList() {
             const container = document.getElementById('notesListContainer');
-            if (!container) return;
-            if (savedNotes.length === 0) {
-                container.innerHTML =
-                    '<div class="empty-notes"><i class="far fa-save"></i> No saved notes. Generate emails.</div>';
+            if (!savedNotes.length) {
+                container.innerHTML = '<div class="empty-notes"><i class="far fa-folder-open" style="font-size:1.8rem;"></i> No saved notes.</div>';
                 return;
             }
-            container.innerHTML = '';
-            savedNotes.forEach(note => {
-                const div = document.createElement('div');
-                div.className = 'note-card';
-                div.innerHTML = `
-                    <div class="note-info">
-                        <div class="note-title">📧 ${note.count} variant${note.count!==1?'s':''}</div>
-                        <div class="note-meta"><span>${note.timestamp}</span><span>${note.baseHint}</span></div>
+            container.innerHTML = savedNotes.map(note => `
+                <div class="note-card">
+                    <div class="note-info" data-noteid="${note.id}">
+                        <div class="note-title"><i class="fas fa-envelope"></i> ${note.count} variant${note.count!==1?'s':''}</div>
+                        <div class="note-meta"><span><i class="far fa-clock"></i> ${note.timestamp}</span><span>${note.baseHint}</span></div>
                     </div>
-                    <button class="delete-note-btn" data-id="${note.id}"><i class="fas fa-trash-alt"></i></button>
-                `;
-                const infoDiv = div.querySelector('.note-info');
-                const delBtn = div.querySelector('.delete-note-btn');
-                infoDiv.addEventListener('click', () => openNoteModal(note.id));
-                delBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    deleteNote(note.id);
-                });
-                container.appendChild(div);
-            });
+                    <button class="delete-note-btn" data-id="${note.id}"><i class="fas fa-trash-can"></i></button>
+                </div>
+            `).join('');
+            document.querySelectorAll('.note-info').forEach(el => el.addEventListener('click', () => openNoteModal(Number(el.dataset.noteid))));
+            document.querySelectorAll('.delete-note-btn').forEach(btn => btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                deleteNote(Number(btn.dataset.id));
+            }));
         }
 
-        // Modal logic
         let activeModalNoteId = null;
         const modal = document.getElementById('noteModal');
         const modalTitle = document.getElementById('modalTitle');
         const modalBody = document.getElementById('modalBody');
-        const closeModalBtn = document.getElementById('closeModalBtn');
-        let modalOpenHistory = false;
-        let ignorePopState = false;
 
         function refreshModal(noteId) {
             const note = savedNotes.find(n => n.id === noteId);
             if (!note) { closeModal(); return; }
-            modalTitle.innerText =
-                `📄 ${note.count} email${note.count!==1?'s':''} · ${note.timestamp}`;
-            modalBody.innerHTML = '';
-            if (note.emails.length === 0) {
-                modalBody.innerHTML = '<div class="empty-notes">Empty note will be removed.</div>';
-                return;
-            }
-            note.emails.forEach((email, idx) => {
-                const row = document.createElement('div');
-                row.className = 'modal-email-row';
-                row.innerHTML = `
-                    <div class="modal-email-text">${escapeHtml(email)}</div>
-                    <button class="cut-single-btn" data-idx="${idx}"><i class="fas fa-cut"></i> Cut</button>
-                `;
-                row.querySelector('.cut-single-btn').addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    cutEmailFromNote(noteId, idx);
-                });
-                modalBody.appendChild(row);
-            });
+            modalTitle.innerHTML = `<i class="fas fa-envelopes-bulk"></i> ${note.count} email${note.count!==1?'s':''} · ${note.timestamp}`;
+            modalBody.innerHTML = note.emails.map((email, idx) => `
+                <div class="modal-email-row">
+                    <div class="modal-email-text">${email}</div>
+                    <button class="cut-single-btn" data-idx="${idx}"><i class="fas fa-scissors"></i> Cut</button>
+                </div>
+            `).join('');
+            document.querySelectorAll('.cut-single-btn').forEach(btn => btn.addEventListener('click', (e) => {
+                cutEmailFromNote(noteId, Number(btn.dataset.idx));
+            }));
         }
 
         function openNoteModal(noteId) {
-            const note = savedNotes.find(n => n.id === noteId);
-            if (!note) return;
             activeModalNoteId = noteId;
             refreshModal(noteId);
             modal.classList.add('active');
-            if (!modalOpenHistory) {
-                history.pushState({ modal: true }, '');
-                modalOpenHistory = true;
-            }
+            history.pushState({ modal: true }, '');
         }
 
         function closeModal() {
-            if (modal.classList.contains('active')) {
-                if (modalOpenHistory) {
-                    ignorePopState = true;
-                    history.back();
-                    modalOpenHistory = false;
-                }
-                modal.classList.remove('active');
-                activeModalNoteId = null;
-            }
+            modal.classList.remove('active');
+            activeModalNoteId = null;
+            history.back();
         }
+        document.getElementById('closeModalBtn').addEventListener('click', closeModal);
+        window.addEventListener('popstate', () => { if (modal.classList.contains('active')) closeModal(); });
 
-        window.addEventListener('popstate', (e) => {
-            if (ignorePopState) { ignorePopState = false; return; }
-            if (modal.classList.contains('active')) {
-                modal.classList.remove('active');
-                activeModalNoteId = null;
-                modalOpenHistory = false;
-                history.pushState({ modal: false }, '');
-                e.preventDefault();
-            }
-        });
-
-        closeModalBtn.addEventListener('click', closeModal);
-        modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
-
-        function escapeHtml(str) {
-            return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
-        }
-
-        // ----- generator -----
         let currentEmails = [];
 
         function randomCaseVariant(base) {
-            let out = '';
-            for (let i = 0; i < base.length; i++) {
-                const ch = base[i];
-                if (/[A-Za-z]/.test(ch)) {
-                    out += Math.random() < 0.5 ? ch.toUpperCase() : ch.toLowerCase();
-                } else {
-                    out += ch;
-                }
-            }
-            return out;
+            return [...base].map(ch => /[A-Za-z]/.test(ch) ? (Math.random() < 0.5 ? ch.toUpperCase() : ch.toLowerCase()) : ch).join('');
         }
 
         function generateVariants(base, count) {
-            const arr = [];
-            for (let i = 0; i < count; i++) arr.push(randomCaseVariant(base));
-            return arr;
+            return Array.from({ length: count }, () => randomCaseVariant(base));
         }
 
         function renderCurrent() {
             const container = document.getElementById('resultContainer');
-            if (!currentEmails.length) {
-                container.innerHTML = '<div class="empty-msg">✨ No emails yet. Click Generate.</div>';
-                return;
-            }
-            container.innerHTML = currentEmails.map(e =>
-                `<div class="email-item"><i class="far fa-envelope" style="margin-right:6px; color:#3b82f6;"></i>${escapeHtml(e)}</div>`
-            ).join('');
+            container.innerHTML = currentEmails.length ? currentEmails.map(e => `<div class="email-item"><i class="fas fa-envelope"></i>${e}</div>`).join('') : '<div class="empty-msg">No emails yet.</div>';
         }
 
-        const baseInput = document.getElementById('baseEmailInput');
-        const countInput = document.getElementById('countInput');
-        const genBtn = document.getElementById('generateBtn');
-        const copyBtn = document.getElementById('copyAllBtn');
-        const clearBtn = document.getElementById('clearAllBtn');
-
-        genBtn.addEventListener('click', () => {
-            let base = baseInput.value.trim();
-            if (!base) { toast("Enter base email", "error"); return; }
-            let count = parseInt(countInput.value, 10);
-            if (isNaN(count) || count < 1) count = 1;
-            if (count > 1000) { toast("Max 1000, capped", "info");
-                count = 1000;
-                countInput.value = 1000; }
-            const generated = generateVariants(base, count);
-            currentEmails = generated;
+        document.getElementById('generateBtn').addEventListener('click', () => {
+            const base = document.getElementById('baseEmailInput').value.trim();
+            if (!base) return toast("Enter base email", "error");
+            let count = parseInt(document.getElementById('countInput').value) || 8;
+            count = Math.min(1000, Math.max(1, count));
+            currentEmails = generateVariants(base, count);
             renderCurrent();
-            addNote(generated, base);
-            toast(`✨ ${generated.length} variants generated & saved`, 'success');
+            addNote(currentEmails, base);
         });
 
-        clearBtn.addEventListener('click', () => {
-            if (!currentEmails.length) { toast("Nothing to clear", "info"); return; }
+        document.getElementById('clearAllBtn').addEventListener('click', () => {
             currentEmails = [];
             renderCurrent();
-            toast("Current list cleared (saved notes remain)", "info");
+            toast("Current list cleared");
         });
 
-        copyBtn.addEventListener('click', async () => {
-            if (!currentEmails.length) { toast("No emails to copy", "error"); return; }
+        document.getElementById('copyAllBtn').addEventListener('click', async () => {
+            if (!currentEmails.length) return toast("No emails", "error");
             await navigator.clipboard.writeText(currentEmails.join('\n'));
-            toast(`📋 Copied ${currentEmails.length} emails`, 'success');
+            toast("📋 Copied all");
         });
 
-        // exports
-        function getCurrentExport() {
-            if (!currentEmails.length) { toast("Generate emails first", "error"); return null; }
-            return currentEmails;
-        }
-
-        function exportCSV() {
-            const arr = getCurrentExport();
-            if (!arr) return;
-            const rows = [
-                ["Generated Emails"],
-                ...arr.map(e => [e])
-            ];
-            const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(",")).join("\n");
-            const blob = new Blob(["\uFEFF" + csv], { type: "text/csv" });
+        function exportFile(ext, mime, data) {
+            const blob = new Blob([data], { type: mime });
             const a = document.createElement('a');
             a.href = URL.createObjectURL(blob);
-            a.download = `emails_${Date.now()}.csv`;
+            a.download = `emails_${Date.now()}.${ext}`;
             a.click();
-            URL.revokeObjectURL(a.href);
-            toast("CSV exported", "success");
         }
 
-        function exportExcel() {
-            const arr = getCurrentExport();
-            if (!arr) return;
-            const ws = XLSX.utils.aoa_to_sheet([
-                ["Generated Emails"],
-                ...arr.map(e => [e])
-            ]);
+        document.getElementById('downloadCsvBtn').addEventListener('click', () => {
+            if (!currentEmails.length) return toast("No emails", "error");
+            exportFile('csv', 'text/csv', '\uFEFF' + currentEmails.map(e => `"${e}"`).join('\n'));
+        });
+
+        document.getElementById('downloadExcelBtn').addEventListener('click', () => {
+            if (!currentEmails.length) return toast("No emails", "error");
+            const ws = XLSX.utils.aoa_to_sheet([["Emails"], ...currentEmails.map(e => [e])]);
             const wb = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(wb, ws, "Emails");
             XLSX.writeFile(wb, `emails_${Date.now()}.xlsx`);
-            toast("Excel saved", "success");
-        }
+        });
 
-        async function exportPDF() {
-            const arr = getCurrentExport();
-            if (!arr) return;
+        document.getElementById('downloadPdfBtn').addEventListener('click', () => {
+            if (!currentEmails.length) return toast("No emails", "error");
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
-            doc.setFontSize(12);
             doc.text("Email Variants", 14, 12);
-            doc.setFontSize(8);
-            doc.text(`Total: ${arr.length} | Base: ${baseInput.value}`, 14, 20);
-            doc.autoTable({ startY: 26, head: [
-                    ["Emails"]
-                ], body: arr.map(e => [e]), styles: { fontSize: 7 } });
+            doc.autoTable({ startY: 20, head: [["Emails"]], body: currentEmails.map(e => [e]) });
             doc.save(`emails_${Date.now()}.pdf`);
-            toast("PDF exported", "success");
-        }
-        document.getElementById('downloadCsvBtn').addEventListener('click', exportCSV);
-        document.getElementById('downloadExcelBtn').addEventListener('click', exportExcel);
-        document.getElementById('downloadPdfBtn').addEventListener('click', exportPDF);
-
-        // ========== PWA INSTALL ==========
-        let deferredPrompt = null;
-        const installBtnEl = document.getElementById('installAppBtn');
-        const installPanel = document.querySelector('.install-panel');
-
-        function isStandalone() {
-            return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone ===
-                true;
-        }
-        if (isStandalone()) installPanel.style.display = 'none';
-
-        const manifestObj = {
-            name: "CaseForge Email Studio",
-            short_name: "CaseForge",
-            start_url: ".",
-            display: "standalone",
-            theme_color: "#0f172a",
-            background_color: "#ffffff",
-            icons: [{ src: "genarator.png", sizes: "192x192", type: "image/png" }, { src: "genarator.png",
-                sizes: "512x512", type: "image/png" }]
-        };
-        const manifestBlob = new Blob([JSON.stringify(manifestObj)], { type: 'application/json' });
-        const manifestURL = URL.createObjectURL(manifestBlob);
-        const manifestLink = document.createElement('link');
-        manifestLink.rel = 'manifest';
-        manifestLink.href = manifestURL;
-        document.head.appendChild(manifestLink);
-
-        // ----- service worker with offline caching -----
-        if ('serviceWorker' in navigator) {
-            const swCode = `
-                const CACHE_NAME = 'caseforge-offline-v1';
-                const urlsToCache = [
-                    '.',
-                    'index.html',
-                    'genarator.png',
-                    'proton.png',
-                    'telegram.png',
-                    'telegramx.png',
-                    'telegramapk.png',
-                    'group.png',
-                    'temp.png',
-                    'tggraph.png',
-                    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css',
-                    'https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js',
-                    'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js',
-                    'https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.6.0/jspdf.plugin.autotable.min.js'
-                ];
-
-                self.addEventListener('install', (event) => {
-                    event.waitUntil(
-                        caches.open(CACHE_NAME).then((cache) => {
-                            return cache.addAll(urlsToCache);
-                        })
-                    );
-                });
-
-                self.addEventListener('fetch', (event) => {
-                    event.respondWith(
-                        caches.match(event.request).then((response) => {
-                            return response || fetch(event.request).then((fetchResponse) => {
-                                return caches.open(CACHE_NAME).then((cache) => {
-                                    cache.put(event.request, fetchResponse.clone());
-                                    return fetchResponse;
-                                });
-                            });
-                        })
-                    );
-                });
-
-                self.addEventListener('activate', (event) => {
-                    event.waitUntil(
-                        caches.keys().then((cacheNames) => {
-                            return Promise.all(
-                                cacheNames.map((cache) => {
-                                    if (cache !== CACHE_NAME) {
-                                        return caches.delete(cache);
-                                    }
-                                })
-                            );
-                        })
-                    );
-                });
-            `;
-            const swBlob = new Blob([swCode], { type: 'application/javascript' });
-            const swURL = URL.createObjectURL(swBlob);
-            navigator.serviceWorker.register(swURL).catch(e => console.log("SW error", e));
-        }
-
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            if (!isStandalone()) installPanel.style.display = 'flex';
         });
 
-        installBtnEl.addEventListener('click', async () => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                if (outcome === 'accepted') {
-                    toast("Installing app...", "success");
-                    installPanel.style.display = 'none';
-                } else {
-                    toast("Install cancelled", "info");
-                }
-                deferredPrompt = null;
-            } else {
-                toast("Tap browser menu → Add to Home Screen", "info");
-            }
-        });
-
-        window.addEventListener('appinstalled', () => {
-            deferredPrompt = null;
-            installPanel.style.display = 'none';
-            toast("✅ App installed! Launch from home screen.", "success");
-        });
-
-        // ========== SECTION SWITCHING (VPN সহ) ==========
-        const genSec = document.getElementById('generatorSection');
-        const creatSec = document.getElementById('allCreatSection');
-        const vpnSec = document.getElementById('vpnSection');
-        const aboutSec = document.getElementById('aboutSection');
-        const navs = document.querySelectorAll('.nav-item');
-        const appLinksGrid = document.getElementById('appLinksGrid');
-
-        function switchSection(section) {
-            genSec.classList.remove('active-section');
-            creatSec.classList.remove('active-section');
-            vpnSec.classList.remove('active-section');
-            aboutSec.classList.remove('active-section');
-
-            if (section === 'generator') genSec.classList.add('active-section');
-            else if (section === 'allCreat') creatSec.classList.add('active-section');
-            else if (section === 'vpn') vpnSec.classList.add('active-section');
-            else if (section === 'about') {
-                aboutSec.classList.add('active-section');
-                if (appLinksGrid) {
-                    appLinksGrid.classList.remove('animate-in');
-                    void appLinksGrid.offsetWidth;
-                    appLinksGrid.classList.add('animate-in');
-                }
-            }
-
-            navs.forEach(btn => {
-                const s = btn.getAttribute('data-section');
-                if (s === section) btn.classList.add('active');
-                else btn.classList.remove('active');
+        // Navigation
+        document.querySelectorAll('.nav-item').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.section').forEach(s => s.classList.remove('active-section'));
+                document.getElementById(btn.dataset.section + 'Section').classList.add('active-section');
+                document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                if (btn.dataset.section === 'allCreat') renderNotesList();
+                updateDashboardStats();
             });
+        });
 
-            if (section === 'allCreat') renderNotesList();
-            updateDashboardStats();
-        }
-
-        navs.forEach(btn => btn.addEventListener('click', () => switchSection(btn.getAttribute('data-section'))));
-
-        // initial load
         loadNotes();
-        const demoBase = baseInput.value.trim();
-        const demoGen = generateVariants(demoBase, 4);
-        currentEmails = demoGen;
+        const demoBase = document.getElementById('baseEmailInput').value.trim();
+        currentEmails = generateVariants(demoBase, 4);
         renderCurrent();
-        switchSection('generator');
         updateDashboardStats();
     })();
 </script>
