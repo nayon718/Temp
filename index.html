@@ -110,7 +110,6 @@
             .vpn-promo-line .promo-text { font-size: 0.7rem; }
         }
 
-        /* dashboard with circle numbers */
         .dashboard-card {
             background: linear-gradient(135deg, #ffffff, #f9fbfd);
             border-radius: 22px;
@@ -177,18 +176,13 @@
             align-items: center;
         }
         .generator-title .casecraft-icon {
-            width: 28px;
-            height: 28px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             object-fit: cover;
             margin-right: 8px;
             vertical-align: middle;
-            animation: floatIcon 3s ease-in-out infinite;
             flex-shrink: 0;
-        }
-        @keyframes floatIcon {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-4px); }
         }
 
         .label { font-weight: 600; color: #1f2a3e; margin-bottom: 5px; display: block; font-size: 0.75rem; letter-spacing: 0.3px; }
@@ -390,7 +384,6 @@
         .app-links-grid.animate-in .app-link-item:nth-child(5) { animation-delay: 0.25s; }
         .app-links-grid.animate-in .app-link-item:nth-child(6) { animation-delay: 0.3s; }
         .sweet-watermark { text-align: center; font-size: 0.75rem; font-weight: 500; color: #2d6a4f; margin: 12px 0 6px; letter-spacing: 0.5px; display: flex; align-items: center; justify-content: center; gap: 6px; }
-        footer { font-size: 0.6rem; text-align: center; color: #6c8b7a; margin-top: 12px; padding-bottom: 4px; border-top: 1px dashed #d1e7dd; padding-top: 10px; }
         .toast-container { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); z-index: 3000; pointer-events: none; }
         .toast { background: #1e293b; color: white; padding: 7px 16px; border-radius: 32px; font-size: 0.73rem; display: flex; align-items: center; gap: 8px; animation: fadeUp 0.2s ease; box-shadow: 0 4px 14px rgba(0,0,0,0.15); }
         .toast.success { background: #0f3b2c; }
@@ -462,7 +455,6 @@
                 <a href="https://www.facebook.com/share/1P7hqLHFBu/" target="_blank" rel="noopener noreferrer" class="social-icon-circle facebook-og" data-tooltip="Facebook"><i class="fab fa-facebook-f"></i></a>
                 <a href="mailto:mdahoshanhabibnayon@gmail.com" class="social-icon-circle mail-og" data-tooltip="Mail"><i class="fas fa-envelope"></i></a>
             </div>
-            <footer>✂️ Cut = copy + remove from note · All Notes Saved Server · Ethical use only</footer>
         </div>
 
         <!-- ALL CREAT MAIL SECTION -->
@@ -482,7 +474,6 @@
                 <a href="https://www.facebook.com/share/1P7hqLHFBu/" target="_blank" rel="noopener noreferrer" class="social-icon-circle facebook-og" data-tooltip="Facebook"><i class="fab fa-facebook-f"></i></a>
                 <a href="mailto:mdahoshanhabibnayon@gmail.com" class="social-icon-circle mail-og" data-tooltip="Mail"><i class="fas fa-envelope"></i></a>
             </div>
-            <footer>✂️ Cut = copy + remove from note · All Notes Saved Server · Ethical use only</footer>
         </div>
 
         <!-- VPN SECTION -->
@@ -545,7 +536,6 @@
                 <a href="https://www.facebook.com/share/1P7hqLHFBu/" target="_blank" rel="noopener noreferrer" class="social-icon-circle facebook-og" data-tooltip="Facebook"><i class="fab fa-facebook-f"></i></a>
                 <a href="mailto:mdahoshanhabibnayon@gmail.com" class="social-icon-circle mail-og" data-tooltip="Mail"><i class="fas fa-envelope"></i></a>
             </div>
-            <footer>✂️ Cut = copy + remove from note · All Notes Saved Server · Ethical use only</footer>
         </div>
     </div>
 
@@ -776,7 +766,7 @@
             document.getElementById('installAppBtn')?.addEventListener('click',async()=>{ if(deferredPrompt){ deferredPrompt.prompt(); const {outcome}=await deferredPrompt.userChoice; if(outcome==='accepted'){ toast("Installing app...","success"); } else toast("Install cancelled","info"); deferredPrompt=null; } else toast("Tap browser menu → Add to Home Screen","info"); });
             window.addEventListener('appinstalled',()=>{ deferredPrompt=null; toast("✅ App installed!","success"); });
 
-            // section switching (no mail overlay)
+            // section switching
             const genSec=document.getElementById('generatorSection'), creatSec=document.getElementById('allCreatSection'), vpnSec=document.getElementById('vpnSection'), aboutSec=document.getElementById('aboutSection');
             const navs=document.querySelectorAll('.nav-item');
             const appLinksGrid=document.getElementById('appLinksGrid');
