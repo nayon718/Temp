@@ -11,12 +11,9 @@
     <link rel="icon" type="image/png" href="genarator.png">
     <link rel="apple-touch-icon" href="genarator.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js">
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js">
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.6.0/jspdf.plugin.autotable.min.js">
-    </script>
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.6.0/jspdf.plugin.autotable.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -28,6 +25,8 @@
             background: #f4f7fb;
             padding-bottom: 70px;
             font-family: system-ui, -apple-system, 'Segoe UI', 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-font-smoothing: antialiased;
         }
 
         .app-container {
@@ -40,76 +39,51 @@
 
         .section {
             display: none;
+            will-change: transform, opacity;
         }
         .section.active-section {
             display: block;
         }
 
-        /* ============ SLIDING ANIMATIONS ============ */
         .anim-slide-forward {
-            animation: slideInForward 0.35s ease forwards;
+            animation: slideInForward 0.28s cubic-bezier(0,0,0.2,1) forwards;
         }
         .anim-slide-backward {
-            animation: slideInBackward 0.35s ease forwards;
+            animation: slideInBackward 0.28s cubic-bezier(0,0,0.2,1) forwards;
         }
         .anim-slide-out-forward {
-            animation: slideOutForward 0.35s ease forwards;
+            animation: slideOutForward 0.2s cubic-bezier(0.4,0,1,1) forwards;
         }
         .anim-slide-out-backward {
-            animation: slideOutBackward 0.35s ease forwards;
+            animation: slideOutBackward 0.2s cubic-bezier(0.4,0,1,1) forwards;
         }
 
         @keyframes slideInForward {
-            from {
-                opacity: 0;
-                transform: translateX(55px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+            0% { opacity: 0; transform: translateX(28px) scale(0.97); }
+            100% { opacity: 1; transform: translateX(0) scale(1); }
         }
         @keyframes slideInBackward {
-            from {
-                opacity: 0;
-                transform: translateX(-55px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+            0% { opacity: 0; transform: translateX(-28px) scale(0.97); }
+            100% { opacity: 1; transform: translateX(0) scale(1); }
         }
         @keyframes slideOutForward {
-            from {
-                opacity: 1;
-                transform: translateX(0);
-            }
-            to {
-                opacity: 0;
-                transform: translateX(-55px);
-            }
+            0% { opacity: 1; transform: translateX(0) scale(1); }
+            100% { opacity: 0; transform: translateX(-24px) scale(0.98); }
         }
         @keyframes slideOutBackward {
-            from {
-                opacity: 1;
-                transform: translateX(0);
-            }
-            to {
-                opacity: 0;
-                transform: translateX(55px);
-            }
+            0% { opacity: 1; transform: translateX(0) scale(1); }
+            100% { opacity: 0; transform: translateX(24px) scale(0.98); }
         }
 
         .card {
             background: white;
             border-radius: 20px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02), 0 1px 2px rgba(0, 0, 0, 0.03);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02), 0 1px 2px rgba(0,0,0,0.03);
             padding: 14px 16px;
             margin-bottom: 14px;
             border: 1px solid #eef2f8;
         }
 
-        /* ============ VPN section এ এক লাইনের প্রমোশন ============ */
         .vpn-promo-line {
             display: flex;
             align-items: center;
@@ -122,112 +96,74 @@
             flex-wrap: wrap;
             animation: protonSlideIn 0.5s ease;
         }
-
         @keyframes protonSlideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-8px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-
-        .vpn-promo-line img {
-            width: 30px;
-            height: 30px;
-            object-fit: contain;
-            border-radius: 8px;
-            flex-shrink: 0;
-        }
-
-        .vpn-promo-line .promo-text {
-            flex: 1;
-            font-weight: 700;
-            font-size: 0.78rem;
-            color: #064e3b;
-            min-width: 140px;
-            letter-spacing: -0.2px;
-        }
-
-        .vpn-promo-line .promo-btn {
-            background: #1d8c5e;
-            color: white;
-            padding: 8px 18px;
-            border-radius: 28px;
-            font-weight: 700;
-            font-size: 0.73rem;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            white-space: nowrap;
-            transition: background 0.2s;
-            box-shadow: 0 4px 12px rgba(29, 140, 94, 0.25);
-        }
-
-        .vpn-promo-line .promo-btn:hover {
-            background: #16784e;
-        }
+        .vpn-promo-line img { width: 30px; height: 30px; object-fit: contain; border-radius: 8px; flex-shrink: 0; }
+        .vpn-promo-line .promo-text { flex: 1; font-weight: 700; font-size: 0.78rem; color: #064e3b; min-width: 140px; letter-spacing: -0.2px; }
+        .vpn-promo-line .promo-btn { background: #1d8c5e; color: white; padding: 8px 18px; border-radius: 28px; font-weight: 700; font-size: 0.73rem; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; transition: background 0.2s; box-shadow: 0 4px 12px rgba(29,140,94,0.25); }
+        .vpn-promo-line .promo-btn:hover { background: #16784e; }
 
         @media (max-width: 400px) {
-            .vpn-promo-line {
-                gap: 6px;
-                padding: 8px 10px;
-            }
-            .vpn-promo-line .promo-text {
-                font-size: 0.7rem;
-            }
+            .vpn-promo-line { gap: 6px; padding: 8px 10px; }
+            .vpn-promo-line .promo-text { font-size: 0.7rem; }
         }
 
-        /* Dashboard card animation */
+        /* dashboard with circle numbers */
         .dashboard-card {
             background: linear-gradient(135deg, #ffffff, #f9fbfd);
             border-radius: 22px;
-            padding: 16px;
+            padding: 14px 8px;
             margin-bottom: 16px;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04), 0 2px 6px rgba(0, 0, 0, 0.02);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.04), 0 2px 6px rgba(0,0,0,0.02);
             display: flex;
             justify-content: space-around;
             flex-wrap: wrap;
-            gap: 12px;
+            gap: 10px;
             animation: dashFadeIn 0.6s ease-out;
         }
-
         @keyframes dashFadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-12px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(-12px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         .dashboard-stat {
             text-align: center;
             flex: 1;
             min-width: 70px;
         }
-        .dashboard-stat i {
-            font-size: 1.3rem;
-            color: #16a34a;
-            margin-bottom: 4px;
-        }
-        .dashboard-stat .stat-value {
-            font-size: 1.6rem;
+        .stat-circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             font-weight: 700;
-            color: #0f172a;
-            line-height: 1.2;
+            color: #166534;
+            margin-bottom: 6px;
+            box-shadow: 0 2px 8px rgba(22,163,74,0.18);
+            animation: circlePulse 2.5s ease-in-out infinite;
+            border: 2px solid rgba(22,163,74,0.15);
+            font-size: 1.2rem;
+            transition: font-size 0.2s ease;
+            word-break: break-word;
+            line-height: 1;
+            overflow: hidden;
+        }
+        @keyframes circlePulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 2px 8px rgba(22,163,74,0.18); }
+            50% { transform: scale(1.07); box-shadow: 0 4px 16px rgba(22,163,74,0.3); }
         }
         .dashboard-stat .stat-label {
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             color: #475569;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.3px;
         }
+
         .generator-title {
             font-size: 1.4rem;
             font-weight: 700;
@@ -238,39 +174,23 @@
             color: transparent;
             margin-bottom: 4px;
         }
-        .label {
-            font-weight: 600;
-            color: #1f2a3e;
-            margin-bottom: 5px;
-            display: block;
-            font-size: 0.75rem;
-            letter-spacing: 0.3px;
+        .generator-title i {
+            background: none;
+            color: #16a34a;
+            -webkit-text-fill-color: #16a34a;
+            background-clip: unset;
+            animation: floatIcon 3s ease-in-out infinite;
         }
-        input,
-        .count-input {
-            width: 100%;
-            padding: 9px 14px;
-            border: 1.5px solid #e2e8f0;
-            border-radius: 22px;
-            font-size: 0.85rem;
-            background: white;
-            outline: none;
+        @keyframes floatIcon {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
         }
-        input:focus {
-            border-color: #22c55e;
-            box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.1);
-        }
-        .row-flex {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            align-items: flex-end;
-            margin-top: 8px;
-        }
-        .count-wrapper {
-            flex: 2;
-            min-width: 110px;
-        }
+
+        .label { font-weight: 600; color: #1f2a3e; margin-bottom: 5px; display: block; font-size: 0.75rem; letter-spacing: 0.3px; }
+        input, .count-input { width: 100%; padding: 9px 14px; border: 1.5px solid #e2e8f0; border-radius: 22px; font-size: 0.85rem; background: white; outline: none; transition: border-color 0.2s, box-shadow 0.2s; }
+        input:focus { border-color: #22c55e; box-shadow: 0 0 0 3px rgba(34,197,94,0.08); }
+        .row-flex { display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-end; margin-top: 8px; }
+        .count-wrapper { flex: 2; min-width: 110px; }
         .generate-btn {
             background: #16a34a;
             color: white;
@@ -285,106 +205,60 @@
             align-items: center;
             gap: 8px;
             transition: 0.2s;
+            white-space: nowrap;
         }
-        .generate-btn:hover {
-            background: #15803d;
-            transform: scale(0.97);
+        .generate-btn i { animation: sparkleIcon 2s ease-in-out infinite; }
+        @keyframes sparkleIcon {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
         }
-        .action-buttons {
-            display: flex;
-            gap: 12px;
-            margin: 14px 0 12px;
-            border-top: 1px solid #edf2f7;
-            padding-top: 14px;
-        }
-        .small-btn {
-            background: #f0fdf4;
-            border: 1px solid #bbf7d0;
-            padding: 7px 16px;
-            border-radius: 32px;
-            font-size: 0.78rem;
-            font-weight: 600;
-            cursor: pointer;
+        .generate-btn:hover { background: #15803d; transform: scale(0.97); }
+        .generate-btn:active { transform: scale(0.94); }
+        .action-buttons { display: flex; gap: 12px; margin: 14px 0 12px; border-top: 1px solid #edf2f7; padding-top: 14px; }
+        .small-btn { background: #f0fdf4; border: 1px solid #bbf7d0; padding: 7px 16px; border-radius: 32px; font-size: 0.78rem; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; color: #166534; transition: 0.2s; }
+        .small-btn:hover { background: #dcfce7; border-color: #86efac; }
+        .download-group { display: flex; gap: 10px; margin-top: 8px; flex-wrap: wrap; }
+        .download-btn { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 28px; padding: 5px 16px; font-size: 0.72rem; font-weight: 600; cursor: pointer; color: #166534; transition: 0.2s; }
+        .download-btn:hover { background: #dcfce7; }
+        .result-area { background: #fafcff; border-radius: 18px; border: 1px solid #eef2ff; max-height: 270px; overflow-y: auto; padding: 4px 2px; }
+
+        .email-pill-icon {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            color: #166534;
-            transition: 0.2s;
+            justify-content: center;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f43f5e, #e11d48);
+            color: white;
+            font-size: 0.65rem;
+            margin-right: 7px;
+            box-shadow: 0 2px 6px rgba(244,63,94,0.25);
+            animation: mailFloat 2s ease-in-out infinite;
+            flex-shrink: 0;
         }
-        .small-btn:hover {
-            background: #dcfce7;
-            border-color: #86efac;
-        }
-        .download-group {
-            display: flex;
-            gap: 10px;
-            margin-top: 8px;
-            flex-wrap: wrap;
-        }
-        .download-btn {
-            background: #f0fdf4;
-            border: 1px solid #bbf7d0;
-            border-radius: 28px;
-            padding: 5px 16px;
-            font-size: 0.72rem;
-            font-weight: 600;
-            cursor: pointer;
-            color: #166534;
-            transition: 0.2s;
-        }
-        .download-btn:hover {
-            background: #dcfce7;
-        }
-        .result-area {
-            background: #fafcff;
-            border-radius: 18px;
-            border: 1px solid #eef2ff;
-            max-height: 270px;
-            overflow-y: auto;
-            padding: 4px 2px;
+        @keyframes mailFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
         }
         .email-item {
-            font-family: 'SF Mono', monospace;
+            font-family: 'SF Mono', 'Cascadia Code', 'Consolas', monospace;
             padding: 7px 12px;
             border-bottom: 1px solid #ecf3fa;
             font-size: 0.72rem;
             word-break: break-all;
-        }
-        .empty-msg {
-            text-align: center;
-            color: #94a3b8;
-            padding: 22px 12px;
-            font-size: 0.77rem;
-        }
-        .notes-grid {
             display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: 8px;
-        }
-        .note-card {
-            background: white;
-            border-radius: 18px;
-            padding: 10px 14px;
-            border: 1px solid #eef2ff;
-            display: flex;
-            justify-content: space-between;
             align-items: center;
-            cursor: pointer;
         }
-        .note-title {
-            font-weight: 700;
-            font-size: 0.85rem;
-        }
-        .note-meta {
-            font-size: 0.63rem;
-            color: #5b6e8c;
-            margin-top: 3px;
-            display: flex;
-            gap: 10px;
-        }
+        .empty-msg { text-align: center; color: #94a3b8; padding: 22px 12px; font-size: 0.77rem; }
 
-        /* ========== DELETE BUTTON ANIMATION (PURPLE PULSE) ========== */
+        .notes-grid { display: flex; flex-direction: column; gap: 10px; margin-top: 8px; }
+        .note-card { background: white; border-radius: 18px; padding: 10px 14px; border: 1px solid #eef2ff; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: box-shadow 0.2s, transform 0.2s; }
+        .note-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.05); }
+        .note-card:active { transform: scale(0.98); }
+        .note-title { font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; gap: 6px; }
+        .note-meta { font-size: 0.63rem; color: #5b6e8c; margin-top: 3px; display: flex; gap: 10px; }
+
         .delete-note-btn {
             background: transparent;
             border: none;
@@ -394,401 +268,154 @@
             padding: 6px;
             border-radius: 30px;
             animation: deletePurplePulse 2s ease-in-out infinite;
+            transition: background 0.2s, color 0.2s;
         }
-
         @keyframes deletePurplePulse {
-            0% {
-                color: #cbd5e1;
-                transform: scale(1);
-            }
-            30% {
-                color: #a78bfa;
-                transform: scale(1.15);
-            }
-            60% {
-                color: #8b5cf6;
-                transform: scale(0.95);
-            }
-            100% {
-                color: #cbd5e1;
-                transform: scale(1);
-            }
+            0% { color: #cbd5e1; transform: scale(1); }
+            30% { color: #a78bfa; transform: scale(1.15); }
+            60% { color: #8b5cf6; transform: scale(0.95); }
+            100% { color: #cbd5e1; transform: scale(1); }
         }
+        .delete-note-btn:hover { color: #ef4444; background: #fee2e2; animation: none; }
+        .empty-notes { text-align: center; padding: 30px 12px; color: #94a3b8; font-size: 0.78rem; }
 
-        .delete-note-btn:hover {
-            color: #ef4444;
-            background: #fee2e2;
-            animation: none;
-        }
-
-        .empty-notes {
-            text-align: center;
-            padding: 30px 12px;
-            color: #94a3b8;
-            font-size: 0.78rem;
-        }
         .full-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: white;
-            z-index: 2000;
-            display: flex;
-            flex-direction: column;
-            transform: translateY(100%);
-            transition: transform 0.25s ease;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 2000;
+            display: flex; flex-direction: column; transform: translateY(100%);
+            transition: transform 0.28s cubic-bezier(0.4,0,0.2,1);
         }
-        .full-modal.active {
-            transform: translateY(0);
-        }
-        .modal-header {
-            padding: 14px 16px;
-            border-bottom: 1px solid #eef2ff;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .modal-header h3 {
-            font-size: 1.05rem;
-            font-weight: 600;
-        }
-        .close-modal {
-            background: #f1f5f9;
-            border: none;
-            width: 36px;
-            height: 36px;
-            border-radius: 30px;
-            cursor: pointer;
-        }
-        .modal-body {
-            flex: 1;
-            overflow-y: auto;
-            padding: 12px 14px;
-        }
+        .full-modal.active { transform: translateY(0); }
+        .modal-header { padding: 14px 16px; border-bottom: 1px solid #eef2ff; display: flex; justify-content: space-between; align-items: center; background: #fff; position: sticky; top: 0; z-index: 10; }
+        .modal-header h3 { font-size: 1.05rem; font-weight: 600; }
+        .close-modal { background: #f1f5f9; border: none; width: 36px; height: 36px; border-radius: 30px; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; justify-content: center; }
+        .close-modal:hover { background: #e2e8f0; }
+        .modal-body { flex: 1; overflow-y: auto; padding: 12px 14px; -webkit-overflow-scrolling: touch; }
         .modal-email-row {
-            background: #fafcff;
-            border-radius: 16px;
-            padding: 8px 12px;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border: 1px solid #eef2ff;
+            background: #fafcff; border-radius: 16px; padding: 8px 12px; margin-bottom: 10px;
+            display: flex; align-items: center; justify-content: space-between; border: 1px solid #eef2ff;
+            transition: background 0.2s;
         }
         .modal-email-text {
-            font-family: monospace;
-            font-size: 0.73rem;
-            word-break: break-all;
-            flex: 1;
-            margin-right: 10px;
+            font-family: 'SF Mono', 'Cascadia Code', 'Consolas', monospace;
+            font-size: 0.73rem; word-break: break-all; flex: 1; margin-right: 10px;
+            display: flex; align-items: center; gap: 6px;
         }
-
-        /* ========== CUT BUTTON ANIMATION (RED PULSE) ========== */
         .cut-single-btn {
-            background: #fee2e2;
-            border: none;
-            padding: 5px 12px;
-            border-radius: 28px;
-            font-size: 0.68rem;
-            font-weight: 600;
-            cursor: pointer;
-            color: #b91c1c;
-            animation: cutRedPulse 2s ease-in-out infinite;
+            background: #fee2e2; border: none; padding: 5px 12px; border-radius: 28px; font-size: 0.68rem;
+            font-weight: 600; cursor: pointer; color: #b91c1c; animation: cutRedPulse 2s ease-in-out infinite;
+            transition: background 0.2s; flex-shrink: 0; display: flex; align-items: center; gap: 4px;
         }
-
         @keyframes cutRedPulse {
-            0% {
-                background-color: #fee2e2;
-                transform: scale(1);
-            }
-            30% {
-                background-color: #fecaca;
-                transform: scale(1.06);
-            }
-            60% {
-                background-color: #fca5a5;
-                transform: scale(0.96);
-            }
-            100% {
-                background-color: #fee2e2;
-                transform: scale(1);
-            }
+            0% { background-color: #fee2e2; transform: scale(1); }
+            30% { background-color: #fecaca; transform: scale(1.06); }
+            60% { background-color: #fca5a5; transform: scale(0.96); }
+            100% { background-color: #fee2e2; transform: scale(1); }
         }
-
-        .cut-single-btn:hover {
-            animation: none;
-            background: #fecaca;
-        }
+        .cut-single-btn:hover { animation: none; background: #fecaca; }
+        .cut-single-btn:active { transform: scale(0.92); }
 
         .bottom-nav {
-            position: fixed;
-            bottom: 12px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: calc(100% - 32px);
-            max-width: 450px;
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(20px);
-            border-radius: 40px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.04);
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            padding: 8px 4px;
-            z-index: 1000;
-            border: 1px solid rgba(255, 255, 255, 0.6);
+            position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%);
+            width: calc(100% - 32px); max-width: 450px;
+            background: rgba(255,255,255,0.94); backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px); border-radius: 40px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.07), 0 2px 8px rgba(0,0,0,0.04);
+            display: flex; justify-content: space-around; align-items: center; padding: 6px 4px;
+            z-index: 1000; border: 1px solid rgba(255,255,255,0.6);
         }
         .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 3px;
-            padding: 8px 12px;
-            border-radius: 30px;
-            border: none;
-            background: transparent;
-            font-size: 0.6rem;
-            font-weight: 600;
-            color: #6b7280;
-            cursor: pointer;
-            transition: 0.2s ease;
-            min-width: 60px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+            padding: 8px 10px; border-radius: 30px; border: none; background: transparent;
+            font-size: 0.6rem; font-weight: 600; color: #6b7280; cursor: pointer;
+            transition: 0.25s cubic-bezier(0.4,0,0.2,1); min-width: 55px;
+            -webkit-tap-highlight-color: transparent; user-select: none;
         }
-        .nav-item i {
-            font-size: 1.2rem;
-            transition: 0.2s;
+        .nav-item i { font-size: 1.15rem; transition: 0.25s cubic-bezier(0.4,0,0.2,1); }
+        .nav-item.active { background: #0f172a; color: white; box-shadow: 0 4px 14px rgba(15,23,42,0.25); transform: translateY(-2px); }
+        .nav-item.active i { color: white; }
+        .nav-item:active { transform: scale(0.93); }
+        .nav-item.active:active { transform: translateY(-1px) scale(0.95); }
+
+        .install-panel { display: none !important; }
+
+        .social-links { display: flex; justify-content: center; align-items: center; gap: 16px; margin: 10px 0 6px; flex-wrap: wrap; }
+        .social-icon-circle {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 44px; height: 44px; border-radius: 50%; text-decoration: none;
+            transition: all 0.28s cubic-bezier(0.34,1.56,0.64,1);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.04);
+            position: relative; flex-shrink: 0;
         }
-        .nav-item.active {
-            background: #0f172a;
-            color: white;
-            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.2);
+        .social-icon-circle i { font-size: 1.05rem; color: #fff; transition: transform 0.28s cubic-bezier(0.34,1.56,0.64,1); }
+        .social-icon-circle:hover { transform: translateY(-3px) scale(1.08); box-shadow: 0 8px 22px rgba(0,0,0,0.14), 0 3px 8px rgba(0,0,0,0.06); }
+        .social-icon-circle:active { transform: scale(0.9); transition: all 0.1s ease; }
+        .social-icon-circle.contact-web { background: #16a34a; }
+        .social-icon-circle.contact-web:hover { background: #15803d; }
+        .social-icon-circle.facebook-og { background: #1877f2; }
+        .social-icon-circle.facebook-og:hover { background: #166fe5; }
+        .social-icon-circle.mail-og { background: #d44638; }
+        .social-icon-circle.mail-og:hover { background: #c1352a; }
+        .social-icon-circle::after {
+            content: attr(data-tooltip); position: absolute; bottom: -22px; left: 50%;
+            transform: translateX(-50%) translateY(4px); background: #1e293b; color: #fff;
+            font-size: 0.6rem; font-weight: 600; padding: 3px 10px; border-radius: 20px;
+            white-space: nowrap; pointer-events: none; opacity: 0; transition: all 0.25s ease; letter-spacing: 0.2px;
         }
-        .nav-item.active i {
-            color: white;
+        .social-icon-circle:hover::after { opacity: 1; transform: translateX(-50%) translateY(0); }
+        @media (max-width: 380px) {
+            .social-links { gap: 12px; }
+            .social-icon-circle { width: 40px; height: 40px; }
+            .social-icon-circle i { font-size: 0.95rem; }
+            .social-icon-circle::after { display: none; }
         }
-        .install-panel {
-            background: #eef2ff;
-            border-radius: 44px;
-            padding: 8px 14px;
-            margin-top: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-        }
-        .install-btn {
-            background: #16a34a;
-            border: none;
-            color: white;
-            padding: 7px 20px;
-            border-radius: 34px;
-            font-weight: 600;
-            font-size: 0.78rem;
-            cursor: pointer;
-        }
-        .install-btn:hover {
-            background: #15803d;
-        }
-        .contact-btn {
-            background: #16a34a;
-            border: none;
-            color: white;
-            padding: 7px 20px;
-            border-radius: 34px;
-            font-weight: 600;
-            font-size: 0.8rem;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: 0.2s;
-            text-decoration: none;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-        }
-        .contact-btn:hover {
-            background: #15803d;
-            transform: scale(0.97);
-        }
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            margin: 10px 0 4px;
-            flex-wrap: wrap;
-        }
-        .app-links-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-top: 14px;
-        }
-        .app-link-item {
-            background: #ffffff;
-            border: none;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03), 0 1px 4px rgba(0, 0, 0, 0.05);
-            border-radius: 20px;
-            padding: 16px 10px 12px;
-            flex: 1 1 130px;
-            text-align: center;
-            text-decoration: none;
-            color: #0f172a;
-            transition: all 0.25s ease;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 6px;
-        }
-        .app-link-item:hover {
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.04);
-            transform: translateY(-3px);
-            background: #f8fcff;
-        }
-        .app-link-item img {
-            width: 40px;
-            height: 40px;
-            object-fit: contain;
-            transition: transform 0.2s;
-        }
-        .app-link-item:hover img {
-            transform: scale(1.05);
-        }
-        .app-link-item .link-label {
-            font-weight: 700;
-            font-size: 0.74rem;
-            display: block;
-        }
-        .app-link-item .link-desc {
-            font-size: 0.62rem;
-            color: #475569;
-        }
-        .app-links-grid.animate-in .app-link-item {
-            opacity: 0;
-            transform: translateY(16px);
-            animation: appLinkFadeUp 0.4s ease forwards;
-        }
-        @keyframes appLinkFadeUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        .app-links-grid.animate-in .app-link-item:nth-child(1) {
-            animation-delay: 0.05s;
-        }
-        .app-links-grid.animate-in .app-link-item:nth-child(2) {
-            animation-delay: 0.1s;
-        }
-        .app-links-grid.animate-in .app-link-item:nth-child(3) {
-            animation-delay: 0.15s;
-        }
-        .app-links-grid.animate-in .app-link-item:nth-child(4) {
-            animation-delay: 0.2s;
-        }
-        .app-links-grid.animate-in .app-link-item:nth-child(5) {
-            animation-delay: 0.25s;
-        }
-        .app-links-grid.animate-in .app-link-item:nth-child(6) {
-            animation-delay: 0.3s;
-        }
-        .sweet-watermark {
-            text-align: center;
-            font-size: 0.75rem;
-            font-weight: 500;
-            color: #2d6a4f;
-            margin: 12px 0 6px;
-            letter-spacing: 0.5px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-        }
-        footer {
-            font-size: 0.6rem;
-            text-align: center;
-            color: #6c8b7a;
-            margin-top: 12px;
-            padding-bottom: 4px;
-            border-top: 1px dashed #d1e7dd;
-            padding-top: 10px;
-        }
-        .toast-container {
-            position: fixed;
-            bottom: 80px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 3000;
-            pointer-events: none;
-        }
-        .toast {
-            background: #1e293b;
-            color: white;
-            padding: 7px 16px;
-            border-radius: 32px;
-            font-size: 0.73rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            animation: fadeUp 0.2s;
-        }
-        .toast.success {
-            background: #0f3b2c;
-        }
-        @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(6px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        .about-text {
-            font-size: 0.76rem;
-            line-height: 1.5;
-            color: #1e293b;
-        }
-        .about-text strong {
-            color: #0f172a;
-        }
-        .about-highlight {
-            background: #fffbea;
-            border-left: 3px solid #f59e0b;
-            padding: 10px 12px;
-            border-radius: 14px;
-            margin: 14px 0;
-            font-size: 0.73rem;
-        }
+
+        .app-links-grid { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 14px; }
+        .app-link-item { background: #ffffff; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.03), 0 1px 4px rgba(0,0,0,0.05); border-radius: 20px; padding: 16px 10px 12px; flex: 1 1 130px; text-align: center; text-decoration: none; color: #0f172a; transition: all 0.25s ease; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+        .app-link-item:hover { box-shadow: 0 12px 24px rgba(0,0,0,0.08), 0 4px 8px rgba(0,0,0,0.04); transform: translateY(-3px); background: #f8fcff; }
+        .app-link-item img { width: 40px; height: 40px; object-fit: contain; transition: transform 0.2s; }
+        .app-link-item:hover img { transform: scale(1.05); }
+        .app-link-item .link-label { font-weight: 700; font-size: 0.74rem; display: block; }
+        .app-link-item .link-desc { font-size: 0.62rem; color: #475569; }
+        .app-links-grid.animate-in .app-link-item { opacity: 0; transform: translateY(16px); animation: appLinkFadeUp 0.4s ease forwards; }
+        @keyframes appLinkFadeUp { to { opacity: 1; transform: translateY(0); } }
+        .app-links-grid.animate-in .app-link-item:nth-child(1) { animation-delay: 0.05s; }
+        .app-links-grid.animate-in .app-link-item:nth-child(2) { animation-delay: 0.1s; }
+        .app-links-grid.animate-in .app-link-item:nth-child(3) { animation-delay: 0.15s; }
+        .app-links-grid.animate-in .app-link-item:nth-child(4) { animation-delay: 0.2s; }
+        .app-links-grid.animate-in .app-link-item:nth-child(5) { animation-delay: 0.25s; }
+        .app-links-grid.animate-in .app-link-item:nth-child(6) { animation-delay: 0.3s; }
+        .sweet-watermark { text-align: center; font-size: 0.75rem; font-weight: 500; color: #2d6a4f; margin: 12px 0 6px; letter-spacing: 0.5px; display: flex; align-items: center; justify-content: center; gap: 6px; }
+        footer { font-size: 0.6rem; text-align: center; color: #6c8b7a; margin-top: 12px; padding-bottom: 4px; border-top: 1px dashed #d1e7dd; padding-top: 10px; }
+        .toast-container { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); z-index: 3000; pointer-events: none; }
+        .toast { background: #1e293b; color: white; padding: 7px 16px; border-radius: 32px; font-size: 0.73rem; display: flex; align-items: center; gap: 8px; animation: fadeUp 0.2s ease; box-shadow: 0 4px 14px rgba(0,0,0,0.15); }
+        .toast.success { background: #0f3b2c; }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+        .about-text { font-size: 0.76rem; line-height: 1.5; color: #1e293b; }
+        .about-text strong { color: #0f172a; }
+        .about-highlight { background: #fffbea; border-left: 3px solid #f59e0b; padding: 10px 12px; border-radius: 14px; margin: 14px 0; font-size: 0.73rem; }
     </style>
 </head>
 <body>
-
     <div class="app-container">
-        <!-- GENERATOR SECTION (ফুটার, ওয়াটারমার্ক, সোশ্যাল লিংক সহ) -->
+        <!-- GENERATOR SECTION -->
         <div id="generatorSection" class="section active-section">
             <div class="dashboard-card" id="dashboardCard">
                 <div class="dashboard-stat">
-                    <i class="fas fa-envelope-open-text"></i>
-                    <div class="stat-value" id="totalEmailsStat">0</div>
+                    <div class="stat-circle" id="totalEmailsStat">0</div>
                     <div class="stat-label">Total Emails</div>
                 </div>
                 <div class="dashboard-stat">
-                    <i class="fas fa-sticky-note"></i>
-                    <div class="stat-value" id="notesCountStat">0</div>
+                    <div class="stat-circle" id="notesCountStat">0</div>
                     <div class="stat-label">Notes</div>
                 </div>
                 <div class="dashboard-stat">
-                    <i class="fas fa-cut"></i>
-                    <div class="stat-value" id="cutCountStat">0</div>
+                    <div class="stat-circle" id="cutCountStat">0</div>
                     <div class="stat-label">Use Emails</div>
                 </div>
             </div>
 
             <div class="card">
-                <div class="generator-title">⚡ CaseCraft</div>
+                <div class="generator-title"><i class="fas fa-shuffle"></i> CaseCraft</div>
                 <p style="font-size:0.68rem; color:#475569; margin-bottom:12px;">Random letter case · digits unchanged · auto‑saved</p>
                 <label class="label">Base email</label>
                 <input type="email" id="baseEmailInput" value="demo.user@gmail.com">
@@ -797,7 +424,7 @@
                         <label class="label">Variants (max 1000)</label>
                         <input type="number" id="countInput" min="1" max="1000" value="8">
                     </div>
-                    <button id="generateBtn" class="generate-btn"><i class="fas fa-magic"></i> Generate</button>
+                    <button id="generateBtn" class="generate-btn"><i class="fas fa-wand-magic-sparkles"></i> Generate</button>
                 </div>
                 <div class="action-buttons">
                     <button id="copyAllBtn" class="small-btn"><i class="far fa-copy"></i> Copy all</button>
@@ -815,23 +442,22 @@
                     </div>
                 </div>
             </div>
-            <div class="install-panel">
+            <div class="install-panel" style="display:none !important;">
                 <span style="font-size:0.75rem;"><i class="fas fa-mobile-alt"></i> Install as App</span>
                 <button id="installAppBtn" class="install-btn"><i class="fas fa-download"></i> Install Now</button>
             </div>
-            <!-- ফুটার, ওয়াটারমার্ক, সোশ্যাল -->
             <div class="sweet-watermark">
                 <i class="fas fa-check-circle" style="color:#16a34a;"></i> সুইট বয় নয়ন
             </div>
             <div class="social-links">
-                <a href="https://ah-nayon.github.io/web/" target="_blank" rel="noopener noreferrer" class="contact-btn"><i class="fas fa-user-astronaut"></i> Contact</a>
-                <a href="https://www.facebook.com/share/1P7hqLHFBu/" target="_blank" rel="noopener noreferrer" class="contact-btn" style="background:#1877f2;"><i class="fab fa-facebook-f"></i> Facebook</a>
-                <a href="mailto:mdahoshanhabibnayon@gmail.com" class="contact-btn" style="background:#d44638;"><i class="fas fa-envelope"></i> Mail</a>
+                <a href="https://ah-nayon.github.io/web/" target="_blank" rel="noopener noreferrer" class="social-icon-circle contact-web" data-tooltip="Contact"><i class="fas fa-globe"></i></a>
+                <a href="https://www.facebook.com/share/1P7hqLHFBu/" target="_blank" rel="noopener noreferrer" class="social-icon-circle facebook-og" data-tooltip="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="mailto:mdahoshanhabibnayon@gmail.com" class="social-icon-circle mail-og" data-tooltip="Mail"><i class="fas fa-envelope"></i></a>
             </div>
             <footer>✂️ Cut = copy + remove from note · All Notes Saved Server · Ethical use only</footer>
         </div>
 
-        <!-- ALL CREAT MAIL (ফুটার, ওয়াটারমার্ক, সোশ্যাল লিংক সহ) -->
+        <!-- ALL CREAT MAIL SECTION -->
         <div id="allCreatSection" class="section">
             <div class="card">
                 <div class="generator-title">📁 All Creat Mail</div>
@@ -844,695 +470,346 @@
                 <i class="fas fa-check-circle" style="color:#16a34a;"></i> সুইট বয় নয়ন
             </div>
             <div class="social-links">
-                <a href="https://ah-nayon.github.io/web/" target="_blank" rel="noopener noreferrer" class="contact-btn"><i class="fas fa-user-astronaut"></i> Contact</a>
-                <a href="https://www.facebook.com/share/1P7hqLHFBu/" target="_blank" rel="noopener noreferrer" class="contact-btn" style="background:#1877f2;"><i class="fab fa-facebook-f"></i> Facebook</a>
-                <a href="mailto:mdahoshanhabibnayon@gmail.com" class="contact-btn" style="background:#d44638;"><i class="fas fa-envelope"></i> Mail</a>
+                <a href="https://ah-nayon.github.io/web/" target="_blank" rel="noopener noreferrer" class="social-icon-circle contact-web" data-tooltip="Contact"><i class="fas fa-globe"></i></a>
+                <a href="https://www.facebook.com/share/1P7hqLHFBu/" target="_blank" rel="noopener noreferrer" class="social-icon-circle facebook-og" data-tooltip="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="mailto:mdahoshanhabibnayon@gmail.com" class="social-icon-circle mail-og" data-tooltip="Mail"><i class="fas fa-envelope"></i></a>
             </div>
             <footer>✂️ Cut = copy + remove from note · All Notes Saved Server · Ethical use only</footer>
         </div>
 
-        <!-- ============ VPN SECTION (শুধু প্রমোশন, কোনো ফুটার/ওয়াটারমার্ক/সোশ্যাল নেই) ============ -->
+        <!-- VPN SECTION -->
         <div id="vpnSection" class="section">
             <div class="card">
                 <h2 style="font-weight:700; font-size:1.1rem; margin-bottom:4px;"><i class="fas fa-lock" style="color:#1d8c5e;"></i> Proton VPN</h2>
                 <div class="vpn-promo-line">
-                    <img src="proton.png"
-                    alt="Proton VPN"
-                    onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 36 36%22%3E%3Ccircle cx=%2218%22 cy=%2218%22 r=%2218%22 fill=%22%231d8c5e%22/%3E%3Ctext x=%2218%22 y=%2225%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2218%22 font-weight=%22bold%22%3EP%3C/text%3E%3C/svg%3E'">
+                    <img src="proton.png" alt="Proton VPN" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 36 36%22%3E%3Ccircle cx=%2218%22 cy=%2218%22 r=%2218%22 fill=%22%231d8c5e%22/%3E%3Ctext x=%2218%22 y=%2225%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2218%22 font-weight=%22bold%22%3EP%3C/text%3E%3C/svg%3E'">
                     <span class="promo-text">🔒 Proton VPN 3 Months · 250 TK</span>
-                    <a href="https://wa.me/8801757827996?text=Assalamu%20Alaikum%20%F0%9F%98%8A%2C%20%E0%A6%86%E0%A6%AE%E0%A6%BF%20Proton%20VPN%203%20Months%20(250%20TK)%20%E0%A6%A8%E0%A6%BF%E0%A6%A4%E0%A7%87%20%E0%A6%9A%E0%A6%BE%E0%A6%87%E0%A5%A4%20bKash%20%E0%A6%8F%20%E0%A6%AA%E0%A7%87%E0%A6%AE%E0%A7%87%E0%A6%A8%E0%A7%8D%E0%A6%9F%20%E0%A6%95%E0%A6%B0%E0%A6%AC%E0%A7%8B%20%E2%80%94%20%E0%A6%A8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AC%E0%A6%BE%E0%A6%B0%3A%2001757827996%E0%A5%A4%20%E0%A6%A6%E0%A7%9F%E0%A6%BE%20%E0%A6%95%E0%A6%B0%E0%A7%87%20%E0%A6%AC%E0%A6%B2%E0%A7%81%E0%A6%A8%20%E0%A6%95%E0%A6%BF%E0%A6%AD%E0%A6%BE%E0%A6%AC%E0%A7%87%20%E0%A6%A8%E0%A7%87%E0%A6%AC%E0%A7%8B%20%E2%9C%8C%EF%B8%8F"
-                    class="promo-btn" target="_blank" rel="noopener noreferrer">
-                    <i class="fab fa-whatsapp"></i> Buy Now
-                </a>
+                    <a href="https://wa.me/8801757827996?text=Assalamu%20Alaikum%20%F0%9F%98%8A%2C%20%E0%A6%86%E0%A6%AE%E0%A6%BF%20Proton%20VPN%203%20Months%20(250%20TK)%20%E0%A6%A8%E0%A6%BF%E0%A6%A4%E0%A7%87%20%E0%A6%9A%E0%A6%BE%E0%A6%87%E0%A5%A4%20bKash%20%E0%A6%8F%20%E0%A6%AA%E0%A7%87%E0%A6%AE%E0%A7%87%E0%A6%A8%E0%A7%8D%E0%A6%9F%20%E0%A6%95%E0%A6%B0%E0%A6%AC%E0%A7%8B%20%E2%80%94%20%E0%A6%A8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AC%E0%A6%BE%E0%A6%B0%3A%2001757827996%E0%A5%A4%20%E0%A6%A6%E0%A7%9F%E0%A6%BE%20%E0%A6%95%E0%A6%B0%E0%A7%87%20%E0%A6%AC%E0%A6%B2%E0%A7%81%E0%A6%A8%20%E0%A6%95%E0%A6%BF%E0%A6%AD%E0%A6%BE%E0%A6%AC%E0%A7%87%20%E0%A6%A8%E0%A7%87%E0%A6%AC%E0%A7%8B%20%E2%9C%8C%EF%B8%8F" class="promo-btn" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp"></i> Buy Now</a>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- ABOUT (ফুটার, ওয়াটারমার্ক, সোশ্যাল লিংক সহ) -->
-    <div id="aboutSection" class="section">
-        <div class="card">
-            <h2 style="font-weight:700; font-size:1.2rem;"><i class="fas fa-info-circle"></i> About</h2>
-            <div class="about-text" style="margin-top:10px;">
-                <p><strong>Hello Users,</strong> have a problem? Feel free to reach out via the contact buttons below.</p>
-                <div class="about-highlight">
-                    <i class="fas fa-shield-alt"></i> <strong>Private & Secure:</strong> No data is collected or shared. Everything stays in your browser server.
-                </div>
-                <p><i class="fas fa-copyright"></i> <strong>Copyright Notice:</strong> This application and its code are protected. Unauthorized copying, reproduction, or distribution is strictly prohibited and will result in legal action.</p>
-                <p style="margin-top:8px;"><i class="fas fa-check-circle" style="color:#16a34a;"></i> Ethical use only — intended for development and testing purposes.</p>
-                <p style="margin-top:6px; font-size:0.7rem; color:#475569;"></p>
-                <div style="margin-top:18px; border-top:1px solid #e2e8f0; padding-top:14px;">
-                    <h3 style="font-size:0.9rem; font-weight:700; margin-bottom:8px;"><i class="fas fa-paper-plane"></i> Telegram & Groups</h3>
-                    <div class="app-links-grid" id="appLinksGrid">
-                        <a href="https://play.google.com/store/apps/details?id=org.telegram.messenger" target="_blank" rel="noopener noreferrer" class="app-link-item">
-                            <img src="telegram.png" alt="Telegram Main" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 36 36%27%3E%3Ccircle cx=%2718%27 cy=%2718%27 r=%2718%27 fill=%27%2327a7e7%27/%3E%3Ctext x=%2718%27 y=%2724%27 text-anchor=%27middle%27 fill=%27white%27 font-size=%2720%27 font-weight=%27bold%27%3ET%3C/text%3E%3C/svg%3E'">
-                            <span class="link-label">Telegram</span>
-                            <span class="link-desc">Play Store</span>
-                        </a>
-                        <a href="https://play.google.com/store/apps/details?id=org.thunderdog.challegram" target="_blank" rel="noopener noreferrer" class="app-link-item">
-                            <img src="telegramx.png" alt="Telegram X" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 36 36%27%3E%3Ccircle cx=%2718%27 cy=%2718%27 r=%2718%27 fill=%27%232196f3%27/%3E%3Ctext x=%2718%27 y=%2724%27 text-anchor=%27middle%27 fill=%27white%27 font-size=%2718%27 font-weight=%27bold%27%3EX%3C/text%3E%3C/svg%3E'">
-                            <span class="link-label">Telegram X</span>
-                            <span class="link-desc">Play Store</span>
-                        </a>
-                        <a href="https://telegram.org/dl/android/apk" download class="app-link-item">
-                            <img src="telegramapk.png" alt="Telegram APK" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 36 36%27%3E%3Ccircle cx=%2718%27 cy=%2718%27 r=%2718%27 fill=%27%2334b7f1%27/%3E%3Ctext x=%2718%27 y=%2724%27 text-anchor=%27middle%27 fill=%27white%27 font-size=%2718%27 font-weight=%27bold%27%3E↓%3C/text%3E%3C/svg%3E'">
-                            <span class="link-label">Telegram APK</span>
-                            <span class="link-desc">Download</span>
-                        </a>
-                        <a href="tg://resolve?domain=spdadnan" class="app-link-item">
-                            <img src="group.png" alt="Group" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 36 36%27%3E%3Ccircle cx=%2718%27 cy=%2718%27 r=%2718%27 fill=%27%23f5a623%27/%3E%3Ctext x=%2718%27 y=%2724%27 text-anchor=%27middle%27 fill=%27white%27 font-size=%2718%27 font-weight=%27bold%27%3EG%3C/text%3E%3C/svg%3E'">
-                            <span class="link-label">Premuim Apps</span>
-                            <span class="link-desc">t.me/spdadnan</span>
-                        </a>
-                        <a href="tg://resolve?domain=TempMail_org_bot" class="app-link-item">
-                            <img src="temp.png" alt="Temp Mail" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 36 36%27%3E%3Ccircle cx=%2718%27 cy=%2718%27 r=%2718%27 fill=%27%234caf50%27/%3E%3Ctext x=%2718%27 y=%2724%27 text-anchor=%27middle%27 fill=%27white%27 font-size=%2718%27 font-weight=%27bold%27%3E@%3C/text%3E%3C/svg%3E'">
-                            <span class="link-label">Temp Mail</span>
-                            <span class="link-desc">t.me/TempMail_org_bot</span>
-                        </a>
-                        <a href="https://play.google.com/store/apps/details?id=ir.ilmili.telegraph" target="_blank" rel="noopener noreferrer" class="app-link-item">
-                            <img src="tggraph.png" alt="Telegraph" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 36 36%27%3E%3Ccircle cx=%2718%27 cy=%2718%27 r=%2718%27 fill=%27%23333%27/%3E%3Ctext x=%2718%27 y=%2724%27 text-anchor=%27middle%27 fill=%27white%27 font-size=%2718%27 font-weight=%27bold%27%3ETG%3C/text%3E%3C/svg%3E'">
-                            <span class="link-label">Telegraph</span>
-                            <span class="link-desc">Play Store</span>
-                        </a>
+        <!-- ABOUT SECTION -->
+        <div id="aboutSection" class="section">
+            <div class="card">
+                <h2 style="font-weight:700; font-size:1.2rem;"><i class="fas fa-info-circle"></i> About</h2>
+                <div class="about-text" style="margin-top:10px;">
+                    <p><strong>Hello Users,</strong> have a problem? Feel free to reach out via the contact buttons below.</p>
+                    <div class="about-highlight">
+                        <i class="fas fa-shield-alt"></i> <strong>Private & Secure:</strong> No data is collected or shared. Everything stays in your browser server.
                     </div>
-                    <p style="font-size:0.65rem; color:#64748b; margin-top:10px;"></p>
+                    <p><i class="fas fa-copyright"></i> <strong>Copyright Notice:</strong> This application and its code are protected. Unauthorized copying, reproduction, or distribution is strictly prohibited and will result in legal action.</p>
+                    <p style="margin-top:8px;"><i class="fas fa-check-circle" style="color:#16a34a;"></i> Ethical use only — intended for development and testing purposes.</p>
+                    <div style="margin-top:18px; border-top:1px solid #e2e8f0; padding-top:14px;">
+                        <h3 style="font-size:0.9rem; font-weight:700; margin-bottom:8px;"><i class="fas fa-paper-plane"></i> Telegram & Groups</h3>
+                        <div class="app-links-grid" id="appLinksGrid">
+                            <a href="https://play.google.com/store/apps/details?id=org.telegram.messenger" target="_blank" rel="noopener noreferrer" class="app-link-item">
+                                <img src="telegram.png" alt="Telegram Main" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 36 36%27%3E%3Ccircle cx=%2718%27 cy=%2718%27 r=%2718%27 fill=%27%2327a7e7%27/%3E%3Ctext x=%2718%27 y=%2724%27 text-anchor=%27middle%27 fill=%27white%27 font-size=%2720%27 font-weight=%27bold%27%3ET%3C/text%3E%3C/svg%3E'">
+                                <span class="link-label">Telegram</span><span class="link-desc">Play Store</span>
+                            </a>
+                            <a href="https://play.google.com/store/apps/details?id=org.thunderdog.challegram" target="_blank" rel="noopener noreferrer" class="app-link-item">
+                                <img src="telegramx.png" alt="Telegram X" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 36 36%27%3E%3Ccircle cx=%2718%27 cy=%2718%27 r=%2718%27 fill=%27%232196f3%27/%3E%3Ctext x=%2718%27 y=%2724%27 text-anchor=%27middle%27 fill=%27white%27 font-size=%2718%27 font-weight=%27bold%27%3EX%3C/text%3E%3C/svg%3E'">
+                                <span class="link-label">Telegram X</span><span class="link-desc">Play Store</span>
+                            </a>
+                            <a href="https://telegram.org/dl/android/apk" download class="app-link-item">
+                                <img src="telegramapk.png" alt="Telegram APK" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 36 36%27%3E%3Ccircle cx=%2718%27 cy=%2718%27 r=%2718%27 fill=%27%2334b7f1%27/%3E%3Ctext x=%2718%27 y=%2724%27 text-anchor=%27middle%27 fill=%27white%27 font-size=%2718%27 font-weight=%27bold%27%3E↓%3C/text%3E%3C/svg%3E'">
+                                <span class="link-label">Telegram APK</span><span class="link-desc">Download</span>
+                            </a>
+                            <a href="tg://resolve?domain=spdadnan" class="app-link-item">
+                                <img src="group.png" alt="Group" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 36 36%27%3E%3Ccircle cx=%2718%27 cy=%2718%27 r=%2718%27 fill=%27%23f5a623%27/%3E%3Ctext x=%2718%27 y=%2724%27 text-anchor=%27middle%27 fill=%27white%27 font-size=%2718%27 font-weight=%27bold%27%3EG%3C/text%3E%3C/svg%3E'">
+                                <span class="link-label">Premuim Apps</span><span class="link-desc">t.me/spdadnan</span>
+                            </a>
+                            <a href="tg://resolve?domain=TempMail_org_bot" class="app-link-item">
+                                <img src="temp.png" alt="Temp Mail" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 36 36%27%3E%3Ccircle cx=%2718%27 cy=%2718%27 r=%2718%27 fill=%27%234caf50%27/%3E%3Ctext x=%2718%27 y=%2724%27 text-anchor=%27middle%27 fill=%27white%27 font-size=%2718%27 font-weight=%27bold%27%3E@%3C/text%3E%3C/svg%3E'">
+                                <span class="link-label">Temp Mail</span><span class="link-desc">t.me/TempMail_org_bot</span>
+                            </a>
+                            <a href="https://play.google.com/store/apps/details?id=ir.ilmili.telegraph" target="_blank" rel="noopener noreferrer" class="app-link-item">
+                                <img src="tggraph.png" alt="Telegraph" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 36 36%27%3E%3Ccircle cx=%2718%27 cy=%2718%27 r=%2718%27 fill=%27%23333%27/%3E%3Ctext x=%2718%27 y=%2724%27 text-anchor=%27middle%27 fill=%27white%27 font-size=%2718%27 font-weight=%27bold%27%3ETG%3C/text%3E%3C/svg%3E'">
+                                <span class="link-label">Telegraph</span><span class="link-desc">Play Store</span>
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
+            <div class="sweet-watermark"><i class="fas fa-check-circle" style="color:#16a34a;"></i> সুইট বয় নয়ন</div>
+            <div class="social-links">
+                <a href="https://ah-nayon.github.io/web/" target="_blank" rel="noopener noreferrer" class="social-icon-circle contact-web" data-tooltip="Contact"><i class="fas fa-globe"></i></a>
+                <a href="https://www.facebook.com/share/1P7hqLHFBu/" target="_blank" rel="noopener noreferrer" class="social-icon-circle facebook-og" data-tooltip="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="mailto:mdahoshanhabibnayon@gmail.com" class="social-icon-circle mail-og" data-tooltip="Mail"><i class="fas fa-envelope"></i></a>
+            </div>
+            <footer>✂️ Cut = copy + remove from note · All Notes Saved Server · Ethical use only</footer>
         </div>
-        <div class="sweet-watermark">
-            <i class="fas fa-check-circle" style="color:#16a34a;"></i> সুইট বয় নয়ন
-        </div>
-        <div class="social-links">
-            <a href="https://ah-nayon.github.io/web/" target="_blank" rel="noopener noreferrer" class="contact-btn"><i class="fas fa-user-astronaut"></i> Contact</a>
-            <a href="https://www.facebook.com/share/1P7hqLHFBu/" target="_blank" rel="noopener noreferrer" class="contact-btn" style="background:#1877f2;"><i class="fab fa-facebook-f"></i> Facebook</a>
-            <a href="mailto:mdahoshanhabibnayon@gmail.com" class="contact-btn" style="background:#d44638;"><i class="fas fa-envelope"></i> Mail</a>
-        </div>
-        <footer>✂️ Cut = copy + remove from note · All Notes Saved Server · Ethical use only</footer>
     </div>
-</div>
 
-<!-- বটম নেভিগেশন (VPN সহ) -->
-<div class="bottom-nav">
-    <button class="nav-item active" data-section="generator"><i class="fas fa-magic"></i><span>Creats</span></button>
-    <button class="nav-item" data-section="allCreat"><i class="fas fa-folder-open"></i><span>Emails</span></button>
-    <button class="nav-item" data-section="vpn"><i class="fas fa-lock"></i><span>VPN</span></button>
-    <button class="nav-item" data-section="about"><i class="fas fa-info-circle"></i><span>About</span></button>
-</div>
-
-<div id="noteModal" class="full-modal">
-    <div class="modal-header">
-        <h3 id="modalTitle">📄 Emails</h3>
-        <button class="close-modal" id="closeModalBtn"><i class="fas fa-times"></i></button>
+    <div class="bottom-nav">
+        <button class="nav-item active" data-section="generator"><i class="fas fa-wand-magic-sparkles"></i><span>Creats</span></button>
+        <button class="nav-item" data-section="allCreat"><i class="fas fa-folder-open"></i><span>Emails</span></button>
+        <button class="nav-item" data-section="vpn"><i class="fas fa-lock"></i><span>VPN</span></button>
+        <button class="nav-item" data-section="about"><i class="fas fa-info-circle"></i><span>About</span></button>
     </div>
-    <div class="modal-body" id="modalBody"></div>
-</div>
-<div class="toast-container" id="toastContainer"></div>
 
-<script>
-    (function() {
-        // ----- toast -----
-        const toastContainer = document.getElementById('toastContainer');
+    <div id="noteModal" class="full-modal">
+        <div class="modal-header">
+            <h3 id="modalTitle">📄 Emails</h3>
+            <button class="close-modal" id="closeModalBtn"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body" id="modalBody"></div>
+    </div>
+    <div class="toast-container" id="toastContainer"></div>
 
-        function toast(msg, type = 'info') {
-            const t = document.createElement('div');
-            t.className = `toast ${type}`;
-            t.innerHTML =
-                `<i class="fas ${type==='success'?'fa-check-circle':'fa-info-circle'}"></i><span>${msg}</span>`;
-            toastContainer.appendChild(t);
-            setTimeout(() => t.remove(), 2200);
-        }
-
-        // ----- SOUND ENGINE (জাভাস্ক্রিপ্ট অডিও) -----
-        let audioCtx = null;
-
-        function getAudioContext() {
-            if (!audioCtx) {
-                audioCtx = new(window.AudioContext || window.webkitAudioContext)();
+    <script>
+        (function() {
+            const toastContainer = document.getElementById('toastContainer');
+            function toast(msg, type='info') {
+                const t = document.createElement('div'); t.className = `toast ${type}`;
+                t.innerHTML = `<i class="fas ${type==='success'?'fa-check-circle':'fa-info-circle'}"></i><span>${msg}</span>`;
+                toastContainer.appendChild(t); setTimeout(() => t.remove(), 2200);
             }
-            return audioCtx;
-        }
 
-        function playCutSound() {
-            try {
-                const ctx = getAudioContext();
-                const now = ctx.currentTime;
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(1200, now);
-                osc.frequency.exponentialRampToValueAtTime(400, now + 0.12);
-                gain.gain.setValueAtTime(0.3, now);
-                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.18);
-                osc.connect(gain);
-                gain.connect(ctx.destination);
-                osc.start(now);
-                osc.stop(now + 0.2);
-            } catch (e) {
-                console.log('Cut sound play error:', e);
+            let audioCtx = null;
+            function getAudioContext() { if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)(); return audioCtx; }
+            function playCutSound() {
+                try {
+                    const ctx = getAudioContext(); const now = ctx.currentTime;
+                    const osc = ctx.createOscillator(); const gain = ctx.createGain();
+                    osc.type='sine'; osc.frequency.setValueAtTime(1200,now); osc.frequency.exponentialRampToValueAtTime(400,now+0.12);
+                    gain.gain.setValueAtTime(0.3,now); gain.gain.exponentialRampToValueAtTime(0.01,now+0.18);
+                    osc.connect(gain); gain.connect(ctx.destination); osc.start(now); osc.stop(now+0.2);
+                } catch(e){}
             }
-        }
-
-        function playDeleteSound() {
-            try {
-                const ctx = getAudioContext();
-                const now = ctx.currentTime;
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-                osc.type = 'triangle';
-                osc.frequency.setValueAtTime(200, now);
-                osc.frequency.exponentialRampToValueAtTime(80, now + 0.15);
-                gain.gain.setValueAtTime(0.4, now);
-                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
-                osc.connect(gain);
-                gain.connect(ctx.destination);
-                osc.start(now);
-                osc.stop(now + 0.3);
-            } catch (e) {
-                console.log('Delete sound play error:', e);
+            function playDeleteSound() {
+                try {
+                    const ctx = getAudioContext(); const now = ctx.currentTime;
+                    const osc = ctx.createOscillator(); const gain = ctx.createGain();
+                    osc.type='triangle'; osc.frequency.setValueAtTime(200,now); osc.frequency.exponentialRampToValueAtTime(80,now+0.15);
+                    gain.gain.setValueAtTime(0.4,now); gain.gain.exponentialRampToValueAtTime(0.01,now+0.25);
+                    osc.connect(gain); gain.connect(ctx.destination); osc.start(now); osc.stop(now+0.3);
+                } catch(e){}
             }
-        }
+            function playGenerateSound() {
+                try {
+                    const ctx = getAudioContext(); const now = ctx.currentTime;
+                    const osc = ctx.createOscillator(); const gain = ctx.createGain();
+                    osc.type='sine';
+                    osc.frequency.setValueAtTime(523.25, now); // C5
+                    osc.frequency.setValueAtTime(659.25, now + 0.08); // E5
+                    osc.frequency.setValueAtTime(783.99, now + 0.16); // G5
+                    gain.gain.setValueAtTime(0.4, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+                    osc.connect(gain); gain.connect(ctx.destination);
+                    osc.start(now); osc.stop(now + 0.35);
+                } catch(e){}
+            }
 
-        // ----- localStorage keys -----
-        const STORAGE_KEY = 'caseforge_notes';
-        const CUT_COUNT_KEY = 'caseforge_cutcount';
+            const STORAGE_KEY = 'caseforge_notes', CUT_COUNT_KEY = 'caseforge_cutcount';
+            let savedNotes = [];
+            function loadNotes() { const stored = localStorage.getItem(STORAGE_KEY); savedNotes = stored ? JSON.parse(stored) : []; renderNotesList(); updateDashboardStats(); }
+            function saveNotes() { localStorage.setItem(STORAGE_KEY, JSON.stringify(savedNotes)); renderNotesList(); updateDashboardStats(); }
+            function addNote(emails, baseHint) {
+                const newNote = { id: Date.now(), timestamp: new Date().toLocaleString(), emails: [...emails], baseHint: baseHint.substring(0,30), count: emails.length };
+                savedNotes.unshift(newNote); saveNotes(); toast(`✅ Saved ${emails.length} emails as note`,'success');
+            }
+            function deleteNote(id) { playDeleteSound(); savedNotes = savedNotes.filter(n=>n.id!==id); saveNotes(); toast('Note deleted','success'); if(activeModalNoteId===id) closeModal(); updateDashboardStats(); }
+            function getCutCount() { const val = localStorage.getItem(CUT_COUNT_KEY); return val ? parseInt(val,10) : 0; }
+            function increaseCutCount(amount=1) { const current = getCutCount(); localStorage.setItem(CUT_COUNT_KEY, current+amount); updateDashboardStats(); }
 
-        // ----- saved notes -----
-        let savedNotes = [];
+            function updateDashboardStats() {
+                const totalEmails = savedNotes.reduce((sum,n)=>sum+n.count,0);
+                const notesCount = savedNotes.length;
+                const cutCount = getCutCount();
 
-        function loadNotes() {
-            const stored = localStorage.getItem(STORAGE_KEY);
-            savedNotes = stored ? JSON.parse(stored) : [];
-            renderNotesList();
-            updateDashboardStats();
-        }
+                const totalEl = document.getElementById('totalEmailsStat');
+                const notesEl = document.getElementById('notesCountStat');
+                const cutEl = document.getElementById('cutCountStat');
 
-        function saveNotes() {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(savedNotes));
-            renderNotesList();
-            updateDashboardStats();
-        }
+                totalEl.textContent = totalEmails;
+                notesEl.textContent = notesCount;
+                cutEl.textContent = cutCount;
 
-        function addNote(emails, baseHint) {
-            const newNote = {
-                id: Date.now(),
-                timestamp: new Date().toLocaleString(),
-                emails: [...emails],
-                baseHint: baseHint.substring(0, 30),
-                count: emails.length
-            };
-            savedNotes.unshift(newNote);
-            saveNotes();
-            toast(`✅ Saved ${emails.length} emails as note`, 'success');
-        }
+                // Auto-adjust font size to prevent overflow
+                [totalEl, notesEl, cutEl].forEach(el => {
+                    const len = el.textContent.length;
+                    if (len > 4) el.style.fontSize = '0.9rem';
+                    else if (len > 3) el.style.fontSize = '1rem';
+                    else el.style.fontSize = '1.2rem';
+                });
+            }
 
-        function deleteNote(id) {
-            playDeleteSound();
-            savedNotes = savedNotes.filter(n => n.id !== id);
-            saveNotes();
-            toast('Note deleted', 'success');
-            if (activeModalNoteId === id) closeModal();
-            updateDashboardStats();
-        }
+            async function cutEmailFromNote(noteId, emailIndex) {
+                const note = savedNotes.find(n=>n.id===noteId); if(!note) return;
+                const email = note.emails[emailIndex]; if(!email) return;
+                try {
+                    await navigator.clipboard.writeText(email);
+                    note.emails.splice(emailIndex,1); note.count = note.emails.length;
+                    increaseCutCount(1); playCutSound();
+                    if(note.emails.length===0) { deleteNote(noteId); toast(`✂️ Cut last email — note removed`,'success'); }
+                    else { saveNotes(); if(activeModalNoteId===noteId) refreshModal(noteId); toast(`✂️ Cut: "${email.substring(0,35)}..."`,'success'); }
+                } catch(e) { toast('Copy failed','error'); }
+            }
 
-        // ----- cut count (lifetime) -----
-        function getCutCount() {
-            const val = localStorage.getItem(CUT_COUNT_KEY);
-            return val ? parseInt(val, 10) : 0;
-        }
+            function renderNotesList() {
+                const container = document.getElementById('notesListContainer'); if(!container) return;
+                if(!savedNotes.length) { container.innerHTML = '<div class="empty-notes"><i class="far fa-save"></i> No saved notes. Generate emails.</div>'; return; }
+                container.innerHTML = '';
+                savedNotes.forEach(note => {
+                    const div = document.createElement('div'); div.className = 'note-card';
+                    div.innerHTML = `
+                        <div class="note-info">
+                            <div class="note-title"><span class="email-pill-icon"><i class="fas fa-envelope"></i></span>${note.count} variant${note.count!==1?'s':''}</div>
+                            <div class="note-meta"><span>${note.timestamp}</span><span>${note.baseHint}</span></div>
+                        </div>
+                        <button class="delete-note-btn" data-id="${note.id}"><i class="fas fa-trash-alt"></i></button>
+                    `;
+                    const infoDiv = div.querySelector('.note-info');
+                    const delBtn = div.querySelector('.delete-note-btn');
+                    infoDiv.addEventListener('click', ()=> openNoteModal(note.id));
+                    delBtn.addEventListener('click', (e)=>{ e.stopPropagation(); deleteNote(note.id); });
+                    container.appendChild(div);
+                });
+            }
 
-        function increaseCutCount(amount = 1) {
-            const current = getCutCount();
-            localStorage.setItem(CUT_COUNT_KEY, current + amount);
-            updateDashboardStats();
-        }
+            let activeModalNoteId = null;
+            const modal = document.getElementById('noteModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalBody = document.getElementById('modalBody');
+            const closeModalBtn = document.getElementById('closeModalBtn');
+            let modalOpenHistory = false, ignorePopState = false;
 
-        // ----- dashboard update -----
-        function updateDashboardStats() {
-            const totalEmails = savedNotes.reduce((sum, note) => sum + note.count, 0);
-            const notesCount = savedNotes.length;
-            const cutCount = getCutCount();
-            document.getElementById('totalEmailsStat').textContent = totalEmails;
-            document.getElementById('notesCountStat').textContent = notesCount;
-            document.getElementById('cutCountStat').textContent = cutCount;
-        }
+            function refreshModal(noteId) {
+                const note = savedNotes.find(n=>n.id===noteId); if(!note) { closeModal(); return; }
+                modalTitle.innerText = `📄 ${note.count} email${note.count!==1?'s':''} · ${note.timestamp}`;
+                modalBody.innerHTML = '';
+                if(!note.emails.length) { modalBody.innerHTML = '<div class="empty-notes">Empty note will be removed.</div>'; return; }
+                note.emails.forEach((email,idx)=>{
+                    const row = document.createElement('div'); row.className = 'modal-email-row';
+                    row.innerHTML = `
+                        <div class="modal-email-text"><span class="email-pill-icon"><i class="fas fa-envelope"></i></span>${escapeHtml(email)}</div>
+                        <button class="cut-single-btn" data-idx="${idx}"><i class="fas fa-scissors"></i> Cut</button>
+                    `;
+                    row.querySelector('.cut-single-btn').addEventListener('click', (e)=>{ e.stopPropagation(); cutEmailFromNote(noteId,idx); });
+                    modalBody.appendChild(row);
+                });
+            }
 
-        // cut email from note
-        async function cutEmailFromNote(noteId, emailIndex) {
-            const note = savedNotes.find(n => n.id === noteId);
-            if (!note) return;
-            const email = note.emails[emailIndex];
-            if (!email) return;
-            try {
-                await navigator.clipboard.writeText(email);
-                note.emails.splice(emailIndex, 1);
-                note.count = note.emails.length;
-                increaseCutCount(1);
-                playCutSound();
-                if (note.emails.length === 0) {
-                    deleteNote(noteId);
-                    toast(`✂️ Cut last email — note removed`, 'success');
-                } else {
-                    saveNotes();
-                    if (activeModalNoteId === noteId) refreshModal(noteId);
-                    toast(`✂️ Cut: "${email.substring(0, 35)}..."`, 'success');
+            function openNoteModal(noteId) {
+                const note = savedNotes.find(n=>n.id===noteId); if(!note) return;
+                activeModalNoteId = noteId; refreshModal(noteId); modal.classList.add('active');
+                if(!modalOpenHistory) { history.pushState({modal:true},''); modalOpenHistory = true; }
+            }
+
+            function closeModal() {
+                if(modal.classList.contains('active')) {
+                    if(modalOpenHistory) { ignorePopState = true; history.back(); modalOpenHistory = false; }
+                    modal.classList.remove('active'); activeModalNoteId = null;
                 }
-            } catch (e) {
-                toast('Copy failed', 'error');
             }
-        }
 
-        function renderNotesList() {
-            const container = document.getElementById('notesListContainer');
-            if (!container) return;
-            if (savedNotes.length === 0) {
-                container.innerHTML =
-                    '<div class="empty-notes"><i class="far fa-save"></i> No saved notes. Generate emails.</div>';
-                return;
-            }
-            container.innerHTML = '';
-            savedNotes.forEach(note => {
-                const div = document.createElement('div');
-                div.className = 'note-card';
-                div.innerHTML = `
-                    <div class="note-info">
-                        <div class="note-title">📧 ${note.count} variant${note.count!==1?'s':''}</div>
-                        <div class="note-meta"><span>${note.timestamp}</span><span>${note.baseHint}</span></div>
-                    </div>
-                    <button class="delete-note-btn" data-id="${note.id}"><i class="fas fa-trash-alt"></i></button>
-                `;
-                const infoDiv = div.querySelector('.note-info');
-                const delBtn = div.querySelector('.delete-note-btn');
-                infoDiv.addEventListener('click', () => openNoteModal(note.id));
-                delBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    deleteNote(note.id);
-                });
-                container.appendChild(div);
-            });
-        }
-
-        // Modal logic
-        let activeModalNoteId = null;
-        const modal = document.getElementById('noteModal');
-        const modalTitle = document.getElementById('modalTitle');
-        const modalBody = document.getElementById('modalBody');
-        const closeModalBtn = document.getElementById('closeModalBtn');
-        let modalOpenHistory = false;
-        let ignorePopState = false;
-
-        function refreshModal(noteId) {
-            const note = savedNotes.find(n => n.id === noteId);
-            if (!note) { closeModal(); return; }
-            modalTitle.innerText =
-                `📄 ${note.count} email${note.count!==1?'s':''} · ${note.timestamp}`;
-            modalBody.innerHTML = '';
-            if (note.emails.length === 0) {
-                modalBody.innerHTML = '<div class="empty-notes">Empty note will be removed.</div>';
-                return;
-            }
-            note.emails.forEach((email, idx) => {
-                const row = document.createElement('div');
-                row.className = 'modal-email-row';
-                row.innerHTML = `
-                    <div class="modal-email-text">${escapeHtml(email)}</div>
-                    <button class="cut-single-btn" data-idx="${idx}"><i class="fas fa-cut"></i> Cut</button>
-                `;
-                row.querySelector('.cut-single-btn').addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    cutEmailFromNote(noteId, idx);
-                });
-                modalBody.appendChild(row);
-            });
-        }
-
-        function openNoteModal(noteId) {
-            const note = savedNotes.find(n => n.id === noteId);
-            if (!note) return;
-            activeModalNoteId = noteId;
-            refreshModal(noteId);
-            modal.classList.add('active');
-            if (!modalOpenHistory) {
-                history.pushState({ modal: true }, '');
-                modalOpenHistory = true;
-            }
-        }
-
-        function closeModal() {
-            if (modal.classList.contains('active')) {
-                if (modalOpenHistory) {
-                    ignorePopState = true;
-                    history.back();
+            window.addEventListener('popstate', (e)=>{
+                if(ignorePopState) { ignorePopState = false; return; }
+                if(modal.classList.contains('active')) {
+                    modal.classList.remove('active');
+                    activeModalNoteId = null;
                     modalOpenHistory = false;
+                    history.pushState({modal:false},'');
+                    e.preventDefault();
                 }
-                modal.classList.remove('active');
-                activeModalNoteId = null;
-            }
-        }
-
-        window.addEventListener('popstate', (e) => {
-            if (ignorePopState) { ignorePopState = false; return; }
-            if (modal.classList.contains('active')) {
-                modal.classList.remove('active');
-                activeModalNoteId = null;
-                modalOpenHistory = false;
-                history.pushState({ modal: false }, '');
-                e.preventDefault();
-            }
-        });
-
-        closeModalBtn.addEventListener('click', closeModal);
-        modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
-
-        function escapeHtml(str) {
-            return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
-        }
-
-        // ----- generator -----
-        let currentEmails = [];
-
-        function randomCaseVariant(base) {
-            let out = '';
-            for (let i = 0; i < base.length; i++) {
-                const ch = base[i];
-                if (/[A-Za-z]/.test(ch)) {
-                    out += Math.random() < 0.5 ? ch.toUpperCase() : ch.toLowerCase();
-                } else {
-                    out += ch;
-                }
-            }
-            return out;
-        }
-
-        function generateVariants(base, count) {
-            const arr = [];
-            for (let i = 0; i < count; i++) arr.push(randomCaseVariant(base));
-            return arr;
-        }
-
-        function renderCurrent() {
-            const container = document.getElementById('resultContainer');
-            if (!currentEmails.length) {
-                container.innerHTML = '<div class="empty-msg">✨ No emails yet. Click Generate.</div>';
-                return;
-            }
-            container.innerHTML = currentEmails.map(e =>
-                `<div class="email-item"><i class="far fa-envelope" style="margin-right:6px; color:#3b82f6;"></i>${escapeHtml(e)}</div>`
-            ).join('');
-        }
-
-        const baseInput = document.getElementById('baseEmailInput');
-        const countInput = document.getElementById('countInput');
-        const genBtn = document.getElementById('generateBtn');
-        const copyBtn = document.getElementById('copyAllBtn');
-        const clearBtn = document.getElementById('clearAllBtn');
-
-        genBtn.addEventListener('click', () => {
-            let base = baseInput.value.trim();
-            if (!base) { toast("Enter base email", "error"); return; }
-            let count = parseInt(countInput.value, 10);
-            if (isNaN(count) || count < 1) count = 1;
-            if (count > 1000) { toast("Max 1000, capped", "info");
-                count = 1000;
-                countInput.value = 1000; }
-            const generated = generateVariants(base, count);
-            currentEmails = generated;
-            renderCurrent();
-            addNote(generated, base);
-            toast(`✨ ${generated.length} variants generated & saved`, 'success');
-        });
-
-        clearBtn.addEventListener('click', () => {
-            if (!currentEmails.length) { toast("Nothing to clear", "info"); return; }
-            currentEmails = [];
-            renderCurrent();
-            toast("Current list cleared (saved notes remain)", "info");
-        });
-
-        copyBtn.addEventListener('click', async () => {
-            if (!currentEmails.length) { toast("No emails to copy", "error"); return; }
-            await navigator.clipboard.writeText(currentEmails.join('\n'));
-            toast(`📋 Copied ${currentEmails.length} emails`, 'success');
-        });
-
-        // exports
-        function getCurrentExport() {
-            if (!currentEmails.length) { toast("Generate emails first", "error"); return null; }
-            return currentEmails;
-        }
-
-        function exportCSV() {
-            const arr = getCurrentExport();
-            if (!arr) return;
-            const rows = [
-                ["Generated Emails"],
-                ...arr.map(e => [e])
-            ];
-            const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(",")).join("\n");
-            const blob = new Blob(["\uFEFF" + csv], { type: "text/csv" });
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = `emails_${Date.now()}.csv`;
-            a.click();
-            URL.revokeObjectURL(a.href);
-            toast("CSV exported", "success");
-        }
-
-        function exportExcel() {
-            const arr = getCurrentExport();
-            if (!arr) return;
-            const ws = XLSX.utils.aoa_to_sheet([
-                ["Generated Emails"],
-                ...arr.map(e => [e])
-            ]);
-            const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "Emails");
-            XLSX.writeFile(wb, `emails_${Date.now()}.xlsx`);
-            toast("Excel saved", "success");
-        }
-
-        async function exportPDF() {
-            const arr = getCurrentExport();
-            if (!arr) return;
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-            doc.setFontSize(12);
-            doc.text("Email Variants", 14, 12);
-            doc.setFontSize(8);
-            doc.text(`Total: ${arr.length} | Base: ${baseInput.value}`, 14, 20);
-            doc.autoTable({ startY: 26, head: [
-                    ["Emails"]
-                ], body: arr.map(e => [e]), styles: { fontSize: 7 } });
-            doc.save(`emails_${Date.now()}.pdf`);
-            toast("PDF exported", "success");
-        }
-        document.getElementById('downloadCsvBtn').addEventListener('click', exportCSV);
-        document.getElementById('downloadExcelBtn').addEventListener('click', exportExcel);
-        document.getElementById('downloadPdfBtn').addEventListener('click', exportPDF);
-
-        // ========== PWA INSTALL ==========
-        let deferredPrompt = null;
-        const installBtnEl = document.getElementById('installAppBtn');
-        const installPanel = document.querySelector('.install-panel');
-
-        function isStandalone() {
-            return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone ===
-                true;
-        }
-        if (isStandalone()) installPanel.style.display = 'none';
-
-        const manifestObj = {
-            name: "CaseForge Email Studio",
-            short_name: "CaseForge",
-            start_url: ".",
-            display: "standalone",
-            theme_color: "#f4f7fb",
-            background_color: "#ffffff",
-            icons: [{ src: "genarator.png", sizes: "192x192", type: "image/png" }, { src: "genarator.png",
-                sizes: "512x512", type: "image/png" }]
-        };
-        const manifestBlob = new Blob([JSON.stringify(manifestObj)], { type: 'application/json' });
-        const manifestURL = URL.createObjectURL(manifestBlob);
-        const manifestLink = document.createElement('link');
-        manifestLink.rel = 'manifest';
-        manifestLink.href = manifestURL;
-        document.head.appendChild(manifestLink);
-
-        // ----- service worker with offline caching -----
-        if ('serviceWorker' in navigator) {
-            const swCode = `
-                const CACHE_NAME = 'caseforge-offline-v1';
-                const urlsToCache = [
-                    '.',
-                    'index.html',
-                    'genarator.png',
-                    'proton.png',
-                    'telegram.png',
-                    'telegramx.png',
-                    'telegramapk.png',
-                    'group.png',
-                    'temp.png',
-                    'tggraph.png',
-                    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css',
-                    'https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js',
-                    'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js',
-                    'https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.6.0/jspdf.plugin.autotable.min.js'
-                ];
-
-                self.addEventListener('install', (event) => {
-                    event.waitUntil(
-                        caches.open(CACHE_NAME).then((cache) => {
-                            return cache.addAll(urlsToCache);
-                        })
-                    );
-                });
-
-                self.addEventListener('fetch', (event) => {
-                    event.respondWith(
-                        caches.match(event.request).then((response) => {
-                            return response || fetch(event.request).then((fetchResponse) => {
-                                return caches.open(CACHE_NAME).then((cache) => {
-                                    cache.put(event.request, fetchResponse.clone());
-                                    return fetchResponse;
-                                });
-                            });
-                        })
-                    );
-                });
-
-                self.addEventListener('activate', (event) => {
-                    event.waitUntil(
-                        caches.keys().then((cacheNames) => {
-                            return Promise.all(
-                                cacheNames.map((cache) => {
-                                    if (cache !== CACHE_NAME) {
-                                        return caches.delete(cache);
-                                    }
-                                })
-                            );
-                        })
-                    );
-                });
-            `;
-            const swBlob = new Blob([swCode], { type: 'application/javascript' });
-            const swURL = URL.createObjectURL(swBlob);
-            navigator.serviceWorker.register(swURL).catch(e => console.log("SW error", e));
-        }
-
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            if (!isStandalone()) installPanel.style.display = 'flex';
-        });
-
-        installBtnEl.addEventListener('click', async () => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                if (outcome === 'accepted') {
-                    toast("Installing app...", "success");
-                    installPanel.style.display = 'none';
-                } else {
-                    toast("Install cancelled", "info");
-                }
-                deferredPrompt = null;
-            } else {
-                toast("Tap browser menu → Add to Home Screen", "info");
-            }
-        });
-
-        window.addEventListener('appinstalled', () => {
-            deferredPrompt = null;
-            installPanel.style.display = 'none';
-            toast("✅ App installed! Launch from home screen.", "success");
-        });
-
-        // ========== SECTION SWITCHING WITH SLIDING EFFECT ==========
-        const genSec = document.getElementById('generatorSection');
-        const creatSec = document.getElementById('allCreatSection');
-        const vpnSec = document.getElementById('vpnSection');
-        const aboutSec = document.getElementById('aboutSection');
-        const navs = document.querySelectorAll('.nav-item');
-        const appLinksGrid = document.getElementById('appLinksGrid');
-        const sectionOrder = ['generator', 'allCreat', 'vpn', 'about'];
-        let currentSectionName = 'generator'; // track current section
-
-        function switchSection(section) {
-            // Same section? skip
-            if (section === currentSectionName) return;
-
-            const oldIdx = sectionOrder.indexOf(currentSectionName);
-            const newIdx = sectionOrder.indexOf(section);
-            const goingForward = newIdx > oldIdx;
-
-            // Find old active section element
-            const oldSection = document.querySelector('.section.active-section');
-
-            // Determine target section element
-            let targetSec;
-            if (section === 'generator') targetSec = genSec;
-            else if (section === 'allCreat') targetSec = creatSec;
-            else if (section === 'vpn') targetSec = vpnSec;
-            else targetSec = aboutSec;
-
-            // Clean up any lingering animation classes on all sections
-            [genSec, creatSec, vpnSec, aboutSec].forEach(sec => {
-                sec.classList.remove('anim-slide-forward', 'anim-slide-backward',
-                    'anim-slide-out-forward', 'anim-slide-out-backward');
             });
 
-            // Animate out old section (if exists and different from target)
-            if (oldSection && oldSection !== targetSec) {
-                oldSection.classList.add(goingForward ? 'anim-slide-out-forward' : 'anim-slide-out-backward');
+            closeModalBtn.addEventListener('click', closeModal);
+            modal.addEventListener('click', (e)=>{ if(e.target===modal) closeModal(); });
+
+            function escapeHtml(str) { return str.replace(/[&<>]/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m])); }
+
+            let currentEmails = [];
+            function randomCaseVariant(base) { let out=''; for(let i=0;i<base.length;i++){ const ch=base[i]; out += /[A-Za-z]/.test(ch) ? (Math.random()<0.5?ch.toUpperCase():ch.toLowerCase()) : ch; } return out; }
+            function generateVariants(base,count) { const arr=[]; for(let i=0;i<count;i++) arr.push(randomCaseVariant(base)); return arr; }
+
+            function renderCurrent() {
+                const container = document.getElementById('resultContainer');
+                if(!currentEmails.length) { container.innerHTML = '<div class="empty-msg">✨ No emails yet. Click Generate.</div>'; return; }
+                container.innerHTML = currentEmails.map(e => `<div class="email-item"><span class="email-pill-icon"><i class="fas fa-envelope"></i></span>${escapeHtml(e)}</div>`).join('');
             }
 
-            // Prepare and animate in target section
-            targetSec.classList.add('active-section');
-            if (oldSection && oldSection !== targetSec) {
-                targetSec.classList.add(goingForward ? 'anim-slide-forward' : 'anim-slide-backward');
-            }
-
-            // Update current section tracker
-            currentSectionName = section;
-
-            // Clean up after animation completes
-            setTimeout(() => {
-                if (oldSection && oldSection !== targetSec) {
-                    oldSection.classList.remove('active-section', 'anim-slide-out-forward',
-                        'anim-slide-out-backward');
-                }
-                targetSec.classList.remove('anim-slide-forward', 'anim-slide-backward');
-            }, 400);
-
-            // Update bottom nav active state
-            navs.forEach(btn => {
-                const s = btn.getAttribute('data-section');
-                if (s === section) btn.classList.add('active');
-                else btn.classList.remove('active');
+            const baseInput = document.getElementById('baseEmailInput');
+            const countInput = document.getElementById('countInput');
+            document.getElementById('generateBtn').addEventListener('click', ()=>{
+                let base = baseInput.value.trim(); if(!base) { toast("Enter base email","error"); return; }
+                let count = parseInt(countInput.value,10); if(isNaN(count)||count<1) count=1;
+                if(count>1000) { toast("Max 1000, capped","info"); count=1000; countInput.value=1000; }
+                currentEmails = generateVariants(base,count); renderCurrent(); addNote(currentEmails, base);
+                playGenerateSound();
+                toast(`✨ ${currentEmails.length} variants generated & saved`,'success');
             });
+            document.getElementById('clearAllBtn').addEventListener('click', ()=>{ 
+                if(!currentEmails.length){ toast("Nothing to clear","info"); return; }
+                currentEmails=[]; renderCurrent(); toast("Current list cleared (saved notes remain)","info");
+                playDeleteSound();
+            });
+            document.getElementById('copyAllBtn').addEventListener('click', async ()=>{ if(!currentEmails.length){toast("No emails to copy","error");return;} await navigator.clipboard.writeText(currentEmails.join('\n')); toast(`📋 Copied ${currentEmails.length} emails`,'success'); });
 
-            // Special handling for About section
-            if (section === 'about') {
-                if (appLinksGrid) {
-                    appLinksGrid.classList.remove('animate-in');
-                    void appLinksGrid.offsetWidth;
-                    appLinksGrid.classList.add('animate-in');
-                }
+            function getCurrentExport() { if(!currentEmails.length){toast("Generate emails first","error");return null;} return currentEmails; }
+            function exportCSV() { const arr=getCurrentExport(); if(!arr)return; const csv = [["Generated Emails"],...arr.map(e=>[e])].map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(",")).join("\n"); const blob=new Blob(["\uFEFF"+csv],{type:"text/csv"}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=`emails_${Date.now()}.csv`; a.click(); URL.revokeObjectURL(a.href); toast("CSV exported","success"); }
+            function exportExcel() { const arr=getCurrentExport(); if(!arr)return; const ws=XLSX.utils.aoa_to_sheet([["Generated Emails"],...arr.map(e=>[e])]); const wb=XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb,ws,"Emails"); XLSX.writeFile(wb,`emails_${Date.now()}.xlsx`); toast("Excel saved","success"); }
+            async function exportPDF() { const arr=getCurrentExport(); if(!arr)return; const {jsPDF}=window.jspdf; const doc=new jsPDF(); doc.setFontSize(12); doc.text("Email Variants",14,12); doc.setFontSize(8); doc.text(`Total: ${arr.length} | Base: ${baseInput.value}`,14,20); doc.autoTable({startY:26,head:[["Emails"]],body:arr.map(e=>[e]),styles:{fontSize:7}}); doc.save(`emails_${Date.now()}.pdf`); toast("PDF exported","success"); }
+            document.getElementById('downloadCsvBtn').addEventListener('click',exportCSV);
+            document.getElementById('downloadExcelBtn').addEventListener('click',exportExcel);
+            document.getElementById('downloadPdfBtn').addEventListener('click',exportPDF);
+
+            // PWA (hidden panel)
+            let deferredPrompt=null; const installPanel=document.querySelector('.install-panel'); if(installPanel) installPanel.style.display='none';
+            const manifestObj={name:"CaseForge Email Studio",short_name:"CaseForge",start_url:".",display:"standalone",theme_color:"#f4f7fb",background_color:"#ffffff",icons:[{src:"genarator.png",sizes:"192x192",type:"image/png"},{src:"genarator.png",sizes:"512x512",type:"image/png"}]};
+            const manifestBlob=new Blob([JSON.stringify(manifestObj)],{type:'application/json'}); const manifestURL=URL.createObjectURL(manifestBlob);
+            const manifestLink=document.createElement('link'); manifestLink.rel='manifest'; manifestLink.href=manifestURL; document.head.appendChild(manifestLink);
+            if('serviceWorker' in navigator) {
+                const swCode = `const CACHE_NAME='caseforge-offline-v1';const urlsToCache=['.','index.html','genarator.png','proton.png','telegram.png','telegramx.png','telegramapk.png','group.png','temp.png','tggraph.png','https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css','https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js','https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js','https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.6.0/jspdf.plugin.autotable.min.js'];self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE_NAME).then(c=>c.addAll(urlsToCache)))});self.addEventListener('fetch',e=>{e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request).then(fetchRes=>caches.open(CACHE_NAME).then(c=>{c.put(e.request,fetchRes.clone());return fetchRes}))))});self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(keys=>Promise.all(keys.map(k=>{if(k!==CACHE_NAME)return caches.delete(k)}))))});`;
+                const swBlob=new Blob([swCode],{type:'application/javascript'}); const swURL=URL.createObjectURL(swBlob);
+                navigator.serviceWorker.register(swURL).catch(e=>console.log("SW error",e));
             }
+            window.addEventListener('beforeinstallprompt',(e)=>{ e.preventDefault(); deferredPrompt=e; if(installPanel) installPanel.style.display='none'; });
+            document.getElementById('installAppBtn')?.addEventListener('click',async()=>{ if(deferredPrompt){ deferredPrompt.prompt(); const {outcome}=await deferredPrompt.userChoice; if(outcome==='accepted'){ toast("Installing app...","success"); } else toast("Install cancelled","info"); deferredPrompt=null; } else toast("Tap browser menu → Add to Home Screen","info"); });
+            window.addEventListener('appinstalled',()=>{ deferredPrompt=null; toast("✅ App installed!","success"); });
 
-            if (section === 'allCreat') renderNotesList();
+            // section switching (no mail overlay)
+            const genSec=document.getElementById('generatorSection'), creatSec=document.getElementById('allCreatSection'), vpnSec=document.getElementById('vpnSection'), aboutSec=document.getElementById('aboutSection');
+            const navs=document.querySelectorAll('.nav-item');
+            const appLinksGrid=document.getElementById('appLinksGrid');
+            const sectionOrder=['generator','allCreat','vpn','about'];
+            let currentSectionName='generator', isTransitioning=false;
+
+            function switchSection(section) {
+                if(isTransitioning || section===currentSectionName) return;
+                isTransitioning = true;
+                const oldIdx=sectionOrder.indexOf(currentSectionName), newIdx=sectionOrder.indexOf(section);
+                const goingForward = newIdx > oldIdx;
+                let targetSec;
+                if(section==='generator') targetSec=genSec; else if(section==='allCreat') targetSec=creatSec; else if(section==='vpn') targetSec=vpnSec; else targetSec=aboutSec;
+                const oldSection = document.querySelector('.section.active-section');
+
+                [genSec,creatSec,vpnSec,aboutSec].forEach(s=>s.classList.remove('anim-slide-forward','anim-slide-backward','anim-slide-out-forward','anim-slide-out-backward'));
+                if(oldSection && oldSection!==targetSec) {
+                    oldSection.classList.add(goingForward?'anim-slide-out-forward':'anim-slide-out-backward');
+                }
+                targetSec.classList.add('active-section');
+                if(oldSection && oldSection!==targetSec) {
+                    targetSec.classList.add(goingForward?'anim-slide-forward':'anim-slide-backward');
+                }
+                currentSectionName = section;
+                setTimeout(()=>{
+                    if(oldSection && oldSection!==targetSec) oldSection.classList.remove('active-section','anim-slide-out-forward','anim-slide-out-backward');
+                    targetSec.classList.remove('anim-slide-forward','anim-slide-backward');
+                    isTransitioning = false;
+                }, 320);
+                navs.forEach(b=>{ const s=b.getAttribute('data-section'); b.classList.toggle('active', s===section); });
+                if(section==='about' && appLinksGrid) { appLinksGrid.classList.remove('animate-in'); void appLinksGrid.offsetWidth; appLinksGrid.classList.add('animate-in'); }
+                if(section==='allCreat') renderNotesList();
+                updateDashboardStats();
+            }
+            navs.forEach(b=>b.addEventListener('click',()=>switchSection(b.getAttribute('data-section'))));
+
+            loadNotes();
+            const demoBase = baseInput.value.trim(); currentEmails = generateVariants(demoBase,4); renderCurrent();
             updateDashboardStats();
-        }
-
-        navs.forEach(btn => btn.addEventListener('click', () => switchSection(btn.getAttribute('data-section'))));
-
-        // initial load
-        loadNotes();
-        const demoBase = baseInput.value.trim();
-        const demoGen = generateVariants(demoBase, 4);
-        currentEmails = demoGen;
-        renderCurrent();
-        currentSectionName = 'generator';
-        updateDashboardStats();
-    })();
-</script>
+        })();
+    </script>
 </body>
 </html>
