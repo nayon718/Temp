@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <meta name="theme-color" content="#0f172a">
+    <meta name="theme-color" content="#f4f7fb">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="CaseForge">
     <title>CaseForge · Email Case Studio</title>
     <link rel="icon" type="image/png" href="genarator.png">
@@ -34,24 +34,69 @@
             max-width: 700px;
             margin: 0 auto;
             padding: 12px 14px 20px;
+            position: relative;
+            overflow: hidden;
         }
 
         .section {
             display: none;
-            animation: fade 0.2s;
         }
         .section.active-section {
             display: block;
         }
 
-        @keyframes fade {
+        /* ============ SLIDING ANIMATIONS ============ */
+        .anim-slide-forward {
+            animation: slideInForward 0.35s ease forwards;
+        }
+        .anim-slide-backward {
+            animation: slideInBackward 0.35s ease forwards;
+        }
+        .anim-slide-out-forward {
+            animation: slideOutForward 0.35s ease forwards;
+        }
+        .anim-slide-out-backward {
+            animation: slideOutBackward 0.35s ease forwards;
+        }
+
+        @keyframes slideInForward {
             from {
                 opacity: 0;
-                transform: translateY(3px);
+                transform: translateX(55px);
             }
             to {
                 opacity: 1;
-                transform: translateY(0);
+                transform: translateX(0);
+            }
+        }
+        @keyframes slideInBackward {
+            from {
+                opacity: 0;
+                transform: translateX(-55px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        @keyframes slideOutForward {
+            from {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateX(-55px);
+            }
+        }
+        @keyframes slideOutBackward {
+            from {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateX(55px);
             }
         }
 
@@ -373,7 +418,7 @@
         .delete-note-btn:hover {
             color: #ef4444;
             background: #fee2e2;
-            animation: none; /* hover এ animation off */
+            animation: none;
         }
 
         .empty-notes {
@@ -473,7 +518,7 @@
         }
 
         .cut-single-btn:hover {
-            animation: none; /* hover এ animation থামবে */
+            animation: none;
             background: #fecaca;
         }
 
@@ -930,8 +975,6 @@
             try {
                 const ctx = getAudioContext();
                 const now = ctx.currentTime;
-
-                // Oscillator for "snip" sound: quick high-pitched descending tone
                 const osc = ctx.createOscillator();
                 const gain = ctx.createGain();
                 osc.type = 'sine';
@@ -952,8 +995,6 @@
             try {
                 const ctx = getAudioContext();
                 const now = ctx.currentTime;
-
-                // Oscillator for "thud" sound: low pitched quick bump
                 const osc = ctx.createOscillator();
                 const gain = ctx.createGain();
                 osc.type = 'triangle';
@@ -1004,7 +1045,7 @@
         }
 
         function deleteNote(id) {
-            playDeleteSound(); // delete sound
+            playDeleteSound();
             savedNotes = savedNotes.filter(n => n.id !== id);
             saveNotes();
             toast('Note deleted', 'success');
@@ -1045,7 +1086,7 @@
                 note.emails.splice(emailIndex, 1);
                 note.count = note.emails.length;
                 increaseCutCount(1);
-                playCutSound(); // cut sound
+                playCutSound();
                 if (note.emails.length === 0) {
                     deleteNote(noteId);
                     toast(`✂️ Cut last email — note removed`, 'success');
@@ -1303,7 +1344,7 @@
             short_name: "CaseForge",
             start_url: ".",
             display: "standalone",
-            theme_color: "#0f172a",
+            theme_color: "#f4f7fb",
             background_color: "#ffffff",
             icons: [{ src: "genarator.png", sizes: "192x192", type: "image/png" }, { src: "genarator.png",
                 sizes: "512x512", type: "image/png" }]
@@ -1404,37 +1445,78 @@
             toast("✅ App installed! Launch from home screen.", "success");
         });
 
-        // ========== SECTION SWITCHING (VPN সহ) ==========
+        // ========== SECTION SWITCHING WITH SLIDING EFFECT ==========
         const genSec = document.getElementById('generatorSection');
         const creatSec = document.getElementById('allCreatSection');
         const vpnSec = document.getElementById('vpnSection');
         const aboutSec = document.getElementById('aboutSection');
         const navs = document.querySelectorAll('.nav-item');
         const appLinksGrid = document.getElementById('appLinksGrid');
+        const sectionOrder = ['generator', 'allCreat', 'vpn', 'about'];
+        let currentSectionName = 'generator'; // track current section
 
         function switchSection(section) {
-            genSec.classList.remove('active-section');
-            creatSec.classList.remove('active-section');
-            vpnSec.classList.remove('active-section');
-            aboutSec.classList.remove('active-section');
+            // Same section? skip
+            if (section === currentSectionName) return;
 
-            if (section === 'generator') genSec.classList.add('active-section');
-            else if (section === 'allCreat') creatSec.classList.add('active-section');
-            else if (section === 'vpn') vpnSec.classList.add('active-section');
-            else if (section === 'about') {
-                aboutSec.classList.add('active-section');
+            const oldIdx = sectionOrder.indexOf(currentSectionName);
+            const newIdx = sectionOrder.indexOf(section);
+            const goingForward = newIdx > oldIdx;
+
+            // Find old active section element
+            const oldSection = document.querySelector('.section.active-section');
+
+            // Determine target section element
+            let targetSec;
+            if (section === 'generator') targetSec = genSec;
+            else if (section === 'allCreat') targetSec = creatSec;
+            else if (section === 'vpn') targetSec = vpnSec;
+            else targetSec = aboutSec;
+
+            // Clean up any lingering animation classes on all sections
+            [genSec, creatSec, vpnSec, aboutSec].forEach(sec => {
+                sec.classList.remove('anim-slide-forward', 'anim-slide-backward',
+                    'anim-slide-out-forward', 'anim-slide-out-backward');
+            });
+
+            // Animate out old section (if exists and different from target)
+            if (oldSection && oldSection !== targetSec) {
+                oldSection.classList.add(goingForward ? 'anim-slide-out-forward' : 'anim-slide-out-backward');
+            }
+
+            // Prepare and animate in target section
+            targetSec.classList.add('active-section');
+            if (oldSection && oldSection !== targetSec) {
+                targetSec.classList.add(goingForward ? 'anim-slide-forward' : 'anim-slide-backward');
+            }
+
+            // Update current section tracker
+            currentSectionName = section;
+
+            // Clean up after animation completes
+            setTimeout(() => {
+                if (oldSection && oldSection !== targetSec) {
+                    oldSection.classList.remove('active-section', 'anim-slide-out-forward',
+                        'anim-slide-out-backward');
+                }
+                targetSec.classList.remove('anim-slide-forward', 'anim-slide-backward');
+            }, 400);
+
+            // Update bottom nav active state
+            navs.forEach(btn => {
+                const s = btn.getAttribute('data-section');
+                if (s === section) btn.classList.add('active');
+                else btn.classList.remove('active');
+            });
+
+            // Special handling for About section
+            if (section === 'about') {
                 if (appLinksGrid) {
                     appLinksGrid.classList.remove('animate-in');
                     void appLinksGrid.offsetWidth;
                     appLinksGrid.classList.add('animate-in');
                 }
             }
-
-            navs.forEach(btn => {
-                const s = btn.getAttribute('data-section');
-                if (s === section) btn.classList.add('active');
-                else btn.classList.remove('active');
-            });
 
             if (section === 'allCreat') renderNotesList();
             updateDashboardStats();
@@ -1448,7 +1530,7 @@
         const demoGen = generateVariants(demoBase, 4);
         currentEmails = demoGen;
         renderCurrent();
-        switchSection('generator');
+        currentSectionName = 'generator';
         updateDashboardStats();
     })();
 </script>
