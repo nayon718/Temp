@@ -15,382 +15,143 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.6.0/jspdf.plugin.autotable.min.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { background:#f4f7fb; padding-bottom:70px; font-family:system-ui, -apple-system, 'Segoe UI', 'Inter', sans-serif; -webkit-tap-highlight-color:transparent; -webkit-font-smoothing:antialiased; }
+        .app-container { max-width:700px; margin:0 auto; padding:12px 14px 20px; position:relative; overflow:hidden; }
+        .section { display:none; will-change:transform, opacity; }
+        .section.active-section { display:block; }
 
-        body {
-            background: #f4f7fb;
-            padding-bottom: 70px;
-            font-family: system-ui, -apple-system, 'Segoe UI', 'Inter', sans-serif;
-            -webkit-tap-highlight-color: transparent;
-            -webkit-font-smoothing: antialiased;
-        }
+        .anim-slide-forward { animation:slideInForward 0.28s cubic-bezier(0,0,0.2,1) forwards; }
+        .anim-slide-backward { animation:slideInBackward 0.28s cubic-bezier(0,0,0.2,1) forwards; }
+        .anim-slide-out-forward { animation:slideOutForward 0.2s cubic-bezier(0.4,0,1,1) forwards; }
+        .anim-slide-out-backward { animation:slideOutBackward 0.2s cubic-bezier(0.4,0,1,1) forwards; }
 
-        .app-container {
-            max-width: 700px;
-            margin: 0 auto;
-            padding: 12px 14px 20px;
-            position: relative;
-            overflow: hidden;
-        }
+        @keyframes slideInForward { 0%{ opacity:0; transform:translateX(28px) scale(0.97); } 100%{ opacity:1; transform:translateX(0) scale(1); } }
+        @keyframes slideInBackward { 0%{ opacity:0; transform:translateX(-28px) scale(0.97); } 100%{ opacity:1; transform:translateX(0) scale(1); } }
+        @keyframes slideOutForward { 0%{ opacity:1; transform:translateX(0) scale(1); } 100%{ opacity:0; transform:translateX(-24px) scale(0.98); } }
+        @keyframes slideOutBackward { 0%{ opacity:1; transform:translateX(0) scale(1); } 100%{ opacity:0; transform:translateX(24px) scale(0.98); } }
 
-        .section {
-            display: none;
-            will-change: transform, opacity;
-        }
-        .section.active-section {
-            display: block;
-        }
+        .card { background:white; border-radius:20px; box-shadow:0 2px 8px rgba(0,0,0,0.02),0 1px 2px rgba(0,0,0,0.03); padding:14px 16px; margin-bottom:14px; border:1px solid #eef2f8; }
+        .vpn-promo-line { display:flex; align-items:center; gap:10px; background:#ecfdf5; border-radius:16px; padding:10px 14px; margin-top:10px; border:1px solid #a7f3d0; flex-wrap:wrap; animation:protonSlideIn 0.5s ease; }
+        @keyframes protonSlideIn { from{ opacity:0; transform:translateY(-8px); } to{ opacity:1; transform:translateY(0); } }
+        .vpn-promo-line img { width:30px; height:30px; object-fit:contain; border-radius:8px; flex-shrink:0; }
+        .vpn-promo-line .promo-text { flex:1; font-weight:700; font-size:0.78rem; color:#064e3b; min-width:140px; letter-spacing:-0.2px; }
+        .vpn-promo-line .promo-btn { background:#1d8c5e; color:white; padding:8px 18px; border-radius:28px; font-weight:700; font-size:0.73rem; text-decoration:none; display:inline-flex; align-items:center; gap:6px; white-space:nowrap; transition:background 0.2s; box-shadow:0 4px 12px rgba(29,140,94,0.25); }
+        .vpn-promo-line .promo-btn:hover { background:#16784e; }
 
-        .anim-slide-forward {
-            animation: slideInForward 0.28s cubic-bezier(0,0,0.2,1) forwards;
-        }
-        .anim-slide-backward {
-            animation: slideInBackward 0.28s cubic-bezier(0,0,0.2,1) forwards;
-        }
-        .anim-slide-out-forward {
-            animation: slideOutForward 0.2s cubic-bezier(0.4,0,1,1) forwards;
-        }
-        .anim-slide-out-backward {
-            animation: slideOutBackward 0.2s cubic-bezier(0.4,0,1,1) forwards;
-        }
+        @media (max-width:400px) { .vpn-promo-line{ gap:6px; padding:8px 10px; } .vpn-promo-line .promo-text{ font-size:0.7rem; } }
 
-        @keyframes slideInForward {
-            0% { opacity: 0; transform: translateX(28px) scale(0.97); }
-            100% { opacity: 1; transform: translateX(0) scale(1); }
-        }
-        @keyframes slideInBackward {
-            0% { opacity: 0; transform: translateX(-28px) scale(0.97); }
-            100% { opacity: 1; transform: translateX(0) scale(1); }
-        }
-        @keyframes slideOutForward {
-            0% { opacity: 1; transform: translateX(0) scale(1); }
-            100% { opacity: 0; transform: translateX(-24px) scale(0.98); }
-        }
-        @keyframes slideOutBackward {
-            0% { opacity: 1; transform: translateX(0) scale(1); }
-            100% { opacity: 0; transform: translateX(24px) scale(0.98); }
-        }
+        .dashboard-card { background:linear-gradient(135deg,#ffffff,#f9fbfd); border-radius:22px; padding:14px 8px; margin-bottom:16px; box-shadow:0 6px 20px rgba(0,0,0,0.04),0 2px 6px rgba(0,0,0,0.02); display:flex; justify-content:space-around; flex-wrap:wrap; gap:10px; animation:dashFadeIn 0.6s ease-out; }
+        @keyframes dashFadeIn { from{ opacity:0; transform:translateY(-12px); } to{ opacity:1; transform:translateY(0); } }
+        .dashboard-stat { text-align:center; flex:1; min-width:70px; }
+        .stat-circle { width:50px; height:50px; border-radius:50%; background:linear-gradient(135deg,#dcfce7,#bbf7d0); display:inline-flex; align-items:center; justify-content:center; font-weight:700; color:#166534; margin-bottom:6px; box-shadow:0 2px 8px rgba(22,163,74,0.18); animation:circlePulse 2.5s ease-in-out infinite; border:2px solid rgba(22,163,74,0.15); font-size:1.2rem; transition:font-size 0.2s ease; word-break:break-word; line-height:1; overflow:hidden; }
+        @keyframes circlePulse { 0%,100%{ transform:scale(1); box-shadow:0 2px 8px rgba(22,163,74,0.18); } 50%{ transform:scale(1.07); box-shadow:0 4px 16px rgba(22,163,74,0.3); } }
+        .dashboard-stat .stat-label { font-size:0.6rem; color:#475569; font-weight:600; text-transform:uppercase; letter-spacing:0.3px; }
 
-        .card {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.02), 0 1px 2px rgba(0,0,0,0.03);
-            padding: 14px 16px;
-            margin-bottom: 14px;
-            border: 1px solid #eef2f8;
-        }
+        .generator-title { font-size:1.4rem; font-weight:700; letter-spacing:-0.2px; background:linear-gradient(135deg,#1e2b3c,#2c4a6e); -webkit-background-clip:text; background-clip:text; color:transparent; margin-bottom:4px; display:flex; align-items:center; }
+        .generator-title .casecraft-icon { width:32px; height:32px; border-radius:50%; object-fit:cover; margin-right:8px; vertical-align:middle; flex-shrink:0; }
 
-        .vpn-promo-line {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: #ecfdf5;
-            border-radius: 16px;
-            padding: 10px 14px;
-            margin-top: 10px;
-            border: 1px solid #a7f3d0;
-            flex-wrap: wrap;
-            animation: protonSlideIn 0.5s ease;
-        }
-        @keyframes protonSlideIn {
-            from { opacity: 0; transform: translateY(-8px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .vpn-promo-line img { width: 30px; height: 30px; object-fit: contain; border-radius: 8px; flex-shrink: 0; }
-        .vpn-promo-line .promo-text { flex: 1; font-weight: 700; font-size: 0.78rem; color: #064e3b; min-width: 140px; letter-spacing: -0.2px; }
-        .vpn-promo-line .promo-btn { background: #1d8c5e; color: white; padding: 8px 18px; border-radius: 28px; font-weight: 700; font-size: 0.73rem; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; transition: background 0.2s; box-shadow: 0 4px 12px rgba(29,140,94,0.25); }
-        .vpn-promo-line .promo-btn:hover { background: #16784e; }
+        .label { font-weight:600; color:#1f2a3e; margin-bottom:5px; display:block; font-size:0.75rem; letter-spacing:0.3px; }
+        input, .count-input { width:100%; padding:9px 14px; border:1.5px solid #e2e8f0; border-radius:22px; font-size:0.85rem; background:white; outline:none; transition:border-color 0.2s,box-shadow 0.2s; }
+        input:focus { border-color:#22c55e; box-shadow:0 0 0 3px rgba(34,197,94,0.08); }
+        .row-flex { display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end; margin-top:8px; }
+        .count-wrapper { flex:2; min-width:110px; }
+        .generate-btn { background:#16a34a; color:white; border:none; padding:0 24px; border-radius:34px; font-weight:600; font-size:0.88rem; cursor:pointer; height:48px; display:inline-flex; align-items:center; gap:8px; transition:0.2s; white-space:nowrap; }
+        .generate-btn i { animation:sparkleIcon 2s ease-in-out infinite; }
+        @keyframes sparkleIcon { 0%,100%{ transform:scale(1); } 50%{ transform:scale(1.15); } }
+        .generate-btn:hover { background:#15803d; transform:scale(0.97); }
+        .generate-btn:active { transform:scale(0.94); }
+        .action-buttons { display:flex; gap:12px; margin:14px 0 12px; border-top:1px solid #edf2f7; padding-top:14px; }
+        .small-btn { background:#f0fdf4; border:1px solid #bbf7d0; padding:7px 16px; border-radius:32px; font-size:0.78rem; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:6px; color:#166534; transition:0.2s; }
+        .small-btn:hover { background:#dcfce7; border-color:#86efac; }
+        .download-group { display:flex; gap:10px; margin-top:8px; flex-wrap:wrap; }
+        .download-btn { background:#f0fdf4; border:1px solid #bbf7d0; border-radius:28px; padding:5px 16px; font-size:0.72rem; font-weight:600; cursor:pointer; color:#166534; transition:0.2s; }
+        .download-btn:hover { background:#dcfce7; }
+        .result-area { background:#fafcff; border-radius:18px; border:1px solid #eef2ff; max-height:270px; overflow-y:auto; padding:4px 2px; }
 
-        @media (max-width: 400px) {
-            .vpn-promo-line { gap: 6px; padding: 8px 10px; }
-            .vpn-promo-line .promo-text { font-size: 0.7rem; }
-        }
+        .email-pill-icon { display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:50%; background:linear-gradient(135deg,#f43f5e,#e11d48); color:white; font-size:0.65rem; margin-right:7px; box-shadow:0 2px 6px rgba(244,63,94,0.25); animation:mailFloat 2s ease-in-out infinite; flex-shrink:0; }
+        @keyframes mailFloat { 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-3px); } }
+        .email-item { font-family:'SF Mono','Cascadia Code','Consolas',monospace; padding:7px 12px; border-bottom:1px solid #ecf3fa; font-size:0.72rem; word-break:break-all; display:flex; align-items:center; }
+        .empty-msg { text-align:center; color:#94a3b8; padding:22px 12px; font-size:0.77rem; }
 
-        .dashboard-card {
-            background: linear-gradient(135deg, #ffffff, #f9fbfd);
-            border-radius: 22px;
-            padding: 14px 8px;
-            margin-bottom: 16px;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.04), 0 2px 6px rgba(0,0,0,0.02);
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-            gap: 10px;
-            animation: dashFadeIn 0.6s ease-out;
-        }
-        @keyframes dashFadeIn {
-            from { opacity: 0; transform: translateY(-12px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .dashboard-stat {
-            text-align: center;
-            flex: 1;
-            min-width: 70px;
-        }
-        .stat-circle {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #dcfce7, #bbf7d0);
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            color: #166534;
-            margin-bottom: 6px;
-            box-shadow: 0 2px 8px rgba(22,163,74,0.18);
-            animation: circlePulse 2.5s ease-in-out infinite;
-            border: 2px solid rgba(22,163,74,0.15);
-            font-size: 1.2rem;
-            transition: font-size 0.2s ease;
-            word-break: break-word;
-            line-height: 1;
-            overflow: hidden;
-        }
-        @keyframes circlePulse {
-            0%, 100% { transform: scale(1); box-shadow: 0 2px 8px rgba(22,163,74,0.18); }
-            50% { transform: scale(1.07); box-shadow: 0 4px 16px rgba(22,163,74,0.3); }
-        }
-        .dashboard-stat .stat-label {
-            font-size: 0.6rem;
-            color: #475569;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-        }
+        .notes-grid { display:flex; flex-direction:column; gap:10px; margin-top:8px; }
+        .note-card { background:white; border-radius:18px; padding:10px 14px; border:1px solid #eef2ff; display:flex; justify-content:space-between; align-items:center; cursor:pointer; transition:box-shadow 0.2s, transform 0.2s; }
+        .note-card:hover { box-shadow:0 4px 16px rgba(0,0,0,0.05); }
+        .note-card:active { transform:scale(0.98); }
+        .note-title { font-weight:700; font-size:0.85rem; display:flex; align-items:center; gap:6px; }
+        .note-meta { font-size:0.63rem; color:#5b6e8c; margin-top:3px; display:flex; gap:10px; }
 
-        .generator-title {
-            font-size: 1.4rem;
-            font-weight: 700;
-            letter-spacing: -0.2px;
-            background: linear-gradient(135deg, #1e2b3c, #2c4a6e);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            margin-bottom: 4px;
-            display: flex;
-            align-items: center;
-        }
-        .generator-title .casecraft-icon {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-right: 8px;
-            vertical-align: middle;
-            flex-shrink: 0;
-        }
+        .delete-note-btn { background:transparent; border:none; font-size:1rem; color:#cbd5e1; cursor:pointer; padding:6px; border-radius:30px; animation:deletePurplePulse 2s ease-in-out infinite; transition:background 0.2s, color 0.2s; }
+        @keyframes deletePurplePulse { 0%{ color:#cbd5e1; transform:scale(1); } 30%{ color:#a78bfa; transform:scale(1.15); } 60%{ color:#8b5cf6; transform:scale(0.95); } 100%{ color:#cbd5e1; transform:scale(1); } }
+        .delete-note-btn:hover { color:#ef4444; background:#fee2e2; animation:none; }
+        .empty-notes { text-align:center; padding:30px 12px; color:#94a3b8; font-size:0.78rem; }
 
-        .label { font-weight: 600; color: #1f2a3e; margin-bottom: 5px; display: block; font-size: 0.75rem; letter-spacing: 0.3px; }
-        input, .count-input { width: 100%; padding: 9px 14px; border: 1.5px solid #e2e8f0; border-radius: 22px; font-size: 0.85rem; background: white; outline: none; transition: border-color 0.2s, box-shadow 0.2s; }
-        input:focus { border-color: #22c55e; box-shadow: 0 0 0 3px rgba(34,197,94,0.08); }
-        .row-flex { display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-end; margin-top: 8px; }
-        .count-wrapper { flex: 2; min-width: 110px; }
-        .generate-btn {
-            background: #16a34a;
-            color: white;
-            border: none;
-            padding: 0 24px;
-            border-radius: 34px;
-            font-weight: 600;
-            font-size: 0.88rem;
-            cursor: pointer;
-            height: 48px;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: 0.2s;
-            white-space: nowrap;
-        }
-        .generate-btn i { animation: sparkleIcon 2s ease-in-out infinite; }
-        @keyframes sparkleIcon {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.15); }
-        }
-        .generate-btn:hover { background: #15803d; transform: scale(0.97); }
-        .generate-btn:active { transform: scale(0.94); }
-        .action-buttons { display: flex; gap: 12px; margin: 14px 0 12px; border-top: 1px solid #edf2f7; padding-top: 14px; }
-        .small-btn { background: #f0fdf4; border: 1px solid #bbf7d0; padding: 7px 16px; border-radius: 32px; font-size: 0.78rem; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; color: #166534; transition: 0.2s; }
-        .small-btn:hover { background: #dcfce7; border-color: #86efac; }
-        .download-group { display: flex; gap: 10px; margin-top: 8px; flex-wrap: wrap; }
-        .download-btn { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 28px; padding: 5px 16px; font-size: 0.72rem; font-weight: 600; cursor: pointer; color: #166534; transition: 0.2s; }
-        .download-btn:hover { background: #dcfce7; }
-        .result-area { background: #fafcff; border-radius: 18px; border: 1px solid #eef2ff; max-height: 270px; overflow-y: auto; padding: 4px 2px; }
+        .full-modal { position:fixed; top:0; left:0; width:100%; height:100%; background:white; z-index:2000; display:flex; flex-direction:column; transform:translateY(100%); transition:transform 0.28s cubic-bezier(0.4,0,0.2,1); }
+        .full-modal.active { transform:translateY(0); }
+        .modal-header { padding:14px 16px; border-bottom:1px solid #eef2ff; display:flex; justify-content:space-between; align-items:center; background:#fff; position:sticky; top:0; z-index:10; }
+        .modal-header h3 { font-size:1.05rem; font-weight:600; }
+        .close-modal { background:#f1f5f9; border:none; width:36px; height:36px; border-radius:30px; cursor:pointer; transition:background 0.2s; display:flex; align-items:center; justify-content:center; }
+        .close-modal:hover { background:#e2e8f0; }
+        .modal-body { flex:1; overflow-y:auto; padding:12px 14px; -webkit-overflow-scrolling:touch; }
+        .modal-email-row { background:#fafcff; border-radius:16px; padding:8px 12px; margin-bottom:10px; display:flex; align-items:center; justify-content:space-between; border:1px solid #eef2ff; transition:background 0.2s; }
+        .modal-email-text { font-family:'SF Mono','Cascadia Code','Consolas',monospace; font-size:0.73rem; word-break:break-all; flex:1; margin-right:10px; display:flex; align-items:center; gap:6px; }
+        .cut-single-btn { background:#fee2e2; border:none; padding:5px 12px; border-radius:28px; font-size:0.68rem; font-weight:600; cursor:pointer; color:#b91c1c; animation:cutRedPulse 2s ease-in-out infinite; transition:background 0.2s; flex-shrink:0; display:flex; align-items:center; gap:4px; }
+        @keyframes cutRedPulse { 0%{ background-color:#fee2e2; transform:scale(1); } 30%{ background-color:#fecaca; transform:scale(1.06); } 60%{ background-color:#fca5a5; transform:scale(0.96); } 100%{ background-color:#fee2e2; transform:scale(1); } }
+        .cut-single-btn:hover { animation:none; background:#fecaca; }
+        .cut-single-btn:active { transform:scale(0.92); }
 
-        .email-pill-icon {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #f43f5e, #e11d48);
-            color: white;
-            font-size: 0.65rem;
-            margin-right: 7px;
-            box-shadow: 0 2px 6px rgba(244,63,94,0.25);
-            animation: mailFloat 2s ease-in-out infinite;
-            flex-shrink: 0;
-        }
-        @keyframes mailFloat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-3px); }
-        }
-        .email-item {
-            font-family: 'SF Mono', 'Cascadia Code', 'Consolas', monospace;
-            padding: 7px 12px;
-            border-bottom: 1px solid #ecf3fa;
-            font-size: 0.72rem;
-            word-break: break-all;
-            display: flex;
-            align-items: center;
-        }
-        .empty-msg { text-align: center; color: #94a3b8; padding: 22px 12px; font-size: 0.77rem; }
+        .bottom-nav { position:fixed; bottom:12px; left:50%; transform:translateX(-50%); width:calc(100% - 32px); max-width:450px; background:rgba(255,255,255,0.94); backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px); border-radius:40px; box-shadow:0 8px 32px rgba(0,0,0,0.07),0 2px 8px rgba(0,0,0,0.04); display:flex; justify-content:space-around; align-items:center; padding:6px 4px; z-index:1000; border:1px solid rgba(255,255,255,0.6); }
+        .nav-item { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; padding:8px 10px; border-radius:30px; border:none; background:transparent; font-size:0.6rem; font-weight:600; color:#6b7280; cursor:pointer; transition:0.25s cubic-bezier(0.4,0,0.2,1); min-width:55px; -webkit-tap-highlight-color:transparent; user-select:none; }
+        .nav-item i { font-size:1.15rem; transition:0.25s cubic-bezier(0.4,0,0.2,1); }
+        .nav-item.active { background:#0f172a; color:white; box-shadow:0 4px 14px rgba(15,23,42,0.25); transform:translateY(-2px); }
+        .nav-item.active i { color:white; }
+        .nav-item:active { transform:scale(0.93); }
+        .nav-item.active:active { transform:translateY(-1px) scale(0.95); }
 
-        .notes-grid { display: flex; flex-direction: column; gap: 10px; margin-top: 8px; }
-        .note-card { background: white; border-radius: 18px; padding: 10px 14px; border: 1px solid #eef2ff; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: box-shadow 0.2s, transform 0.2s; }
-        .note-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.05); }
-        .note-card:active { transform: scale(0.98); }
-        .note-title { font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; gap: 6px; }
-        .note-meta { font-size: 0.63rem; color: #5b6e8c; margin-top: 3px; display: flex; gap: 10px; }
+        .install-panel { display:none !important; }
 
-        .delete-note-btn {
-            background: transparent;
-            border: none;
-            font-size: 1rem;
-            color: #cbd5e1;
-            cursor: pointer;
-            padding: 6px;
-            border-radius: 30px;
-            animation: deletePurplePulse 2s ease-in-out infinite;
-            transition: background 0.2s, color 0.2s;
-        }
-        @keyframes deletePurplePulse {
-            0% { color: #cbd5e1; transform: scale(1); }
-            30% { color: #a78bfa; transform: scale(1.15); }
-            60% { color: #8b5cf6; transform: scale(0.95); }
-            100% { color: #cbd5e1; transform: scale(1); }
-        }
-        .delete-note-btn:hover { color: #ef4444; background: #fee2e2; animation: none; }
-        .empty-notes { text-align: center; padding: 30px 12px; color: #94a3b8; font-size: 0.78rem; }
+        .social-links { display:flex; justify-content:center; align-items:center; gap:16px; margin:10px 0 6px; flex-wrap:wrap; }
+        .social-icon-circle { display:inline-flex; align-items:center; justify-content:center; width:44px; height:44px; border-radius:50%; text-decoration:none; transition:all 0.28s cubic-bezier(0.34,1.56,0.64,1); box-shadow:0 2px 8px rgba(0,0,0,0.08),0 1px 3px rgba(0,0,0,0.04); position:relative; flex-shrink:0; }
+        .social-icon-circle i { font-size:1.05rem; color:#fff; transition:transform 0.28s cubic-bezier(0.34,1.56,0.64,1); }
+        .social-icon-circle:hover { transform:translateY(-3px) scale(1.08); box-shadow:0 8px 22px rgba(0,0,0,0.14),0 3px 8px rgba(0,0,0,0.06); }
+        .social-icon-circle:active { transform:scale(0.9); transition:all 0.1s ease; }
+        .social-icon-circle.contact-web { background:#16a34a; }
+        .social-icon-circle.contact-web:hover { background:#15803d; }
+        .social-icon-circle.facebook-og { background:#1877f2; }
+        .social-icon-circle.facebook-og:hover { background:#166fe5; }
+        .social-icon-circle.mail-og { background:#d44638; }
+        .social-icon-circle.mail-og:hover { background:#c1352a; }
+        .social-icon-circle::after { content:attr(data-tooltip); position:absolute; bottom:-22px; left:50%; transform:translateX(-50%) translateY(4px); background:#1e293b; color:#fff; font-size:0.6rem; font-weight:600; padding:3px 10px; border-radius:20px; white-space:nowrap; pointer-events:none; opacity:0; transition:all 0.25s ease; letter-spacing:0.2px; }
+        .social-icon-circle:hover::after { opacity:1; transform:translateX(-50%) translateY(0); }
+        @media (max-width:380px) { .social-links{ gap:12px; } .social-icon-circle{ width:40px; height:40px; } .social-icon-circle i{ font-size:0.95rem; } .social-icon-circle::after{ display:none; } }
 
-        .full-modal {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 2000;
-            display: flex; flex-direction: column; transform: translateY(100%);
-            transition: transform 0.28s cubic-bezier(0.4,0,0.2,1);
-        }
-        .full-modal.active { transform: translateY(0); }
-        .modal-header { padding: 14px 16px; border-bottom: 1px solid #eef2ff; display: flex; justify-content: space-between; align-items: center; background: #fff; position: sticky; top: 0; z-index: 10; }
-        .modal-header h3 { font-size: 1.05rem; font-weight: 600; }
-        .close-modal { background: #f1f5f9; border: none; width: 36px; height: 36px; border-radius: 30px; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; justify-content: center; }
-        .close-modal:hover { background: #e2e8f0; }
-        .modal-body { flex: 1; overflow-y: auto; padding: 12px 14px; -webkit-overflow-scrolling: touch; }
-        .modal-email-row {
-            background: #fafcff; border-radius: 16px; padding: 8px 12px; margin-bottom: 10px;
-            display: flex; align-items: center; justify-content: space-between; border: 1px solid #eef2ff;
-            transition: background 0.2s;
-        }
-        .modal-email-text {
-            font-family: 'SF Mono', 'Cascadia Code', 'Consolas', monospace;
-            font-size: 0.73rem; word-break: break-all; flex: 1; margin-right: 10px;
-            display: flex; align-items: center; gap: 6px;
-        }
-        .cut-single-btn {
-            background: #fee2e2; border: none; padding: 5px 12px; border-radius: 28px; font-size: 0.68rem;
-            font-weight: 600; cursor: pointer; color: #b91c1c; animation: cutRedPulse 2s ease-in-out infinite;
-            transition: background 0.2s; flex-shrink: 0; display: flex; align-items: center; gap: 4px;
-        }
-        @keyframes cutRedPulse {
-            0% { background-color: #fee2e2; transform: scale(1); }
-            30% { background-color: #fecaca; transform: scale(1.06); }
-            60% { background-color: #fca5a5; transform: scale(0.96); }
-            100% { background-color: #fee2e2; transform: scale(1); }
-        }
-        .cut-single-btn:hover { animation: none; background: #fecaca; }
-        .cut-single-btn:active { transform: scale(0.92); }
+        .app-links-grid { display:flex; flex-wrap:wrap; gap:12px; margin-top:14px; }
+        .app-link-item { background:#ffffff; border:none; box-shadow:0 4px 12px rgba(0,0,0,0.03),0 1px 4px rgba(0,0,0,0.05); border-radius:20px; padding:16px 10px 12px; flex:1 1 130px; text-align:center; text-decoration:none; color:#0f172a; transition:all 0.25s ease; display:flex; flex-direction:column; align-items:center; gap:6px; }
+        .app-link-item:hover { box-shadow:0 12px 24px rgba(0,0,0,0.08),0 4px 8px rgba(0,0,0,0.04); transform:translateY(-3px); background:#f8fcff; }
+        .app-link-item img { width:40px; height:40px; object-fit:contain; transition:transform 0.2s; }
+        .app-link-item:hover img { transform:scale(1.05); }
+        .app-link-item .link-label { font-weight:700; font-size:0.74rem; display:block; }
+        .app-link-item .link-desc { font-size:0.62rem; color:#475569; }
+        .app-links-grid.animate-in .app-link-item { opacity:0; transform:translateY(16px); animation:appLinkFadeUp 0.4s ease forwards; }
+        @keyframes appLinkFadeUp { to { opacity:1; transform:translateY(0); } }
+        .app-links-grid.animate-in .app-link-item:nth-child(1) { animation-delay:0.05s; }
+        .app-links-grid.animate-in .app-link-item:nth-child(2) { animation-delay:0.1s; }
+        .app-links-grid.animate-in .app-link-item:nth-child(3) { animation-delay:0.15s; }
+        .app-links-grid.animate-in .app-link-item:nth-child(4) { animation-delay:0.2s; }
+        .app-links-grid.animate-in .app-link-item:nth-child(5) { animation-delay:0.25s; }
+        .app-links-grid.animate-in .app-link-item:nth-child(6) { animation-delay:0.3s; }
+        .sweet-watermark { text-align:center; font-size:0.75rem; font-weight:500; color:#2d6a4f; margin:12px 0 6px; letter-spacing:0.5px; display:flex; align-items:center; justify-content:center; gap:6px; }
+        .toast-container { position:fixed; bottom:80px; left:50%; transform:translateX(-50%); z-index:3000; pointer-events:none; }
+        .toast { background:#1e293b; color:white; padding:7px 16px; border-radius:32px; font-size:0.73rem; display:flex; align-items:center; gap:8px; animation:fadeUp 0.2s ease; box-shadow:0 4px 14px rgba(0,0,0,0.15); }
+        .toast.success { background:#0f3b2c; }
+        @keyframes fadeUp { from{ opacity:0; transform:translateY(6px); } to{ opacity:1; transform:translateY(0); } }
+        .about-text { font-size:0.76rem; line-height:1.5; color:#1e293b; }
+        .about-text strong { color:#0f172a; }
+        .about-highlight { background:#fffbea; border-left:3px solid #f59e0b; padding:10px 12px; border-radius:14px; margin:14px 0; font-size:0.73rem; }
 
-        .bottom-nav {
-            position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%);
-            width: calc(100% - 32px); max-width: 450px;
-            background: rgba(255,255,255,0.94); backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px); border-radius: 40px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.07), 0 2px 8px rgba(0,0,0,0.04);
-            display: flex; justify-content: space-around; align-items: center; padding: 6px 4px;
-            z-index: 1000; border: 1px solid rgba(255,255,255,0.6);
-        }
-        .nav-item {
-            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
-            padding: 8px 10px; border-radius: 30px; border: none; background: transparent;
-            font-size: 0.6rem; font-weight: 600; color: #6b7280; cursor: pointer;
-            transition: 0.25s cubic-bezier(0.4,0,0.2,1); min-width: 55px;
-            -webkit-tap-highlight-color: transparent; user-select: none;
-        }
-        .nav-item i { font-size: 1.15rem; transition: 0.25s cubic-bezier(0.4,0,0.2,1); }
-        .nav-item.active { background: #0f172a; color: white; box-shadow: 0 4px 14px rgba(15,23,42,0.25); transform: translateY(-2px); }
-        .nav-item.active i { color: white; }
-        .nav-item:active { transform: scale(0.93); }
-        .nav-item.active:active { transform: translateY(-1px) scale(0.95); }
-
-        .install-panel { display: none !important; }
-
-        .social-links { display: flex; justify-content: center; align-items: center; gap: 16px; margin: 10px 0 6px; flex-wrap: wrap; }
-        .social-icon-circle {
-            display: inline-flex; align-items: center; justify-content: center;
-            width: 44px; height: 44px; border-radius: 50%; text-decoration: none;
-            transition: all 0.28s cubic-bezier(0.34,1.56,0.64,1);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.04);
-            position: relative; flex-shrink: 0;
-        }
-        .social-icon-circle i { font-size: 1.05rem; color: #fff; transition: transform 0.28s cubic-bezier(0.34,1.56,0.64,1); }
-        .social-icon-circle:hover { transform: translateY(-3px) scale(1.08); box-shadow: 0 8px 22px rgba(0,0,0,0.14), 0 3px 8px rgba(0,0,0,0.06); }
-        .social-icon-circle:active { transform: scale(0.9); transition: all 0.1s ease; }
-        .social-icon-circle.contact-web { background: #16a34a; }
-        .social-icon-circle.contact-web:hover { background: #15803d; }
-        .social-icon-circle.facebook-og { background: #1877f2; }
-        .social-icon-circle.facebook-og:hover { background: #166fe5; }
-        .social-icon-circle.mail-og { background: #d44638; }
-        .social-icon-circle.mail-og:hover { background: #c1352a; }
-        .social-icon-circle::after {
-            content: attr(data-tooltip); position: absolute; bottom: -22px; left: 50%;
-            transform: translateX(-50%) translateY(4px); background: #1e293b; color: #fff;
-            font-size: 0.6rem; font-weight: 600; padding: 3px 10px; border-radius: 20px;
-            white-space: nowrap; pointer-events: none; opacity: 0; transition: all 0.25s ease; letter-spacing: 0.2px;
-        }
-        .social-icon-circle:hover::after { opacity: 1; transform: translateX(-50%) translateY(0); }
-        @media (max-width: 380px) {
-            .social-links { gap: 12px; }
-            .social-icon-circle { width: 40px; height: 40px; }
-            .social-icon-circle i { font-size: 0.95rem; }
-            .social-icon-circle::after { display: none; }
-        }
-
-        .app-links-grid { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 14px; }
-        .app-link-item { background: #ffffff; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.03), 0 1px 4px rgba(0,0,0,0.05); border-radius: 20px; padding: 16px 10px 12px; flex: 1 1 130px; text-align: center; text-decoration: none; color: #0f172a; transition: all 0.25s ease; display: flex; flex-direction: column; align-items: center; gap: 6px; }
-        .app-link-item:hover { box-shadow: 0 12px 24px rgba(0,0,0,0.08), 0 4px 8px rgba(0,0,0,0.04); transform: translateY(-3px); background: #f8fcff; }
-        .app-link-item img { width: 40px; height: 40px; object-fit: contain; transition: transform 0.2s; }
-        .app-link-item:hover img { transform: scale(1.05); }
-        .app-link-item .link-label { font-weight: 700; font-size: 0.74rem; display: block; }
-        .app-link-item .link-desc { font-size: 0.62rem; color: #475569; }
-        .app-links-grid.animate-in .app-link-item { opacity: 0; transform: translateY(16px); animation: appLinkFadeUp 0.4s ease forwards; }
-        @keyframes appLinkFadeUp { to { opacity: 1; transform: translateY(0); } }
-        .app-links-grid.animate-in .app-link-item:nth-child(1) { animation-delay: 0.05s; }
-        .app-links-grid.animate-in .app-link-item:nth-child(2) { animation-delay: 0.1s; }
-        .app-links-grid.animate-in .app-link-item:nth-child(3) { animation-delay: 0.15s; }
-        .app-links-grid.animate-in .app-link-item:nth-child(4) { animation-delay: 0.2s; }
-        .app-links-grid.animate-in .app-link-item:nth-child(5) { animation-delay: 0.25s; }
-        .app-links-grid.animate-in .app-link-item:nth-child(6) { animation-delay: 0.3s; }
-        .sweet-watermark { text-align: center; font-size: 0.75rem; font-weight: 500; color: #2d6a4f; margin: 12px 0 6px; letter-spacing: 0.5px; display: flex; align-items: center; justify-content: center; gap: 6px; }
-        .toast-container { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); z-index: 3000; pointer-events: none; }
-        .toast { background: #1e293b; color: white; padding: 7px 16px; border-radius: 32px; font-size: 0.73rem; display: flex; align-items: center; gap: 8px; animation: fadeUp 0.2s ease; box-shadow: 0 4px 14px rgba(0,0,0,0.15); }
-        .toast.success { background: #0f3b2c; }
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-        .about-text { font-size: 0.76rem; line-height: 1.5; color: #1e293b; }
-        .about-text strong { color: #0f172a; }
-        .about-highlight { background: #fffbea; border-left: 3px solid #f59e0b; padding: 10px 12px; border-radius: 14px; margin: 14px 0; font-size: 0.73rem; }
+        /* Temp Mail link style */
+        .temp-mail-link { transition: opacity 0.2s; }
+        .temp-mail-link:hover { opacity:0.8; }
     </style>
 </head>
 <body>
@@ -460,7 +221,15 @@
         <!-- ALL CREAT MAIL SECTION -->
         <div id="allCreatSection" class="section">
             <div class="card">
-                <div class="generator-title">📁 All Creat Mail</div>
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <div class="generator-title" style="margin-bottom:0;">📁 All Creat Mail</div>
+                    <a href="temp-mail.html" class="temp-mail-link" style="text-decoration:none; display:flex; align-items:center; gap:6px;">
+                        <div style="width:36px; height:36px; border-radius:50%; background:linear-gradient(135deg,#f59e0b,#f97316); display:flex; align-items:center; justify-content:center; color:white; font-size:0.8rem; box-shadow:0 2px 8px rgba(245,158,11,0.3);">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <span style="font-size:0.7rem; font-weight:600; color:#f59e0b;">Temp Mail</span>
+                    </a>
+                </div>
                 <p style="font-size:0.68rem; color:#475569; margin-bottom:8px;">Tap a note → cut emails (copy & delete)</p>
                 <div id="notesListContainer" class="notes-grid">
                     <div class="empty-notes">No saved notes. Generate emails first.</div>
@@ -566,38 +335,9 @@
 
             let audioCtx = null;
             function getAudioContext() { if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)(); return audioCtx; }
-            function playCutSound() {
-                try {
-                    const ctx = getAudioContext(); const now = ctx.currentTime;
-                    const osc = ctx.createOscillator(); const gain = ctx.createGain();
-                    osc.type='sine'; osc.frequency.setValueAtTime(1200,now); osc.frequency.exponentialRampToValueAtTime(400,now+0.12);
-                    gain.gain.setValueAtTime(0.3,now); gain.gain.exponentialRampToValueAtTime(0.01,now+0.18);
-                    osc.connect(gain); gain.connect(ctx.destination); osc.start(now); osc.stop(now+0.2);
-                } catch(e){}
-            }
-            function playDeleteSound() {
-                try {
-                    const ctx = getAudioContext(); const now = ctx.currentTime;
-                    const osc = ctx.createOscillator(); const gain = ctx.createGain();
-                    osc.type='triangle'; osc.frequency.setValueAtTime(200,now); osc.frequency.exponentialRampToValueAtTime(80,now+0.15);
-                    gain.gain.setValueAtTime(0.4,now); gain.gain.exponentialRampToValueAtTime(0.01,now+0.25);
-                    osc.connect(gain); gain.connect(ctx.destination); osc.start(now); osc.stop(now+0.3);
-                } catch(e){}
-            }
-            function playGenerateSound() {
-                try {
-                    const ctx = getAudioContext(); const now = ctx.currentTime;
-                    const osc = ctx.createOscillator(); const gain = ctx.createGain();
-                    osc.type='sine';
-                    osc.frequency.setValueAtTime(523.25, now); 
-                    osc.frequency.setValueAtTime(659.25, now + 0.08);
-                    osc.frequency.setValueAtTime(783.99, now + 0.16);
-                    gain.gain.setValueAtTime(0.4, now);
-                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
-                    osc.connect(gain); gain.connect(ctx.destination);
-                    osc.start(now); osc.stop(now + 0.35);
-                } catch(e){}
-            }
+            function playCutSound() { try { const ctx=getAudioContext(); const now=ctx.currentTime; const osc=ctx.createOscillator(); const gain=ctx.createGain(); osc.type='sine'; osc.frequency.setValueAtTime(1200,now); osc.frequency.exponentialRampToValueAtTime(400,now+0.12); gain.gain.setValueAtTime(0.3,now); gain.gain.exponentialRampToValueAtTime(0.01,now+0.18); osc.connect(gain); gain.connect(ctx.destination); osc.start(now); osc.stop(now+0.2); } catch(e){} }
+            function playDeleteSound() { try { const ctx=getAudioContext(); const now=ctx.currentTime; const osc=ctx.createOscillator(); const gain=ctx.createGain(); osc.type='triangle'; osc.frequency.setValueAtTime(200,now); osc.frequency.exponentialRampToValueAtTime(80,now+0.15); gain.gain.setValueAtTime(0.4,now); gain.gain.exponentialRampToValueAtTime(0.01,now+0.25); osc.connect(gain); gain.connect(ctx.destination); osc.start(now); osc.stop(now+0.3); } catch(e){} }
+            function playGenerateSound() { try { const ctx=getAudioContext(); const now=ctx.currentTime; const osc=ctx.createOscillator(); const gain=ctx.createGain(); osc.type='sine'; osc.frequency.setValueAtTime(523.25,now); osc.frequency.setValueAtTime(659.25,now+0.08); osc.frequency.setValueAtTime(783.99,now+0.16); gain.gain.setValueAtTime(0.4,now); gain.gain.exponentialRampToValueAtTime(0.01,now+0.3); osc.connect(gain); gain.connect(ctx.destination); osc.start(now); osc.stop(now+0.35); } catch(e){} }
 
             const STORAGE_KEY = 'caseforge_notes', CUT_COUNT_KEY = 'caseforge_cutcount';
             let savedNotes = [];
@@ -615,16 +355,10 @@
                 const totalEmails = savedNotes.reduce((sum,n)=>sum+n.count,0);
                 const notesCount = savedNotes.length;
                 const cutCount = getCutCount();
-
-                const totalEl = document.getElementById('totalEmailsStat');
-                const notesEl = document.getElementById('notesCountStat');
-                const cutEl = document.getElementById('cutCountStat');
-
-                totalEl.textContent = totalEmails;
-                notesEl.textContent = notesCount;
-                cutEl.textContent = cutCount;
-
-                [totalEl, notesEl, cutEl].forEach(el => {
+                document.getElementById('totalEmailsStat').textContent = totalEmails;
+                document.getElementById('notesCountStat').textContent = notesCount;
+                document.getElementById('cutCountStat').textContent = cutCount;
+                [document.getElementById('totalEmailsStat'), document.getElementById('notesCountStat'), document.getElementById('cutCountStat')].forEach(el => {
                     const len = el.textContent.length;
                     if (len > 4) el.style.fontSize = '0.9rem';
                     else if (len > 3) el.style.fontSize = '1rem';
@@ -752,7 +486,6 @@
             document.getElementById('downloadExcelBtn').addEventListener('click',exportExcel);
             document.getElementById('downloadPdfBtn').addEventListener('click',exportPDF);
 
-            // PWA (hidden panel)
             let deferredPrompt=null; const installPanel=document.querySelector('.install-panel'); if(installPanel) installPanel.style.display='none';
             const manifestObj={name:"CaseForge Email Studio",short_name:"CaseForge",start_url:".",display:"standalone",theme_color:"#f4f7fb",background_color:"#ffffff",icons:[{src:"genarator.png",sizes:"192x192",type:"image/png"},{src:"genarator.png",sizes:"512x512",type:"image/png"}]};
             const manifestBlob=new Blob([JSON.stringify(manifestObj)],{type:'application/json'}); const manifestURL=URL.createObjectURL(manifestBlob);
@@ -766,7 +499,6 @@
             document.getElementById('installAppBtn')?.addEventListener('click',async()=>{ if(deferredPrompt){ deferredPrompt.prompt(); const {outcome}=await deferredPrompt.userChoice; if(outcome==='accepted'){ toast("Installing app...","success"); } else toast("Install cancelled","info"); deferredPrompt=null; } else toast("Tap browser menu → Add to Home Screen","info"); });
             window.addEventListener('appinstalled',()=>{ deferredPrompt=null; toast("✅ App installed!","success"); });
 
-            // section switching
             const genSec=document.getElementById('generatorSection'), creatSec=document.getElementById('allCreatSection'), vpnSec=document.getElementById('vpnSection'), aboutSec=document.getElementById('aboutSection');
             const navs=document.querySelectorAll('.nav-item');
             const appLinksGrid=document.getElementById('appLinksGrid');
