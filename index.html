@@ -25,7 +25,6 @@
         .anim-slide-backward { animation:slideInBackward 0.28s cubic-bezier(0,0,0.2,1) forwards; }
         .anim-slide-out-forward { animation:slideOutForward 0.2s cubic-bezier(0.4,0,1,1) forwards; }
         .anim-slide-out-backward { animation:slideOutBackward 0.2s cubic-bezier(0.4,0,1,1) forwards; }
-
         @keyframes slideInForward { 0%{ opacity:0; transform:translateX(28px) scale(0.97); } 100%{ opacity:1; transform:translateX(0) scale(1); } }
         @keyframes slideInBackward { 0%{ opacity:0; transform:translateX(-28px) scale(0.97); } 100%{ opacity:1; transform:translateX(0) scale(1); } }
         @keyframes slideOutForward { 0%{ opacity:1; transform:translateX(0) scale(1); } 100%{ opacity:0; transform:translateX(-24px) scale(0.98); } }
@@ -38,7 +37,6 @@
         .vpn-promo-line .promo-text { flex:1; font-weight:700; font-size:0.78rem; color:#064e3b; min-width:140px; letter-spacing:-0.2px; }
         .vpn-promo-line .promo-btn { background:#1d8c5e; color:white; padding:8px 18px; border-radius:28px; font-weight:700; font-size:0.73rem; text-decoration:none; display:inline-flex; align-items:center; gap:6px; white-space:nowrap; transition:background 0.2s; box-shadow:0 4px 12px rgba(29,140,94,0.25); }
         .vpn-promo-line .promo-btn:hover { background:#16784e; }
-
         @media (max-width:400px) { .vpn-promo-line{ gap:6px; padding:8px 10px; } .vpn-promo-line .promo-text{ font-size:0.7rem; } }
 
         .dashboard-card { background:linear-gradient(135deg,#ffffff,#f9fbfd); border-radius:22px; padding:14px 8px; margin-bottom:16px; box-shadow:0 6px 20px rgba(0,0,0,0.04),0 2px 6px rgba(0,0,0,0.02); display:flex; justify-content:space-around; flex-wrap:wrap; gap:10px; animation:dashFadeIn 0.6s ease-out; }
@@ -52,7 +50,7 @@
         .generator-title .casecraft-icon { width:32px; height:32px; border-radius:50%; object-fit:cover; margin-right:8px; vertical-align:middle; flex-shrink:0; }
 
         .label { font-weight:600; color:#1f2a3e; margin-bottom:5px; display:block; font-size:0.75rem; letter-spacing:0.3px; }
-        input, .count-input { width:100%; padding:9px 14px; border:1.5px solid #e2e8f0; border-radius:22px; font-size:0.85rem; background:white; outline:none; transition:border-color 0.2s,box-shadow 0.2s; }
+        input,.count-input { width:100%; padding:9px 14px; border:1.5px solid #e2e8f0; border-radius:22px; font-size:0.85rem; background:white; outline:none; transition:border-color 0.2s,box-shadow 0.2s; }
         input:focus { border-color:#22c55e; box-shadow:0 0 0 3px rgba(34,197,94,0.08); }
         .row-flex { display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end; margin-top:8px; }
         .count-wrapper { flex:2; min-width:110px; }
@@ -100,7 +98,7 @@
         .cut-single-btn:hover { animation:none; background:#fecaca; }
         .cut-single-btn:active { transform:scale(0.92); }
 
-        .bottom-nav { position:fixed; bottom:12px; left:50%; transform:translateX(-50%); width:calc(100% - 32px); max-width:450px; background:rgba(255,255,255,0.94); backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px); border-radius:40px; box-shadow:0 8px 32px rgba(0,0,0,0.07),0 2px 8px rgba(0,0,0,0.04); display:flex; justify-content:space-around; align-items:center; padding:6px 4px; z-index:1000; border:1px solid rgba(255,255,255,0.6); }
+        .bottom-nav { position:fixed; bottom:12px; left:50%; transform:translateX(-50%); width:calc(100% - 32px); max-width:500px; background:rgba(255,255,255,0.94); backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px); border-radius:40px; box-shadow:0 8px 32px rgba(0,0,0,0.07),0 2px 8px rgba(0,0,0,0.04); display:flex; justify-content:space-around; align-items:center; padding:6px 4px; z-index:1000; border:1px solid rgba(255,255,255,0.6); }
         .nav-item { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; padding:8px 10px; border-radius:30px; border:none; background:transparent; font-size:0.6rem; font-weight:600; color:#6b7280; cursor:pointer; transition:0.25s cubic-bezier(0.4,0,0.2,1); min-width:55px; -webkit-tap-highlight-color:transparent; user-select:none; }
         .nav-item i { font-size:1.15rem; transition:0.25s cubic-bezier(0.4,0,0.2,1); }
         .nav-item.active { background:#0f172a; color:white; box-shadow:0 4px 14px rgba(15,23,42,0.25); transform:translateY(-2px); }
@@ -149,396 +147,640 @@
         .about-text strong { color:#0f172a; }
         .about-highlight { background:#fffbea; border-left:3px solid #f59e0b; padding:10px 12px; border-radius:14px; margin:14px 0; font-size:0.73rem; }
 
-        /* Temp Mail link style */
-        .temp-mail-link { transition: opacity 0.2s; }
-        .temp-mail-link:hover { opacity:0.8; }
+        /* ===== TEMP MAIL PREMIUM STYLES ===== */
+        .temp-card {
+            background: #ffffff; border-radius: 24px; padding: 20px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.1);
+            border: 1px solid #e2e8f0;
+        }
+        .temp-loading-bar-container { height: 3px; background: transparent; margin-bottom: 12px; }
+        .temp-loading-bar { height: 100%; width: 0%; background: linear-gradient(90deg, #059669, #34d399); transition: width 0.2s ease-out; opacity: 0; }
+        .temp-loading-bar.show { opacity: 1; }
+        .temp-email-card {
+            background: #f8fafc; border-radius: 20px; padding: 16px; margin-bottom: 18px;
+            display: flex; align-items: center; justify-content: space-between; gap: 14px;
+            flex-wrap: wrap; border: 1px solid #e2e8f0; transition: all 0.3s;
+        }
+        .temp-email-card.expired { border-color: #fecaca; background: #fff5f5; }
+        .temp-email-info { flex: 1; min-width: 150px; }
+        .temp-email-address {
+            font-family: 'SF Mono', monospace; font-size: 0.82rem; font-weight: 600;
+            color: #1e293b; word-break: break-all; line-height: 1.4;
+        }
+        .temp-email-status { font-size: 0.6rem; color: #ef4444; display: none; margin-top: 2px; }
+        .temp-email-card.expired .temp-email-status { display: block; }
+        .temp-btn-row { display: flex; gap: 8px; align-items: center; flex-shrink: 0; }
+        .btn-premium {
+            display: inline-flex; align-items: center; gap: 7px; padding: 11px 18px;
+            border-radius: 14px; font-size: 0.76rem; font-weight: 600; cursor: pointer;
+            border: none; white-space: nowrap; transition: all 0.25s cubic-bezier(0.34,1.56,0.64,1);
+            letter-spacing: 0.2px; position: relative; overflow: hidden;
+        }
+        .btn-premium:active { transform: scale(0.94); }
+        .btn-copy {
+            background: linear-gradient(135deg, #059669, #10b981); color: #fff;
+            box-shadow: 0 4px 14px rgba(5,150,105,0.3);
+        }
+        .btn-copy:hover { box-shadow: 0 6px 20px rgba(5,150,105,0.4); transform: translateY(-2px); }
+        .btn-refresh {
+            background: linear-gradient(135deg, #4f46e5, #6366f1); color: #fff;
+            box-shadow: 0 4px 14px rgba(79,70,229,0.3);
+        }
+        .btn-refresh:hover { box-shadow: 0 6px 20px rgba(79,70,229,0.4); transform: translateY(-2px); }
+        .btn-new {
+            background: linear-gradient(135deg, #f59e0b, #f97316); color: #fff;
+            box-shadow: 0 4px 14px rgba(245,158,11,0.3);
+        }
+        .btn-new:hover { box-shadow: 0 6px 20px rgba(245,158,11,0.4); transform: translateY(-2px); }
+        .btn-new i { animation: sparkle 1.8s ease-in-out infinite; }
+        @keyframes sparkle { 0%,100%{ transform:scale(1); } 50%{ transform:scale(1.2); } }
+
+        .temp-inbox-section { border-radius: 20px; border: 1px solid #e2e8f0; overflow: hidden; background: white; }
+        .temp-inbox-header {
+            background: #f8fafc; padding: 12px 16px; font-weight: 600; font-size: 0.8rem;
+            color: #475569; border-bottom: 1px solid #e2e8f0; display: flex;
+            justify-content: space-between; align-items: center;
+        }
+        .temp-message-list { max-height: 320px; overflow-y: auto; }
+        .temp-message-item {
+            padding: 14px 16px; border-bottom: 1px solid #f1f5f9; cursor: pointer;
+            transition: background 0.2s; display: flex; flex-direction: column; gap: 4px;
+            position: relative;
+        }
+        .temp-message-item:hover { background: #f9fafb; }
+        .temp-message-sender { font-weight: 600; font-size: 0.8rem; color: #1e293b; }
+        .temp-message-subject { font-size: 0.75rem; color: #475569; }
+        .temp-message-preview {
+            font-size: 0.68rem; color: #94a3b8; white-space: nowrap; overflow: hidden;
+            text-overflow: ellipsis; max-width: calc(100% - 90px);
+        }
+        .code-copy-chip {
+            position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+            background: #fff5f5; border: 1.5px solid #fecaca; color: #b91c1c; padding: 5px 12px;
+            border-radius: 20px; font-size: 0.7rem; font-weight: 700; cursor: pointer;
+            display: flex; align-items: center; gap: 5px; transition: all 0.2s; z-index: 2;
+        }
+        .code-copy-chip:hover { background: #fee2e2; border-color: #fca5a5; }
+        .no-messages { text-align: center; padding: 36px 12px; color: #94a3b8; font-size: 0.8rem; }
+        .modal-overlay {
+            position: fixed; top:0; left:0; width:100%; height:100%;
+            background: rgba(0,0,0,0.4); z-index:2000; display:flex; align-items:center;
+            justify-content:center; padding:16px; animation: fadeIn 0.2s ease;
+        }
+        @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+        .modal-content {
+            background: white; border-radius:24px; max-width:550px; width:100%;
+            max-height:80vh; overflow-y:auto; padding:20px; box-shadow:0 20px 40px rgba(0,0,0,0.15);
+        }
+        .modal-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; }
+        .modal-header h3 { font-size:1rem; font-weight:600; color: #1e293b; }
+        .modal-body { font-family:'SF Mono', monospace; font-size:0.72rem; line-height:1.6; white-space:pre-wrap; word-break:break-word; color:#334155; }
+        .close-btn { background: #f1f5f9; border: none; width: 32px; height: 32px; border-radius: 50%; font-size: 0.9rem; color: #64748b; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+        .close-btn:hover { background: #e2e8f0; }
     </style>
 </head>
 <body>
-    <div class="app-container">
-        <!-- GENERATOR SECTION -->
-        <div id="generatorSection" class="section active-section">
-            <div class="dashboard-card" id="dashboardCard">
-                <div class="dashboard-stat">
-                    <div class="stat-circle" id="totalEmailsStat">0</div>
-                    <div class="stat-label">Total Emails</div>
-                </div>
-                <div class="dashboard-stat">
-                    <div class="stat-circle" id="notesCountStat">0</div>
-                    <div class="stat-label">Notes</div>
-                </div>
-                <div class="dashboard-stat">
-                    <div class="stat-circle" id="cutCountStat">0</div>
-                    <div class="stat-label">Use Emails</div>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="generator-title">
-                    <img src="near-protocol.png" alt="CaseCraft" class="casecraft-icon">
-                    CaseCraft
-                </div>
-                <p style="font-size:0.68rem; color:#475569; margin-bottom:12px;">Random letter case · digits unchanged · auto‑saved</p>
-                <label class="label">Base email</label>
-                <input type="email" id="baseEmailInput" value="demo.user@gmail.com">
-                <div class="row-flex">
-                    <div class="count-wrapper">
-                        <label class="label">Variants (max 1000)</label>
-                        <input type="number" id="countInput" min="1" max="1000" value="8">
-                    </div>
-                    <button id="generateBtn" class="generate-btn"><i class="fas fa-wand-magic-sparkles"></i> Generate</button>
-                </div>
-                <div class="action-buttons">
-                    <button id="copyAllBtn" class="small-btn"><i class="far fa-copy"></i> Copy all</button>
-                    <button id="clearAllBtn" class="small-btn"><i class="fas fa-trash-alt"></i> Clear</button>
-                </div>
-                <div id="resultContainer" class="result-area">
-                    <div class="empty-msg">✨ Generate emails → auto‑saved to "All Creat Mail"</div>
-                </div>
-                <div style="margin-top: 12px;">
-                    <div class="label">Export current</div>
-                    <div class="download-group">
-                        <button id="downloadCsvBtn" class="download-btn"><i class="fas fa-file-csv"></i> CSV</button>
-                        <button id="downloadExcelBtn" class="download-btn"><i class="fas fa-file-excel"></i> Excel</button>
-                        <button id="downloadPdfBtn" class="download-btn"><i class="fas fa-file-pdf"></i> PDF</button>
-                    </div>
-                </div>
-            </div>
-            <div class="install-panel" style="display:none !important;">
-                <span style="font-size:0.75rem;"><i class="fas fa-mobile-alt"></i> Install as App</span>
-                <button id="installAppBtn" class="install-btn"><i class="fas fa-download"></i> Install Now</button>
-            </div>
-            <div class="sweet-watermark">
-                <i class="fas fa-check-circle" style="color:#16a34a;"></i> সুইট বয় নয়ন
-            </div>
-            <div class="social-links">
-                <a href="https://ah-nayon.github.io/web/" target="_blank" rel="noopener noreferrer" class="social-icon-circle contact-web" data-tooltip="Contact"><i class="fas fa-globe"></i></a>
-                <a href="https://www.facebook.com/share/1P7hqLHFBu/" target="_blank" rel="noopener noreferrer" class="social-icon-circle facebook-og" data-tooltip="Facebook"><i class="fab fa-facebook-f"></i></a>
-                <a href="mailto:mdahoshanhabibnayon@gmail.com" class="social-icon-circle mail-og" data-tooltip="Mail"><i class="fas fa-envelope"></i></a>
-            </div>
+<div class="app-container">
+    <!-- GENERATOR SECTION -->
+    <div id="generatorSection" class="section active-section">
+        <div class="dashboard-card" id="dashboardCard">
+            <div class="dashboard-stat"><div class="stat-circle" id="totalEmailsStat">0</div><div class="stat-label">Total Emails</div></div>
+            <div class="dashboard-stat"><div class="stat-circle" id="notesCountStat">0</div><div class="stat-label">Notes</div></div>
+            <div class="dashboard-stat"><div class="stat-circle" id="cutCountStat">0</div><div class="stat-label">Use Emails</div></div>
         </div>
-
-        <!-- ALL CREAT MAIL SECTION -->
-        <div id="allCreatSection" class="section">
-            <div class="card">
-                <div style="display: flex; align-items: center; justify-content: space-between;">
-                    <div class="generator-title" style="margin-bottom:0;">📁 All Creat Mail</div>
-                    <a href="temp-mail.html" class="temp-mail-link" style="text-decoration:none; display:flex; align-items:center; gap:6px;">
-                        <div style="width:36px; height:36px; border-radius:50%; background:linear-gradient(135deg,#f59e0b,#f97316); display:flex; align-items:center; justify-content:center; color:white; font-size:0.8rem; box-shadow:0 2px 8px rgba(245,158,11,0.3);">
-                            <i class="fas fa-clock"></i>
-                        </div>
-                        <span style="font-size:0.7rem; font-weight:600; color:#f59e0b;">Temp Mail</span>
-                    </a>
-                </div>
-                <p style="font-size:0.68rem; color:#475569; margin-bottom:8px;">Tap a note → cut emails (copy & delete)</p>
-                <div id="notesListContainer" class="notes-grid">
-                    <div class="empty-notes">No saved notes. Generate emails first.</div>
-                </div>
+        <div class="card">
+            <div class="generator-title"><img src="near-protocol.png" class="casecraft-icon">CaseCraft</div>
+            <p style="font-size:0.68rem; color:#475569; margin-bottom:12px;">Random letter case · digits unchanged · auto‑saved</p>
+            <label class="label">Base email</label>
+            <input type="email" id="baseEmailInput" value="demo.user@gmail.com">
+            <div class="row-flex">
+                <div class="count-wrapper"><label class="label">Variants (max 1000)</label><input type="number" id="countInput" min="1" max="1000" value="8"></div>
+                <button id="generateBtn" class="generate-btn"><i class="fas fa-wand-magic-sparkles"></i> Generate</button>
             </div>
-            <div class="sweet-watermark">
-                <i class="fas fa-check-circle" style="color:#16a34a;"></i> সুইট বয় নয়ন
+            <div class="action-buttons">
+                <button id="copyAllBtn" class="small-btn"><i class="far fa-copy"></i> Copy all</button>
+                <button id="clearAllBtn" class="small-btn"><i class="fas fa-trash-alt"></i> Clear</button>
             </div>
-            <div class="social-links">
-                <a href="https://ah-nayon.github.io/web/" target="_blank" rel="noopener noreferrer" class="social-icon-circle contact-web" data-tooltip="Contact"><i class="fas fa-globe"></i></a>
-                <a href="https://www.facebook.com/share/1P7hqLHFBu/" target="_blank" rel="noopener noreferrer" class="social-icon-circle facebook-og" data-tooltip="Facebook"><i class="fab fa-facebook-f"></i></a>
-                <a href="mailto:mdahoshanhabibnayon@gmail.com" class="social-icon-circle mail-og" data-tooltip="Mail"><i class="fas fa-envelope"></i></a>
-            </div>
-        </div>
-
-        <!-- VPN SECTION -->
-        <div id="vpnSection" class="section">
-            <div class="card">
-                <h2 style="font-weight:700; font-size:1.1rem; margin-bottom:4px;"><i class="fas fa-lock" style="color:#1d8c5e;"></i> Proton VPN</h2>
-                <div class="vpn-promo-line">
-                    <img src="proton.png" alt="Proton VPN" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 36 36%22%3E%3Ccircle cx=%2218%22 cy=%2218%22 r=%2218%22 fill=%22%231d8c5e%22/%3E%3Ctext x=%2218%22 y=%2225%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2218%22 font-weight=%22bold%22%3EP%3C/text%3E%3C/svg%3E'">
-                    <span class="promo-text">🔒 Proton VPN 3 Months · 250 TK</span>
-                    <a href="https://wa.me/8801757827996?text=Assalamu%20Alaikum%20%F0%9F%98%8A%2C%20%E0%A6%86%E0%A6%AE%E0%A6%BF%20Proton%20VPN%203%20Months%20(250%20TK)%20%E0%A6%A8%E0%A6%BF%E0%A6%A4%E0%A7%87%20%E0%A6%9A%E0%A6%BE%E0%A6%87%E0%A5%A4%20bKash%20%E0%A6%8F%20%E0%A6%AA%E0%A7%87%E0%A6%AE%E0%A7%87%E0%A6%A8%E0%A7%8D%E0%A6%9F%20%E0%A6%95%E0%A6%B0%E0%A6%AC%E0%A7%8B%20%E2%80%94%20%E0%A6%A8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AC%E0%A6%BE%E0%A6%B0%3A%2001757827996%E0%A5%A4%20%E0%A6%A6%E0%A7%9F%E0%A6%BE%20%E0%A6%95%E0%A6%B0%E0%A7%87%20%E0%A6%AC%E0%A6%B2%E0%A7%81%E0%A6%A8%20%E0%A6%95%E0%A6%BF%E0%A6%AD%E0%A6%BE%E0%A6%AC%E0%A7%87%20%E0%A6%A8%E0%A7%87%E0%A6%AC%E0%A7%8B%20%E2%9C%8C%EF%B8%8F" class="promo-btn" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp"></i> Buy Now</a>
+            <div id="resultContainer" class="result-area"><div class="empty-msg">✨ Generate emails → auto‑saved to "All Creat Mail"</div></div>
+            <div style="margin-top:12px;">
+                <div class="label">Export current</div>
+                <div class="download-group">
+                    <button id="downloadCsvBtn" class="download-btn"><i class="fas fa-file-csv"></i> CSV</button>
+                    <button id="downloadExcelBtn" class="download-btn"><i class="fas fa-file-excel"></i> Excel</button>
+                    <button id="downloadPdfBtn" class="download-btn"><i class="fas fa-file-pdf"></i> PDF</button>
                 </div>
             </div>
         </div>
+        <div class="install-panel" style="display:none !important;"><span style="font-size:0.75rem;"><i class="fas fa-mobile-alt"></i> Install as App</span><button id="installAppBtn" class="install-btn"><i class="fas fa-download"></i> Install Now</button></div>
+        <div class="sweet-watermark"><i class="fas fa-check-circle" style="color:#16a34a;"></i> সুইট বয় নয়ন</div>
+        <div class="social-links">
+            <a href="https://ah-nayon.github.io/web/" target="_blank" class="social-icon-circle contact-web"><i class="fas fa-globe"></i></a>
+            <a href="https://www.facebook.com/share/1P7hqLHFBu/" target="_blank" class="social-icon-circle facebook-og"><i class="fab fa-facebook-f"></i></a>
+            <a href="mailto:mdahoshanhabibnayon@gmail.com" class="social-icon-circle mail-og"><i class="fas fa-envelope"></i></a>
+        </div>
+    </div>
 
-        <!-- ABOUT SECTION -->
-        <div id="aboutSection" class="section">
-            <div class="card">
-                <h2 style="font-weight:700; font-size:1.2rem;"><i class="fas fa-info-circle"></i> About</h2>
-                <div class="about-text" style="margin-top:10px;">
-                    <p><strong>Hello Users,</strong> have a problem? Feel free to reach out via the contact buttons below.</p>
-                    <div class="about-highlight">
-                        <i class="fas fa-shield-alt"></i> <strong>Private & Secure:</strong> No data is collected or shared. Everything stays in your browser server.
-                    </div>
-                    <p><i class="fas fa-copyright"></i> <strong>Copyright Notice:</strong> This application and its code are protected. Unauthorized copying, reproduction, or distribution is strictly prohibited and will result in legal action.</p>
-                    <p style="margin-top:8px;"><i class="fas fa-check-circle" style="color:#16a34a;"></i> Ethical use only — intended for development and testing purposes.</p>
-                    <div style="margin-top:18px; border-top:1px solid #e2e8f0; padding-top:14px;">
-                        <h3 style="font-size:0.9rem; font-weight:700; margin-bottom:8px;"><i class="fas fa-paper-plane"></i> Telegram & Groups</h3>
-                        <div class="app-links-grid" id="appLinksGrid">
-                            <a href="https://play.google.com/store/apps/details?id=org.telegram.messenger" target="_blank" rel="noopener noreferrer" class="app-link-item">
-                                <img src="telegram.png" alt="Telegram Main" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 36 36%27%3E%3Ccircle cx=%2718%27 cy=%2718%27 r=%2718%27 fill=%27%2327a7e7%27/%3E%3Ctext x=%2718%27 y=%2724%27 text-anchor=%27middle%27 fill=%27white%27 font-size=%2720%27 font-weight=%27bold%27%3ET%3C/text%3E%3C/svg%3E'">
-                                <span class="link-label">Telegram</span><span class="link-desc">Play Store</span>
-                            </a>
-                            <a href="https://play.google.com/store/apps/details?id=org.thunderdog.challegram" target="_blank" rel="noopener noreferrer" class="app-link-item">
-                                <img src="telegramx.png" alt="Telegram X" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 36 36%27%3E%3Ccircle cx=%2718%27 cy=%2718%27 r=%2718%27 fill=%27%232196f3%27/%3E%3Ctext x=%2718%27 y=%2724%27 text-anchor=%27middle%27 fill=%27white%27 font-size=%2718%27 font-weight=%27bold%27%3EX%3C/text%3E%3C/svg%3E'">
-                                <span class="link-label">Telegram X</span><span class="link-desc">Play Store</span>
-                            </a>
-                            <a href="https://telegram.org/dl/android/apk" download class="app-link-item">
-                                <img src="telegramapk.png" alt="Telegram APK" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 36 36%27%3E%3Ccircle cx=%2718%27 cy=%2718%27 r=%2718%27 fill=%27%2334b7f1%27/%3E%3Ctext x=%2718%27 y=%2724%27 text-anchor=%27middle%27 fill=%27white%27 font-size=%2718%27 font-weight=%27bold%27%3E↓%3C/text%3E%3C/svg%3E'">
-                                <span class="link-label">Telegram APK</span><span class="link-desc">Download</span>
-                            </a>
-                            <a href="tg://resolve?domain=spdadnan" class="app-link-item">
-                                <img src="group.png" alt="Group" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 36 36%27%3E%3Ccircle cx=%2718%27 cy=%2718%27 r=%2718%27 fill=%27%23f5a623%27/%3E%3Ctext x=%2718%27 y=%2724%27 text-anchor=%27middle%27 fill=%27white%27 font-size=%2718%27 font-weight=%27bold%27%3EG%3C/text%3E%3C/svg%3E'">
-                                <span class="link-label">Premuim Apps</span><span class="link-desc">t.me/spdadnan</span>
-                            </a>
-                            <a href="tg://resolve?domain=TempMail_org_bot" class="app-link-item">
-                                <img src="temp.png" alt="Temp Mail" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 36 36%27%3E%3Ccircle cx=%2718%27 cy=%2718%27 r=%2718%27 fill=%27%234caf50%27/%3E%3Ctext x=%2718%27 y=%2724%27 text-anchor=%27middle%27 fill=%27white%27 font-size=%2718%27 font-weight=%27bold%27%3E@%3C/text%3E%3C/svg%3E'">
-                                <span class="link-label">Temp Mail</span><span class="link-desc">t.me/TempMail_org_bot</span>
-                            </a>
-                            <a href="https://play.google.com/store/apps/details?id=ir.ilmili.telegraph" target="_blank" rel="noopener noreferrer" class="app-link-item">
-                                <img src="tggraph.png" alt="Telegraph" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 36 36%27%3E%3Ccircle cx=%2718%27 cy=%2718%27 r=%2718%27 fill=%27%23333%27/%3E%3Ctext x=%2718%27 y=%2724%27 text-anchor=%27middle%27 fill=%27white%27 font-size=%2718%27 font-weight=%27bold%27%3ETG%3C/text%3E%3C/svg%3E'">
-                                <span class="link-label">Telegraph</span><span class="link-desc">Play Store</span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="sweet-watermark"><i class="fas fa-check-circle" style="color:#16a34a;"></i> সুইট বয় নয়ন</div>
-            <div class="social-links">
-                <a href="https://ah-nayon.github.io/web/" target="_blank" rel="noopener noreferrer" class="social-icon-circle contact-web" data-tooltip="Contact"><i class="fas fa-globe"></i></a>
-                <a href="https://www.facebook.com/share/1P7hqLHFBu/" target="_blank" rel="noopener noreferrer" class="social-icon-circle facebook-og" data-tooltip="Facebook"><i class="fab fa-facebook-f"></i></a>
-                <a href="mailto:mdahoshanhabibnayon@gmail.com" class="social-icon-circle mail-og" data-tooltip="Mail"><i class="fas fa-envelope"></i></a>
+    <!-- ALL CREAT MAIL SECTION -->
+    <div id="allCreatSection" class="section">
+        <div class="card">
+            <div class="generator-title">📁 All Creat Mail</div>
+            <p style="font-size:0.68rem; color:#475569; margin-bottom:8px;">Tap a note → cut emails (copy & delete)</p>
+            <div id="notesListContainer" class="notes-grid"><div class="empty-notes">No saved notes. Generate emails first.</div></div>
+        </div>
+        <div class="sweet-watermark"><i class="fas fa-check-circle" style="color:#16a34a;"></i> সুইট বয় নয়ন</div>
+        <div class="social-links">
+            <a href="https://ah-nayon.github.io/web/" target="_blank" class="social-icon-circle contact-web"><i class="fas fa-globe"></i></a>
+            <a href="https://www.facebook.com/share/1P7hqLHFBu/" target="_blank" class="social-icon-circle facebook-og"><i class="fab fa-facebook-f"></i></a>
+            <a href="mailto:mdahoshanhabibnayon@gmail.com" class="social-icon-circle mail-og"><i class="fas fa-envelope"></i></a>
+        </div>
+    </div>
+
+    <!-- VPN SECTION -->
+    <div id="vpnSection" class="section">
+        <div class="card">
+            <h2 style="font-weight:700; font-size:1.1rem;"><i class="fas fa-lock" style="color:#1d8c5e;"></i> Proton VPN</h2>
+            <div class="vpn-promo-line">
+                <img src="proton.png" alt="Proton VPN" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 36 36%22%3E%3Ccircle cx=%2218%22 cy=%2218%22 r=%2218%22 fill=%22%231d8c5e%22/%3E%3Ctext x=%2218%22 y=%2225%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2218%22 font-weight=%22bold%22%3EP%3C/text%3E%3C/svg%3E'">
+                <span class="promo-text">🔒 Proton VPN 3 Months · 250 TK</span>
+                <a href="https://wa.me/8801757827996?text=Assalamu%20Alaikum%20%F0%9F%98%8A%2C%20%E0%A6%86%E0%A6%AE%E0%A6%BF%20Proton%20VPN%203%20Months%20(250%20TK)%20%E0%A6%A8%E0%A6%BF%E0%A6%A4%E0%A7%87%20%E0%A6%9A%E0%A6%BE%E0%A6%87%E0%A5%A4%20bKash%20%E0%A6%8F%20%E0%A6%AA%E0%A7%87%E0%A6%AE%E0%A7%87%E0%A6%A8%E0%A7%8D%E0%A6%9F%20%E0%A6%95%E0%A6%B0%E0%A6%AC%E0%A7%8B%20%E2%80%94%20%E0%A6%A8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AC%E0%A6%BE%E0%A6%B0%3A%2001757827996%E0%A5%A4%20%E0%A6%A6%E0%A7%9F%E0%A6%BE%20%E0%A6%95%E0%A6%B0%E0%A7%87%20%E0%A6%AC%E0%A6%B2%E0%A7%81%E0%A6%A8%20%E0%A6%95%E0%A6%BF%E0%A6%AD%E0%A6%BE%E0%A6%AC%E0%A7%87%20%E0%A6%A8%E0%A7%87%E0%A6%AC%E0%A7%8B%20%E2%9C%8C%EF%B8%8F" class="promo-btn" target="_blank"><i class="fab fa-whatsapp"></i> Buy Now</a>
             </div>
         </div>
     </div>
 
-    <div class="bottom-nav">
-        <button class="nav-item active" data-section="generator"><i class="fas fa-wand-magic-sparkles"></i><span>Creats</span></button>
-        <button class="nav-item" data-section="allCreat"><i class="fas fa-folder-open"></i><span>Emails</span></button>
-        <button class="nav-item" data-section="vpn"><i class="fas fa-lock"></i><span>VPN</span></button>
-        <button class="nav-item" data-section="about"><i class="fas fa-info-circle"></i><span>About</span></button>
-    </div>
-
-    <div id="noteModal" class="full-modal">
-        <div class="modal-header">
-            <h3 id="modalTitle">📄 Emails</h3>
-            <button class="close-modal" id="closeModalBtn"><i class="fas fa-times"></i></button>
+    <!-- ABOUT SECTION -->
+    <div id="aboutSection" class="section">
+        <div class="card">
+            <h2><i class="fas fa-info-circle"></i> About</h2>
+            <div class="about-text">
+                <p><strong>Hello Users,</strong> have a problem? Reach out via buttons below.</p>
+                <div class="about-highlight"><i class="fas fa-shield-alt"></i> <strong>Private & Secure:</strong> No data collected.</div>
+                <p><i class="fas fa-copyright"></i> <strong>Copyright:</strong> Protected.</p>
+                <p><i class="fas fa-check-circle" style="color:#16a34a;"></i> Ethical use only.</p>
+                <div style="margin-top:18px; border-top:1px solid #e2e8f0; padding-top:14px;">
+                    <h3><i class="fas fa-paper-plane"></i> Telegram & Groups</h3>
+                    <div class="app-links-grid" id="appLinksGrid">
+                        <a href="https://play.google.com/store/apps/details?id=org.telegram.messenger" target="_blank" class="app-link-item"><img src="telegram.png" alt="Telegram"><span class="link-label">Telegram</span><span class="link-desc">Play Store</span></a>
+                        <a href="https://play.google.com/store/apps/details?id=org.thunderdog.challegram" target="_blank" class="app-link-item"><img src="telegramx.png" alt="Telegram X"><span class="link-label">Telegram X</span><span class="link-desc">Play Store</span></a>
+                        <a href="https://telegram.org/dl/android/apk" download class="app-link-item"><img src="telegramapk.png" alt="APK"><span class="link-label">Telegram APK</span><span class="link-desc">Download</span></a>
+                        <a href="tg://resolve?domain=spdadnan" class="app-link-item"><img src="group.png" alt="Premium"><span class="link-label">Premium Apps</span><span class="link-desc">t.me/spdadnan</span></a>
+                        <a href="tg://resolve?domain=TempMail_org_bot" class="app-link-item"><img src="temp.png" alt="Temp Mail"><span class="link-label">Temp Mail</span><span class="link-desc">t.me/TempMail_org_bot</span></a>
+                        <a href="https://play.google.com/store/apps/details?id=ir.ilmili.telegraph" target="_blank" class="app-link-item"><img src="tggraph.png" alt="Telegraph"><span class="link-label">Telegraph</span><span class="link-desc">Play Store</span></a>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="modal-body" id="modalBody"></div>
+        <div class="sweet-watermark"><i class="fas fa-check-circle"></i> সুইট বয় নয়ন</div>
+        <div class="social-links">
+            <a href="https://ah-nayon.github.io/web/" target="_blank" class="social-icon-circle contact-web"><i class="fas fa-globe"></i></a>
+            <a href="https://www.facebook.com/share/1P7hqLHFBu/" target="_blank" class="social-icon-circle facebook-og"><i class="fab fa-facebook-f"></i></a>
+            <a href="mailto:mdahoshanhabibnayon@gmail.com" class="social-icon-circle mail-og"><i class="fas fa-envelope"></i></a>
+        </div>
     </div>
-    <div class="toast-container" id="toastContainer"></div>
 
-    <script>
-        (function() {
-            const toastContainer = document.getElementById('toastContainer');
-            function toast(msg, type='info') {
-                const t = document.createElement('div'); t.className = `toast ${type}`;
-                t.innerHTML = `<i class="fas ${type==='success'?'fa-check-circle':'fa-info-circle'}"></i><span>${msg}</span>`;
-                toastContainer.appendChild(t); setTimeout(() => t.remove(), 2200);
-            }
+    <!-- TEMP MAIL SECTION -->
+    <div id="tempmailSection" class="section">
+        <div class="temp-card">
+            <div class="temp-loading-bar-container"><div class="temp-loading-bar" id="tempLoadingBar"></div></div>
+            <header style="display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; padding-bottom:14px; border-bottom:1px solid #d1fae5;">
+                <div class="logo-area"><i class="fas fa-clock" style="font-size:1.8rem; color:#059669;"></i><h1 style="font-size:1.3rem; font-weight:700; color:#1e293b;">Temp Mail</h1></div>
+                <button class="btn-premium btn-new" id="tempNewBtn"><i class="fas fa-plus-circle"></i> New</button>
+            </header>
+            <div class="temp-email-card" id="tempEmailCard">
+                <div class="temp-email-info">
+                    <div class="temp-email-address" id="tempEmailAddress">Loading...</div>
+                    <div class="temp-email-status">⚠️ Session expired — tap New</div>
+                </div>
+                <div class="temp-btn-row">
+                    <button class="btn-premium btn-copy" id="tempCopyEmail"><i class="far fa-copy"></i> Copy</button>
+                    <button class="btn-premium btn-refresh" id="tempRefreshBtn"><i class="fas fa-sync-alt"></i> Refresh</button>
+                </div>
+            </div>
+            <div class="temp-inbox-section">
+                <div class="temp-inbox-header"><span>📨 Inbox</span><span id="tempMessageCount">0 messages</span></div>
+                <div class="temp-message-list" id="tempMessageList"><div class="no-messages">Waiting for verification code...</div></div>
+            </div>
+            <p style="font-size:0.62rem; color:#94a3b8; text-align:center; margin-top:14px;">Auto‑refresh every 2s · Codes extracted automatically</p>
+        </div>
+    </div>
+</div>
 
-            let audioCtx = null;
-            function getAudioContext() { if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)(); return audioCtx; }
-            function playCutSound() { try { const ctx=getAudioContext(); const now=ctx.currentTime; const osc=ctx.createOscillator(); const gain=ctx.createGain(); osc.type='sine'; osc.frequency.setValueAtTime(1200,now); osc.frequency.exponentialRampToValueAtTime(400,now+0.12); gain.gain.setValueAtTime(0.3,now); gain.gain.exponentialRampToValueAtTime(0.01,now+0.18); osc.connect(gain); gain.connect(ctx.destination); osc.start(now); osc.stop(now+0.2); } catch(e){} }
-            function playDeleteSound() { try { const ctx=getAudioContext(); const now=ctx.currentTime; const osc=ctx.createOscillator(); const gain=ctx.createGain(); osc.type='triangle'; osc.frequency.setValueAtTime(200,now); osc.frequency.exponentialRampToValueAtTime(80,now+0.15); gain.gain.setValueAtTime(0.4,now); gain.gain.exponentialRampToValueAtTime(0.01,now+0.25); osc.connect(gain); gain.connect(ctx.destination); osc.start(now); osc.stop(now+0.3); } catch(e){} }
-            function playGenerateSound() { try { const ctx=getAudioContext(); const now=ctx.currentTime; const osc=ctx.createOscillator(); const gain=ctx.createGain(); osc.type='sine'; osc.frequency.setValueAtTime(523.25,now); osc.frequency.setValueAtTime(659.25,now+0.08); osc.frequency.setValueAtTime(783.99,now+0.16); gain.gain.setValueAtTime(0.4,now); gain.gain.exponentialRampToValueAtTime(0.01,now+0.3); osc.connect(gain); gain.connect(ctx.destination); osc.start(now); osc.stop(now+0.35); } catch(e){} }
+<div class="bottom-nav">
+    <button class="nav-item active" data-section="generator"><i class="fas fa-wand-magic-sparkles"></i><span>Creats</span></button>
+    <button class="nav-item" data-section="allCreat"><i class="fas fa-folder-open"></i><span>Emails</span></button>
+    <button class="nav-item" data-section="tempmail"><i class="fas fa-clock"></i><span>Temp</span></button>
+    <button class="nav-item" data-section="vpn"><i class="fas fa-lock"></i><span>VPN</span></button>
+    <button class="nav-item" data-section="about"><i class="fas fa-info-circle"></i><span>About</span></button>
+</div>
 
-            const STORAGE_KEY = 'caseforge_notes', CUT_COUNT_KEY = 'caseforge_cutcount';
-            let savedNotes = [];
-            function loadNotes() { const stored = localStorage.getItem(STORAGE_KEY); savedNotes = stored ? JSON.parse(stored) : []; renderNotesList(); updateDashboardStats(); }
-            function saveNotes() { localStorage.setItem(STORAGE_KEY, JSON.stringify(savedNotes)); renderNotesList(); updateDashboardStats(); }
-            function addNote(emails, baseHint) {
-                const newNote = { id: Date.now(), timestamp: new Date().toLocaleString(), emails: [...emails], baseHint: baseHint.substring(0,30), count: emails.length };
-                savedNotes.unshift(newNote); saveNotes(); toast(`✅ Saved ${emails.length} emails as note`,'success');
-            }
-            function deleteNote(id) { playDeleteSound(); savedNotes = savedNotes.filter(n=>n.id!==id); saveNotes(); toast('Note deleted','success'); if(activeModalNoteId===id) closeModal(); updateDashboardStats(); }
-            function getCutCount() { const val = localStorage.getItem(CUT_COUNT_KEY); return val ? parseInt(val,10) : 0; }
-            function increaseCutCount(amount=1) { const current = getCutCount(); localStorage.setItem(CUT_COUNT_KEY, current+amount); updateDashboardStats(); }
+<div id="noteModal" class="full-modal">
+    <div class="modal-header"><h3 id="modalTitle">📄 Emails</h3><button class="close-modal" id="closeModalBtn"><i class="fas fa-times"></i></button></div>
+    <div class="modal-body" id="modalBody"></div>
+</div>
+<div class="toast-container" id="toastContainer"></div>
 
-            function updateDashboardStats() {
-                const totalEmails = savedNotes.reduce((sum,n)=>sum+n.count,0);
-                const notesCount = savedNotes.length;
-                const cutCount = getCutCount();
-                document.getElementById('totalEmailsStat').textContent = totalEmails;
-                document.getElementById('notesCountStat').textContent = notesCount;
-                document.getElementById('cutCountStat').textContent = cutCount;
-                [document.getElementById('totalEmailsStat'), document.getElementById('notesCountStat'), document.getElementById('cutCountStat')].forEach(el => {
-                    const len = el.textContent.length;
-                    if (len > 4) el.style.fontSize = '0.9rem';
-                    else if (len > 3) el.style.fontSize = '1rem';
-                    else el.style.fontSize = '1.2rem';
-                });
-            }
+<script>
+    (function() {
+        const toastContainer = document.getElementById('toastContainer');
+        function toast(msg, type='info') {
+            const t = document.createElement('div'); t.className = `toast ${type}`;
+            t.innerHTML = `<i class="fas ${type==='success'?'fa-check-circle':'fa-info-circle'}"></i><span>${msg}</span>`;
+            toastContainer.appendChild(t); setTimeout(() => t.remove(), 2200);
+        }
 
-            async function cutEmailFromNote(noteId, emailIndex) {
-                const note = savedNotes.find(n=>n.id===noteId); if(!note) return;
-                const email = note.emails[emailIndex]; if(!email) return;
+        let audioCtx = null;
+        function getAudioContext() { if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)(); return audioCtx; }
+        function playCutSound() { try { const ctx=getAudioContext(); const now=ctx.currentTime; const osc=ctx.createOscillator(); const gain=ctx.createGain(); osc.type='sine'; osc.frequency.setValueAtTime(1200,now); osc.frequency.exponentialRampToValueAtTime(400,now+0.12); gain.gain.setValueAtTime(0.3,now); gain.gain.exponentialRampToValueAtTime(0.01,now+0.18); osc.connect(gain); gain.connect(ctx.destination); osc.start(now); osc.stop(now+0.2); } catch(e){} }
+        function playDeleteSound() { try { const ctx=getAudioContext(); const now=ctx.currentTime; const osc=ctx.createOscillator(); const gain=ctx.createGain(); osc.type='triangle'; osc.frequency.setValueAtTime(200,now); osc.frequency.exponentialRampToValueAtTime(80,now+0.15); gain.gain.setValueAtTime(0.4,now); gain.gain.exponentialRampToValueAtTime(0.01,now+0.25); osc.connect(gain); gain.connect(ctx.destination); osc.start(now); osc.stop(now+0.3); } catch(e){} }
+        function playGenerateSound() { try { const ctx=getAudioContext(); const now=ctx.currentTime; const osc=ctx.createOscillator(); const gain=ctx.createGain(); osc.type='sine'; osc.frequency.setValueAtTime(523.25,now); osc.frequency.setValueAtTime(659.25,now+0.08); osc.frequency.setValueAtTime(783.99,now+0.16); gain.gain.setValueAtTime(0.4,now); gain.gain.exponentialRampToValueAtTime(0.01,now+0.3); osc.connect(gain); gain.connect(ctx.destination); osc.start(now); osc.stop(now+0.35); } catch(e){} }
+
+        const STORAGE_KEY = 'caseforge_notes', CUT_COUNT_KEY = 'caseforge_cutcount';
+        let savedNotes = [];
+        function loadNotes() { savedNotes = JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]'); renderNotesList(); updateDashboardStats(); }
+        function saveNotes() { localStorage.setItem(STORAGE_KEY, JSON.stringify(savedNotes)); renderNotesList(); updateDashboardStats(); }
+        function addNote(emails, baseHint) {
+            const newNote = { id: Date.now(), timestamp: new Date().toLocaleString(), emails: [...emails], baseHint: baseHint.substring(0,30), count: emails.length };
+            savedNotes.unshift(newNote); saveNotes(); toast(`✅ Saved ${emails.length} emails as note`,'success');
+        }
+        function deleteNote(id) { playDeleteSound(); savedNotes = savedNotes.filter(n=>n.id!==id); saveNotes(); toast('Note deleted','success'); if(activeModalNoteId===id) closeModal(); }
+        function getCutCount() { return parseInt(localStorage.getItem(CUT_COUNT_KEY)||'0',10); }
+        function increaseCutCount(amount=1) { localStorage.setItem(CUT_COUNT_KEY, getCutCount()+amount); updateDashboardStats(); }
+
+        function updateDashboardStats() {
+            const totalEmails = savedNotes.reduce((s,n)=>s+n.count,0);
+            document.getElementById('totalEmailsStat').textContent = totalEmails;
+            document.getElementById('notesCountStat').textContent = savedNotes.length;
+            document.getElementById('cutCountStat').textContent = getCutCount();
+            [document.getElementById('totalEmailsStat'), document.getElementById('notesCountStat'), document.getElementById('cutCountStat')].forEach(el => {
+                const len = el.textContent.length;
+                el.style.fontSize = len > 4 ? '0.9rem' : (len > 3 ? '1rem' : '1.2rem');
+            });
+        }
+
+        async function cutEmailFromNote(noteId, emailIndex) {
+            const note = savedNotes.find(n=>n.id===noteId); if(!note) return;
+            const email = note.emails[emailIndex]; if(!email) return;
+            try {
+                await navigator.clipboard.writeText(email);
+                note.emails.splice(emailIndex,1); note.count = note.emails.length;
+                increaseCutCount(1); playCutSound();
+                if(note.emails.length===0) { deleteNote(noteId); toast(`✂️ Cut last email — note removed`,'success'); }
+                else { saveNotes(); if(activeModalNoteId===noteId) refreshModal(noteId); toast(`✂️ Cut: "${email.substring(0,35)}..."`,'success'); }
+            } catch(e) { toast('Copy failed','error'); }
+        }
+
+        function renderNotesList() {
+            const container = document.getElementById('notesListContainer'); if(!container) return;
+            if(!savedNotes.length) { container.innerHTML = '<div class="empty-notes"><i class="far fa-save"></i> No saved notes.</div>'; return; }
+            container.innerHTML = '';
+            savedNotes.forEach(note => {
+                const div = document.createElement('div'); div.className = 'note-card';
+                div.innerHTML = `<div class="note-info"><div class="note-title"><span class="email-pill-icon"><i class="fas fa-envelope"></i></span>${note.count} variant${note.count!==1?'s':''}</div><div class="note-meta"><span>${note.timestamp}</span><span>${note.baseHint}</span></div></div><button class="delete-note-btn" data-id="${note.id}"><i class="fas fa-trash-alt"></i></button>`;
+                div.querySelector('.note-info').addEventListener('click', ()=> openNoteModal(note.id));
+                div.querySelector('.delete-note-btn').addEventListener('click', (e)=>{ e.stopPropagation(); deleteNote(note.id); });
+                container.appendChild(div);
+            });
+        }
+
+        let activeModalNoteId = null;
+        const modal = document.getElementById('noteModal'), modalTitle = document.getElementById('modalTitle'), modalBody = document.getElementById('modalBody'), closeModalBtn = document.getElementById('closeModalBtn');
+        let modalOpenHistory = false, ignorePopState = false;
+
+        function refreshModal(noteId) {
+            const note = savedNotes.find(n=>n.id===noteId); if(!note) { closeModal(); return; }
+            modalTitle.innerText = `📄 ${note.count} email${note.count!==1?'s':''} · ${note.timestamp}`;
+            modalBody.innerHTML = '';
+            if(!note.emails.length) { modalBody.innerHTML = '<div class="empty-notes">Empty note will be removed.</div>'; return; }
+            note.emails.forEach((email,idx)=>{
+                const row = document.createElement('div'); row.className = 'modal-email-row';
+                row.innerHTML = `<div class="modal-email-text"><span class="email-pill-icon"><i class="fas fa-envelope"></i></span>${escapeHtml(email)}</div><button class="cut-single-btn" data-idx="${idx}"><i class="fas fa-scissors"></i> Cut</button>`;
+                row.querySelector('.cut-single-btn').addEventListener('click', (e)=>{ e.stopPropagation(); cutEmailFromNote(noteId,idx); });
+                modalBody.appendChild(row);
+            });
+        }
+
+        function openNoteModal(noteId) { if(!savedNotes.find(n=>n.id===noteId)) return; activeModalNoteId=noteId; refreshModal(noteId); modal.classList.add('active'); if(!modalOpenHistory) { history.pushState({modal:true},''); modalOpenHistory=true; } }
+        function closeModal() { if(modal.classList.contains('active')) { if(modalOpenHistory) { ignorePopState=true; history.back(); modalOpenHistory=false; } modal.classList.remove('active'); activeModalNoteId=null; } }
+        window.addEventListener('popstate', (e)=>{ if(ignorePopState){ ignorePopState=false; return; } if(modal.classList.contains('active')){ modal.classList.remove('active'); activeModalNoteId=null; modalOpenHistory=false; history.pushState({modal:false},''); e.preventDefault(); } });
+        closeModalBtn.addEventListener('click', closeModal);
+        modal.addEventListener('click', (e)=>{ if(e.target===modal) closeModal(); });
+        function escapeHtml(str) { return str.replace(/[&<>]/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m])); }
+
+        let currentEmails = [];
+        function randomCaseVariant(base) { let out=''; for(let i=0;i<base.length;i++){ const ch=base[i]; out += /[A-Za-z]/.test(ch) ? (Math.random()<0.5?ch.toUpperCase():ch.toLowerCase()) : ch; } return out; }
+        function generateVariants(base,count) { return Array.from({length:count}, ()=>randomCaseVariant(base)); }
+
+        function renderCurrent() {
+            const container = document.getElementById('resultContainer');
+            container.innerHTML = currentEmails.length ? currentEmails.map(e => `<div class="email-item"><span class="email-pill-icon"><i class="fas fa-envelope"></i></span>${escapeHtml(e)}</div>`).join('') : '<div class="empty-msg">✨ No emails yet. Click Generate.</div>';
+        }
+
+        document.getElementById('generateBtn').addEventListener('click', ()=>{
+            let base = document.getElementById('baseEmailInput').value.trim(); if(!base) { toast("Enter base email","error"); return; }
+            let count = parseInt(document.getElementById('countInput').value,10); if(isNaN(count)||count<1) count=1; if(count>1000) { count=1000; document.getElementById('countInput').value=1000; }
+            currentEmails = generateVariants(base,count); renderCurrent(); addNote(currentEmails, base); playGenerateSound();
+            toast(`✨ ${currentEmails.length} variants generated & saved`,'success');
+        });
+        document.getElementById('clearAllBtn').addEventListener('click', ()=>{ if(!currentEmails.length){ toast("Nothing to clear","info"); return; } currentEmails=[]; renderCurrent(); toast("List cleared","info"); playDeleteSound(); });
+        document.getElementById('copyAllBtn').addEventListener('click', async ()=>{ if(!currentEmails.length){toast("No emails to copy","error");return;} await navigator.clipboard.writeText(currentEmails.join('\n')); toast(`📋 Copied ${currentEmails.length} emails`,'success'); });
+
+        function getCurrentExport() { if(!currentEmails.length){toast("Generate first","error");return null;} return currentEmails; }
+        function exportCSV() { const arr=getCurrentExport(); if(!arr)return; const csv = [["Generated Emails"],...arr.map(e=>[e])].map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(",")).join("\n"); const blob=new Blob(["\uFEFF"+csv],{type:"text/csv"}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=`emails_${Date.now()}.csv`; a.click(); URL.revokeObjectURL(a.href); toast("CSV exported","success"); }
+        function exportExcel() { const arr=getCurrentExport(); if(!arr)return; const ws=XLSX.utils.aoa_to_sheet([["Generated Emails"],...arr.map(e=>[e])]); const wb=XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb,ws,"Emails"); XLSX.writeFile(wb,`emails_${Date.now()}.xlsx`); toast("Excel saved","success"); }
+        async function exportPDF() { const arr=getCurrentExport(); if(!arr)return; const {jsPDF}=window.jspdf; const doc=new jsPDF(); doc.setFontSize(12); doc.text("Email Variants",14,12); doc.setFontSize(8); doc.text(`Total: ${arr.length}`,14,20); doc.autoTable({startY:26,head:[["Emails"]],body:arr.map(e=>[e]),styles:{fontSize:7}}); doc.save(`emails_${Date.now()}.pdf`); toast("PDF exported","success"); }
+        document.getElementById('downloadCsvBtn').addEventListener('click',exportCSV);
+        document.getElementById('downloadExcelBtn').addEventListener('click',exportExcel);
+        document.getElementById('downloadPdfBtn').addEventListener('click',exportPDF);
+
+        // TEMP MAIL LOGIC (premium, integrated)
+        const TEMP_API = 'https://api.mail.tm';
+        async function tempApiFetch(endpoint, options={}) {
+            const res = await fetch(`${TEMP_API}${endpoint}`, { ...options, headers: {'Content-Type':'application/json', ...options.headers} });
+            if(!res.ok) throw new Error(`HTTP ${res.status}`);
+            return res.json();
+        }
+
+        let tempAccount = null, tempPollTimer = null, knownTempIds = new Set();
+        let tempDomains = [];
+
+        async function fetchTempDomains() {
+            const cached = localStorage.getItem('tempmail_domains');
+            if(cached) { tempDomains = JSON.parse(cached); return; }
+            const data = await tempApiFetch('/domains');
+            tempDomains = data['hydra:member'].map(d => d.domain);
+            localStorage.setItem('tempmail_domains', JSON.stringify(tempDomains));
+        }
+        function getRandomTempDomain() { return tempDomains[Math.floor(Math.random() * tempDomains.length)]; }
+
+        async function createTempAccountAndToken(email, password) {
+            await tempApiFetch('/accounts', { method:'POST', body: JSON.stringify({address: email, password}) });
+            const tokenResp = await tempApiFetch('/token', { method:'POST', body: JSON.stringify({address: email, password}) });
+            return { token: tokenResp.token, id: tokenResp.id };
+        }
+
+        async function getValidTempAccount() {
+            const stored = localStorage.getItem('tempmail_account');
+            if (stored) {
                 try {
-                    await navigator.clipboard.writeText(email);
-                    note.emails.splice(emailIndex,1); note.count = note.emails.length;
-                    increaseCutCount(1); playCutSound();
-                    if(note.emails.length===0) { deleteNote(noteId); toast(`✂️ Cut last email — note removed`,'success'); }
-                    else { saveNotes(); if(activeModalNoteId===noteId) refreshModal(noteId); toast(`✂️ Cut: "${email.substring(0,35)}..."`,'success'); }
-                } catch(e) { toast('Copy failed','error'); }
+                    const acc = JSON.parse(stored);
+                    await tempApiFetch('/messages', { headers: { Authorization: `Bearer ${acc.token}` } });
+                    return acc;
+                } catch { localStorage.removeItem('tempmail_account'); }
             }
+            if (!tempDomains.length) await fetchTempDomains();
+            const domain = getRandomTempDomain();
+            const address = `u${Date.now().toString(36)}@${domain}`;
+            const password = 'TempMail@123';
+            const { token, id } = await createTempAccountAndToken(address, password);
+            const newAcc = { address, token, id };
+            localStorage.setItem('tempmail_account', JSON.stringify(newAcc));
+            return newAcc;
+        }
 
-            function renderNotesList() {
-                const container = document.getElementById('notesListContainer'); if(!container) return;
-                if(!savedNotes.length) { container.innerHTML = '<div class="empty-notes"><i class="far fa-save"></i> No saved notes. Generate emails.</div>'; return; }
-                container.innerHTML = '';
-                savedNotes.forEach(note => {
-                    const div = document.createElement('div'); div.className = 'note-card';
-                    div.innerHTML = `
-                        <div class="note-info">
-                            <div class="note-title"><span class="email-pill-icon"><i class="fas fa-envelope"></i></span>${note.count} variant${note.count!==1?'s':''}</div>
-                            <div class="note-meta"><span>${note.timestamp}</span><span>${note.baseHint}</span></div>
-                        </div>
-                        <button class="delete-note-btn" data-id="${note.id}"><i class="fas fa-trash-alt"></i></button>
-                    `;
-                    const infoDiv = div.querySelector('.note-info');
-                    const delBtn = div.querySelector('.delete-note-btn');
-                    infoDiv.addEventListener('click', ()=> openNoteModal(note.id));
-                    delBtn.addEventListener('click', (e)=>{ e.stopPropagation(); deleteNote(note.id); });
-                    container.appendChild(div);
+        async function fetchTempMessages(token) {
+            const data = await tempApiFetch('/messages', { headers: { Authorization: `Bearer ${token}` } });
+            return data['hydra:member'] || [];
+        }
+
+        function extractCode(text) {
+            if (!text) return null;
+            const m = text.match(/(?:code|Code|CODE)[\s:\-]*(\d{4,8})/);
+            return m ? m[1] : (text.match(/\b(\d{4,8})\b/) || [])[1] || null;
+        }
+
+        const tempLoadingBar = document.getElementById('tempLoadingBar');
+        const tempEmailEl = document.getElementById('tempEmailAddress');
+        const tempEmailCard = document.getElementById('tempEmailCard');
+        const tempMessageList = document.getElementById('tempMessageList');
+        const tempMessageCount = document.getElementById('tempMessageCount');
+
+        function showTempLoading() {
+            tempLoadingBar.style.width = '0%';
+            tempLoadingBar.classList.add('show');
+            requestAnimationFrame(() => {
+                tempLoadingBar.style.transition = 'width 0.2s ease-out';
+                tempLoadingBar.style.width = '100%';
+            });
+        }
+        function hideTempLoading() {
+            tempLoadingBar.style.width = '100%';
+            setTimeout(() => {
+                tempLoadingBar.style.transition = 'none';
+                tempLoadingBar.style.width = '0%';
+                tempLoadingBar.classList.remove('show');
+            }, 250);
+        }
+
+        function createTempMessageElement(msg) {
+            const bodyText = msg.text || msg.html || '';
+            const code = extractCode(msg.subject || '') || extractCode(bodyText);
+            const item = document.createElement('div');
+            item.className = 'temp-message-item';
+            item.dataset.id = msg.id;
+            item.innerHTML = `
+                <div class="temp-message-sender">${escapeHtml(msg.from?.address || 'unknown')}</div>
+                <div class="temp-message-subject">${escapeHtml(msg.subject || '(no subject)')}</div>
+                <div class="temp-message-preview">${escapeHtml(bodyText.substring(0, 100))}</div>
+                ${code ? `<button class="code-copy-chip" data-code="${code}"><i class="fas fa-key"></i> ${code}</button>` : ''}
+            `;
+            const codeBtn = item.querySelector('.code-copy-chip');
+            if (codeBtn) {
+                codeBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const c = codeBtn.dataset.code;
+                    navigator.clipboard.writeText(c).then(() => {
+                        codeBtn.innerHTML = '<i class="fas fa-check"></i> Copied';
+                        codeBtn.style.background = '#dcfce7';
+                        codeBtn.style.borderColor = '#86efac';
+                        codeBtn.style.color = '#166534';
+                        setTimeout(() => {
+                            codeBtn.innerHTML = `<i class="fas fa-key"></i> ${c}`;
+                            codeBtn.style.background = '#fff5f5';
+                            codeBtn.style.borderColor = '#fecaca';
+                            codeBtn.style.color = '#b91c1c';
+                        }, 1500);
+                    });
                 });
             }
+            item.addEventListener('click', async () => {
+                try {
+                    const full = await tempApiFetch(`/messages/${msg.id}`, { headers: { Authorization: `Bearer ${tempAccount.token}` } });
+                    showTempMessageModal(full);
+                } catch { alert('Could not load message.'); }
+            });
+            return item;
+        }
 
-            let activeModalNoteId = null;
-            const modal = document.getElementById('noteModal');
-            const modalTitle = document.getElementById('modalTitle');
-            const modalBody = document.getElementById('modalBody');
-            const closeModalBtn = document.getElementById('closeModalBtn');
-            let modalOpenHistory = false, ignorePopState = false;
+        function showTempMessageModal(message) {
+            const overlay = document.createElement('div');
+            overlay.className = 'modal-overlay';
+            const bodyText = message.text || message.html || 'No content';
+            const code = extractCode(message.subject || '') || extractCode(bodyText);
+            const codeBlock = code ? `
+                <div style="background:#fff5f5; border:1px solid #fecaca; padding:12px 16px; border-radius:14px; margin:10px 0; display:flex; justify-content:space-between; align-items:center;">
+                    <div><div style="font-size:0.6rem;color:#64748b;">VERIFICATION CODE</div><span style="font-weight:700;font-size:1.1rem;color:#b91c1c;">${code}</span></div>
+                    <button class="btn-premium btn-copy" style="padding:8px 14px;font-size:0.7rem;" onclick="navigator.clipboard.writeText('${code}')"><i class="fas fa-copy"></i> Copy</button>
+                </div>` : '';
+            overlay.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-header"><h3>${escapeHtml(message.subject||'Message')}</h3><button class="close-btn"><i class="fas fa-times"></i></button></div>
+                    <div class="modal-body">
+                        <p><strong>From:</strong> ${escapeHtml(message.from?.address||'')}</p>
+                        <p><strong>Date:</strong> ${message.createdAt ? new Date(message.createdAt).toLocaleString() : ''}</p>
+                        ${codeBlock}
+                        <hr style="margin:10px 0;">
+                        <pre style="white-space:pre-wrap;">${escapeHtml(bodyText)}</pre>
+                    </div>
+                </div>`;
+            document.body.appendChild(overlay);
+            overlay.querySelector('.close-btn').addEventListener('click', () => overlay.remove());
+            overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
+        }
 
-            function refreshModal(noteId) {
-                const note = savedNotes.find(n=>n.id===noteId); if(!note) { closeModal(); return; }
-                modalTitle.innerText = `📄 ${note.count} email${note.count!==1?'s':''} · ${note.timestamp}`;
-                modalBody.innerHTML = '';
-                if(!note.emails.length) { modalBody.innerHTML = '<div class="empty-notes">Empty note will be removed.</div>'; return; }
-                note.emails.forEach((email,idx)=>{
-                    const row = document.createElement('div'); row.className = 'modal-email-row';
-                    row.innerHTML = `
-                        <div class="modal-email-text"><span class="email-pill-icon"><i class="fas fa-envelope"></i></span>${escapeHtml(email)}</div>
-                        <button class="cut-single-btn" data-idx="${idx}"><i class="fas fa-scissors"></i> Cut</button>
-                    `;
-                    row.querySelector('.cut-single-btn').addEventListener('click', (e)=>{ e.stopPropagation(); cutEmailFromNote(noteId,idx); });
-                    modalBody.appendChild(row);
+        async function refreshTempInbox(silent = true) {
+            if (!tempAccount) return;
+            try {
+                const messages = await fetchTempMessages(tempAccount.token);
+                tempEmailCard.classList.remove('expired');
+                const currentIds = new Set(messages.map(m => m.id));
+                Array.from(tempMessageList.children).forEach(child => {
+                    if (child.classList.contains('temp-message-item') && !currentIds.has(child.dataset.id)) {
+                        child.remove();
+                        knownTempIds.delete(child.dataset.id);
+                    }
                 });
-            }
-
-            function openNoteModal(noteId) {
-                const note = savedNotes.find(n=>n.id===noteId); if(!note) return;
-                activeModalNoteId = noteId; refreshModal(noteId); modal.classList.add('active');
-                if(!modalOpenHistory) { history.pushState({modal:true},''); modalOpenHistory = true; }
-            }
-
-            function closeModal() {
-                if(modal.classList.contains('active')) {
-                    if(modalOpenHistory) { ignorePopState = true; history.back(); modalOpenHistory = false; }
-                    modal.classList.remove('active'); activeModalNoteId = null;
+                messages.forEach(msg => {
+                    if (!knownTempIds.has(msg.id)) {
+                        knownTempIds.add(msg.id);
+                        const el = createTempMessageElement(msg);
+                        tempMessageList.prepend(el);
+                    }
+                });
+                if (messages.length > 0) {
+                    const empty = tempMessageList.querySelector('.no-messages');
+                    if (empty) empty.remove();
+                } else if (!tempMessageList.querySelector('.temp-message-item') && !tempMessageList.querySelector('.no-messages')) {
+                    tempMessageList.innerHTML = '<div class="no-messages">📭 No messages yet</div>';
                 }
+                tempMessageCount.textContent = `${messages.length} messages`;
+                if (!silent) hideTempLoading();
+            } catch (e) {
+                if (e.message.includes('401') || e.message.includes('403')) {
+                    tempEmailCard.classList.add('expired');
+                    if (!silent) hideTempLoading();
+                } else if (!silent) hideTempLoading();
             }
+        }
 
-            window.addEventListener('popstate', (e)=>{
-                if(ignorePopState) { ignorePopState = false; return; }
-                if(modal.classList.contains('active')) {
-                    modal.classList.remove('active');
-                    activeModalNoteId = null;
-                    modalOpenHistory = false;
-                    history.pushState({modal:false},'');
-                    e.preventDefault();
-                }
-            });
+        function startTempPolling() {
+            clearInterval(tempPollTimer);
+            tempPollTimer = setInterval(() => refreshTempInbox(true), 2000);
+        }
 
-            closeModalBtn.addEventListener('click', closeModal);
-            modal.addEventListener('click', (e)=>{ if(e.target===modal) closeModal(); });
-
-            function escapeHtml(str) { return str.replace(/[&<>]/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m])); }
-
-            let currentEmails = [];
-            function randomCaseVariant(base) { let out=''; for(let i=0;i<base.length;i++){ const ch=base[i]; out += /[A-Za-z]/.test(ch) ? (Math.random()<0.5?ch.toUpperCase():ch.toLowerCase()) : ch; } return out; }
-            function generateVariants(base,count) { const arr=[]; for(let i=0;i<count;i++) arr.push(randomCaseVariant(base)); return arr; }
-
-            function renderCurrent() {
-                const container = document.getElementById('resultContainer');
-                if(!currentEmails.length) { container.innerHTML = '<div class="empty-msg">✨ No emails yet. Click Generate.</div>'; return; }
-                container.innerHTML = currentEmails.map(e => `<div class="email-item"><span class="email-pill-icon"><i class="fas fa-envelope"></i></span>${escapeHtml(e)}</div>`).join('');
+        async function initTempMail() {
+            if (tempPollTimer) return;
+            tempEmailEl.textContent = 'Loading...';
+            showTempLoading();
+            try {
+                if (!tempDomains.length) await fetchTempDomains();
+                tempAccount = await getValidTempAccount();
+                tempEmailEl.textContent = tempAccount.address;
+                knownTempIds.clear();
+                tempMessageList.innerHTML = '';
+                await refreshTempInbox(true);
+                hideTempLoading();
+                startTempPolling();
+            } catch (e) {
+                tempEmailEl.textContent = 'Error. Tap New.';
+                hideTempLoading();
             }
+        }
 
-            const baseInput = document.getElementById('baseEmailInput');
-            const countInput = document.getElementById('countInput');
-            document.getElementById('generateBtn').addEventListener('click', ()=>{
-                let base = baseInput.value.trim(); if(!base) { toast("Enter base email","error"); return; }
-                let count = parseInt(countInput.value,10); if(isNaN(count)||count<1) count=1;
-                if(count>1000) { toast("Max 1000, capped","info"); count=1000; countInput.value=1000; }
-                currentEmails = generateVariants(base,count); renderCurrent(); addNote(currentEmails, base);
-                playGenerateSound();
-                toast(`✨ ${currentEmails.length} variants generated & saved`,'success');
-            });
-            document.getElementById('clearAllBtn').addEventListener('click', ()=>{ 
-                if(!currentEmails.length){ toast("Nothing to clear","info"); return; }
-                currentEmails=[]; renderCurrent(); toast("Current list cleared (saved notes remain)","info");
-                playDeleteSound();
-            });
-            document.getElementById('copyAllBtn').addEventListener('click', async ()=>{ if(!currentEmails.length){toast("No emails to copy","error");return;} await navigator.clipboard.writeText(currentEmails.join('\n')); toast(`📋 Copied ${currentEmails.length} emails`,'success'); });
+        function destroyTempMail() {
+            clearInterval(tempPollTimer);
+            tempPollTimer = null;
+        }
 
-            function getCurrentExport() { if(!currentEmails.length){toast("Generate emails first","error");return null;} return currentEmails; }
-            function exportCSV() { const arr=getCurrentExport(); if(!arr)return; const csv = [["Generated Emails"],...arr.map(e=>[e])].map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(",")).join("\n"); const blob=new Blob(["\uFEFF"+csv],{type:"text/csv"}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=`emails_${Date.now()}.csv`; a.click(); URL.revokeObjectURL(a.href); toast("CSV exported","success"); }
-            function exportExcel() { const arr=getCurrentExport(); if(!arr)return; const ws=XLSX.utils.aoa_to_sheet([["Generated Emails"],...arr.map(e=>[e])]); const wb=XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb,ws,"Emails"); XLSX.writeFile(wb,`emails_${Date.now()}.xlsx`); toast("Excel saved","success"); }
-            async function exportPDF() { const arr=getCurrentExport(); if(!arr)return; const {jsPDF}=window.jspdf; const doc=new jsPDF(); doc.setFontSize(12); doc.text("Email Variants",14,12); doc.setFontSize(8); doc.text(`Total: ${arr.length} | Base: ${baseInput.value}`,14,20); doc.autoTable({startY:26,head:[["Emails"]],body:arr.map(e=>[e]),styles:{fontSize:7}}); doc.save(`emails_${Date.now()}.pdf`); toast("PDF exported","success"); }
-            document.getElementById('downloadCsvBtn').addEventListener('click',exportCSV);
-            document.getElementById('downloadExcelBtn').addEventListener('click',exportExcel);
-            document.getElementById('downloadPdfBtn').addEventListener('click',exportPDF);
+        document.getElementById('tempCopyEmail').addEventListener('click', async () => {
+            if (!tempAccount) return;
+            await navigator.clipboard.writeText(tempAccount.address);
+            toast('📋 Email copied');
+        });
+        document.getElementById('tempRefreshBtn').addEventListener('click', () => {
+            showTempLoading();
+            refreshTempInbox(false);
+        });
+        document.getElementById('tempNewBtn').addEventListener('click', async () => {
+            const btn = document.getElementById('tempNewBtn'); btn.disabled = true;
+            if (!tempDomains.length) await fetchTempDomains();
+            const domain = getRandomTempDomain();
+            const address = `u${Date.now().toString(36)}@${domain}`;
+            tempEmailEl.textContent = address;
+            tempEmailCard.classList.remove('expired');
+            clearInterval(tempPollTimer);
+            knownTempIds.clear();
+            tempMessageList.innerHTML = '<div class="no-messages">Waiting for verification code...</div>';
+            toast('⚡ New address ready');
+            try {
+                const password = 'TempMail@123';
+                const { token, id } = await createTempAccountAndToken(address, password);
+                tempAccount = { address, token, id };
+                localStorage.setItem('tempmail_account', JSON.stringify(tempAccount));
+                await refreshTempInbox(true);
+                startTempPolling();
+            } catch (e) {
+                setTimeout(async () => {
+                    try {
+                        tempAccount = await getValidTempAccount();
+                        tempEmailEl.textContent = tempAccount.address;
+                        startTempPolling();
+                    } catch (err) { tempEmailEl.textContent = 'Error. Try again.'; }
+                }, 2000);
+            } finally { btn.disabled = false; }
+        });
 
-            let deferredPrompt=null; const installPanel=document.querySelector('.install-panel'); if(installPanel) installPanel.style.display='none';
-            const manifestObj={name:"CaseForge Email Studio",short_name:"CaseForge",start_url:".",display:"standalone",theme_color:"#f4f7fb",background_color:"#ffffff",icons:[{src:"genarator.png",sizes:"192x192",type:"image/png"},{src:"genarator.png",sizes:"512x512",type:"image/png"}]};
-            const manifestBlob=new Blob([JSON.stringify(manifestObj)],{type:'application/json'}); const manifestURL=URL.createObjectURL(manifestBlob);
-            const manifestLink=document.createElement('link'); manifestLink.rel='manifest'; manifestLink.href=manifestURL; document.head.appendChild(manifestLink);
-            if('serviceWorker' in navigator) {
-                const swCode = `const CACHE_NAME='caseforge-offline-v1';const urlsToCache=['.','index.html','genarator.png','proton.png','telegram.png','telegramx.png','telegramapk.png','group.png','temp.png','tggraph.png','https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css','https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js','https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js','https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.6.0/jspdf.plugin.autotable.min.js'];self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE_NAME).then(c=>c.addAll(urlsToCache)))});self.addEventListener('fetch',e=>{e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request).then(fetchRes=>caches.open(CACHE_NAME).then(c=>{c.put(e.request,fetchRes.clone());return fetchRes}))))});self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(keys=>Promise.all(keys.map(k=>{if(k!==CACHE_NAME)return caches.delete(k)}))))});`;
-                const swBlob=new Blob([swCode],{type:'application/javascript'}); const swURL=URL.createObjectURL(swBlob);
-                navigator.serviceWorker.register(swURL).catch(e=>console.log("SW error",e));
-            }
-            window.addEventListener('beforeinstallprompt',(e)=>{ e.preventDefault(); deferredPrompt=e; if(installPanel) installPanel.style.display='none'; });
-            document.getElementById('installAppBtn')?.addEventListener('click',async()=>{ if(deferredPrompt){ deferredPrompt.prompt(); const {outcome}=await deferredPrompt.userChoice; if(outcome==='accepted'){ toast("Installing app...","success"); } else toast("Install cancelled","info"); deferredPrompt=null; } else toast("Tap browser menu → Add to Home Screen","info"); });
-            window.addEventListener('appinstalled',()=>{ deferredPrompt=null; toast("✅ App installed!","success"); });
+        // Section switching
+        const sections = {
+            generator: document.getElementById('generatorSection'),
+            allCreat: document.getElementById('allCreatSection'),
+            tempmail: document.getElementById('tempmailSection'),
+            vpn: document.getElementById('vpnSection'),
+            about: document.getElementById('aboutSection')
+        };
+        const navs = document.querySelectorAll('.nav-item');
+        let currentSection = 'generator', isTransitioning = false;
 
-            const genSec=document.getElementById('generatorSection'), creatSec=document.getElementById('allCreatSection'), vpnSec=document.getElementById('vpnSection'), aboutSec=document.getElementById('aboutSection');
-            const navs=document.querySelectorAll('.nav-item');
-            const appLinksGrid=document.getElementById('appLinksGrid');
-            const sectionOrder=['generator','allCreat','vpn','about'];
-            let currentSectionName='generator', isTransitioning=false;
+        function switchSection(section) {
+            if(isTransitioning || section===currentSection) return;
+            isTransitioning = true;
+            const order = ['generator','allCreat','tempmail','vpn','about'];
+            const goingForward = order.indexOf(section) > order.indexOf(currentSection);
+            const targetSec = sections[section];
+            const oldSection = document.querySelector('.section.active-section');
 
-            function switchSection(section) {
-                if(isTransitioning || section===currentSectionName) return;
-                isTransitioning = true;
-                const oldIdx=sectionOrder.indexOf(currentSectionName), newIdx=sectionOrder.indexOf(section);
-                const goingForward = newIdx > oldIdx;
-                let targetSec;
-                if(section==='generator') targetSec=genSec; else if(section==='allCreat') targetSec=creatSec; else if(section==='vpn') targetSec=vpnSec; else targetSec=aboutSec;
-                const oldSection = document.querySelector('.section.active-section');
-
-                [genSec,creatSec,vpnSec,aboutSec].forEach(s=>s.classList.remove('anim-slide-forward','anim-slide-backward','anim-slide-out-forward','anim-slide-out-backward'));
-                if(oldSection && oldSection!==targetSec) {
-                    oldSection.classList.add(goingForward?'anim-slide-out-forward':'anim-slide-out-backward');
-                }
-                targetSec.classList.add('active-section');
-                if(oldSection && oldSection!==targetSec) {
-                    targetSec.classList.add(goingForward?'anim-slide-forward':'anim-slide-backward');
-                }
-                currentSectionName = section;
-                setTimeout(()=>{
-                    if(oldSection && oldSection!==targetSec) oldSection.classList.remove('active-section','anim-slide-out-forward','anim-slide-out-backward');
-                    targetSec.classList.remove('anim-slide-forward','anim-slide-backward');
-                    isTransitioning = false;
-                }, 320);
-                navs.forEach(b=>{ const s=b.getAttribute('data-section'); b.classList.toggle('active', s===section); });
-                if(section==='about' && appLinksGrid) { appLinksGrid.classList.remove('animate-in'); void appLinksGrid.offsetWidth; appLinksGrid.classList.add('animate-in'); }
-                if(section==='allCreat') renderNotesList();
-                updateDashboardStats();
-            }
-            navs.forEach(b=>b.addEventListener('click',()=>switchSection(b.getAttribute('data-section'))));
-
-            loadNotes();
-            const demoBase = baseInput.value.trim(); currentEmails = generateVariants(demoBase,4); renderCurrent();
+            Object.values(sections).forEach(s=>s.classList.remove('anim-slide-forward','anim-slide-backward','anim-slide-out-forward','anim-slide-out-backward'));
+            if(oldSection && oldSection!==targetSec) oldSection.classList.add(goingForward?'anim-slide-out-forward':'anim-slide-out-backward');
+            targetSec.classList.add('active-section');
+            if(oldSection && oldSection!==targetSec) targetSec.classList.add(goingForward?'anim-slide-forward':'anim-slide-backward');
+            currentSection = section;
+            setTimeout(()=>{
+                if(oldSection && oldSection!==targetSec) oldSection.classList.remove('active-section','anim-slide-out-forward','anim-slide-out-backward');
+                targetSec.classList.remove('anim-slide-forward','anim-slide-backward');
+                isTransitioning = false;
+            }, 320);
+            navs.forEach(b=>{ b.classList.toggle('active', b.getAttribute('data-section')===section); });
+            if(section==='about') { const grid = document.getElementById('appLinksGrid'); if(grid) { grid.classList.remove('animate-in'); void grid.offsetWidth; grid.classList.add('animate-in'); } }
+            if(section==='allCreat') renderNotesList();
+            if(section==='tempmail') initTempMail();
+            else destroyTempMail();
             updateDashboardStats();
-        })();
-    </script>
+        }
+
+        navs.forEach(b=>b.addEventListener('click', ()=>switchSection(b.getAttribute('data-section'))));
+
+        loadNotes();
+        currentEmails = generateVariants(document.getElementById('baseEmailInput').value.trim(),4);
+        renderCurrent();
+        updateDashboardStats();
+    })();
+</script>
 </body>
 </html>
