@@ -8,12 +8,15 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="CaseForge">
     <title>CaseForge · Email Case Studio</title>
-    <link rel="icon" type="image/png" href="genarator.png">
-    <link rel="apple-touch-icon" href="genarator.png">
+    <link rel="icon" type="image/png" href="message.png">
+    <link rel="apple-touch-icon" href="message.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.6.0/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.6.0/jspdf.plugin.autotable.min.js">
+    </script>
     <style>
         * { margin:0; padding:0; box-sizing:border-box; }
         body { background:#f4f7fb; padding-bottom:70px; font-family:system-ui, -apple-system, 'Segoe UI', 'Inter', sans-serif; -webkit-tap-highlight-color:transparent; -webkit-font-smoothing:antialiased; }
@@ -147,7 +150,7 @@
         .about-text strong { color:#0f172a; }
         .about-highlight { background:#fffbea; border-left:3px solid #f59e0b; padding:10px 12px; border-radius:14px; margin:14px 0; font-size:0.73rem; }
 
-        /* ===== TEMP MAIL PREMIUM STYLES ===== */
+        /* TEMP MAIL STYLES */
         .temp-card {
             background: #ffffff; border-radius: 24px; padding: 20px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.1);
             border: 1px solid #e2e8f0;
@@ -236,6 +239,67 @@
         .modal-body { font-family:'SF Mono', monospace; font-size:0.72rem; line-height:1.6; white-space:pre-wrap; word-break:break-word; color:#334155; }
         .close-btn { background: #f1f5f9; border: none; width: 32px; height: 32px; border-radius: 50%; font-size: 0.9rem; color: #64748b; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
         .close-btn:hover { background: #e2e8f0; }
+
+        .temp-history-section {
+            margin-top: 18px;
+            border-radius: 20px;
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+            background: #ffffff;
+        }
+        .temp-history-header {
+            background: #f0fdf4;
+            padding: 12px 16px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: #166534;
+            border-bottom: 1px solid #bbf7d0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .temp-history-list { max-height: 250px; overflow-y: auto; }
+        .history-item {
+            padding: 12px 16px;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.75rem;
+            transition: background 0.2s;
+        }
+        .history-item:last-child { border-bottom: none; }
+        .history-item:hover { background: #f8fafc; }
+        .history-icon {
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #059669, #10b981);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+        .history-code {
+            font-weight: 700;
+            color: #1e293b;
+            font-family: 'SF Mono', monospace;
+        }
+        .history-meta {
+            font-size: 0.65rem;
+            color: #64748b;
+            display: flex;
+            flex-direction: column;
+            margin-left: auto;
+            text-align: right;
+        }
+        .no-history {
+            text-align: center;
+            padding: 24px 12px;
+            color: #94a3b8;
+            font-size: 0.78rem;
+        }
     </style>
 </head>
 <body>
@@ -341,7 +405,10 @@
         <div class="temp-card">
             <div class="temp-loading-bar-container"><div class="temp-loading-bar" id="tempLoadingBar"></div></div>
             <header style="display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; padding-bottom:14px; border-bottom:1px solid #d1fae5;">
-                <div class="logo-area"><i class="fas fa-clock" style="font-size:1.8rem; color:#059669;"></i><h1 style="font-size:1.3rem; font-weight:700; color:#1e293b;">Temp Mail</h1></div>
+                <div class="logo-area" style="display:flex; align-items:center; gap:8px;">
+                    <img src="message.png" alt="Temp Mail" style="width:32px; height:32px; object-fit:contain; border-radius:8px;">
+                    <h1 style="font-size:1.3rem; font-weight:700; color:#1e293b; display:inline;">Temp Mail</h1>
+                </div>
                 <button class="btn-premium btn-new" id="tempNewBtn"><i class="fas fa-plus-circle"></i> New</button>
             </header>
             <div class="temp-email-card" id="tempEmailCard">
@@ -357,6 +424,17 @@
             <div class="temp-inbox-section">
                 <div class="temp-inbox-header"><span>📨 Inbox</span><span id="tempMessageCount">0 messages</span></div>
                 <div class="temp-message-list" id="tempMessageList"><div class="no-messages">Waiting for verification code...</div></div>
+            </div>
+            <div class="temp-history-section" id="tempHistorySection">
+                <div class="temp-history-header">
+                    <i class="fas fa-envelope"></i> OTP History
+                    <button id="clearOTPHistoryBtn" style="margin-left:auto; background:#fee2e2; border:none; padding:5px 12px; border-radius:20px; font-size:0.7rem; font-weight:600; cursor:pointer; color:#b91c1c; display:flex; align-items:center; gap:4px;">
+                        <i class="fas fa-trash-alt"></i> Clear All
+                    </button>
+                </div>
+                <div class="temp-history-list" id="tempHistoryList">
+                    <div class="no-history">No codes captured yet</div>
+                </div>
             </div>
             <p style="font-size:0.62rem; color:#94a3b8; text-align:center; margin-top:14px;">Auto‑refresh every 2s · Codes extracted automatically</p>
         </div>
@@ -391,6 +469,25 @@
         function playCutSound() { try { const ctx=getAudioContext(); const now=ctx.currentTime; const osc=ctx.createOscillator(); const gain=ctx.createGain(); osc.type='sine'; osc.frequency.setValueAtTime(1200,now); osc.frequency.exponentialRampToValueAtTime(400,now+0.12); gain.gain.setValueAtTime(0.3,now); gain.gain.exponentialRampToValueAtTime(0.01,now+0.18); osc.connect(gain); gain.connect(ctx.destination); osc.start(now); osc.stop(now+0.2); } catch(e){} }
         function playDeleteSound() { try { const ctx=getAudioContext(); const now=ctx.currentTime; const osc=ctx.createOscillator(); const gain=ctx.createGain(); osc.type='triangle'; osc.frequency.setValueAtTime(200,now); osc.frequency.exponentialRampToValueAtTime(80,now+0.15); gain.gain.setValueAtTime(0.4,now); gain.gain.exponentialRampToValueAtTime(0.01,now+0.25); osc.connect(gain); gain.connect(ctx.destination); osc.start(now); osc.stop(now+0.3); } catch(e){} }
         function playGenerateSound() { try { const ctx=getAudioContext(); const now=ctx.currentTime; const osc=ctx.createOscillator(); const gain=ctx.createGain(); osc.type='sine'; osc.frequency.setValueAtTime(523.25,now); osc.frequency.setValueAtTime(659.25,now+0.08); osc.frequency.setValueAtTime(783.99,now+0.16); gain.gain.setValueAtTime(0.4,now); gain.gain.exponentialRampToValueAtTime(0.01,now+0.3); osc.connect(gain); gain.connect(ctx.destination); osc.start(now); osc.stop(now+0.35); } catch(e){} }
+        function playOTPNotificationSound() {
+            try {
+                const ctx = getAudioContext();
+                const now = ctx.currentTime;
+                const notes = [523.25, 659.25, 783.99, 1046.5];
+                notes.forEach((freq, i) => {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(freq, now + i * 0.12);
+                    gain.gain.setValueAtTime(0.3, now + i * 0.12);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.12 + 0.2);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(now + i * 0.12);
+                    osc.stop(now + i * 0.12 + 0.25);
+                });
+            } catch(e) {}
+        }
 
         const STORAGE_KEY = 'caseforge_notes', CUT_COUNT_KEY = 'caseforge_cutcount';
         let savedNotes = [];
@@ -490,7 +587,7 @@
         document.getElementById('downloadExcelBtn').addEventListener('click',exportExcel);
         document.getElementById('downloadPdfBtn').addEventListener('click',exportPDF);
 
-        // TEMP MAIL LOGIC (premium, integrated)
+        // TEMP MAIL LOGIC
         const TEMP_API = 'https://api.mail.tm';
         async function tempApiFetch(endpoint, options={}) {
             const res = await fetch(`${TEMP_API}${endpoint}`, { ...options, headers: {'Content-Type':'application/json', ...options.headers} });
@@ -500,6 +597,64 @@
 
         let tempAccount = null, tempPollTimer = null, knownTempIds = new Set();
         let tempDomains = [];
+
+        const OTP_HISTORY_KEY = 'tempmail_otp_history';
+        let otpHistory = [];
+
+        function loadOTPHistory() {
+            otpHistory = JSON.parse(localStorage.getItem(OTP_HISTORY_KEY) || '[]');
+            renderOTPHistory();
+        }
+        function saveOTPHistory() {
+            localStorage.setItem(OTP_HISTORY_KEY, JSON.stringify(otpHistory));
+            renderOTPHistory();
+        }
+        function addOTPToHistory(code, from, date) {
+            const recent = otpHistory.filter(e => e.code === code && (Date.now() - e.timestamp < 600000));
+            if (recent.length > 0) return;
+            otpHistory.unshift({
+                code,
+                from: from || 'unknown',
+                timestamp: Date.now(),
+                displayDate: date || new Date().toLocaleString()
+            });
+            if (otpHistory.length > 30) otpHistory.pop();
+            saveOTPHistory();
+            playOTPNotificationSound();
+            if (Notification.permission === 'granted') {
+                try {
+                    new Notification('🔐 OTP Received', {
+                        body: `Code: ${code}\nFrom: ${from}`,
+                        icon: 'message.png',
+                        silent: true
+                    });
+                } catch(e) {}
+            }
+        }
+        function clearOTPHistory() {
+            otpHistory = [];
+            saveOTPHistory();
+            toast('OTP history cleared', 'success');
+        }
+        function renderOTPHistory() {
+            const list = document.getElementById('tempHistoryList');
+            if (!list) return;
+            if (!otpHistory.length) {
+                list.innerHTML = '<div class="no-history">No codes captured yet</div>';
+                return;
+            }
+            list.innerHTML = otpHistory.map(entry => `
+                <div class="history-item">
+                    <div class="history-icon"><i class="fas fa-envelope"></i></div>
+                    <span class="history-code">${escapeHtml(entry.code)}</span>
+                    <div class="history-meta">
+                        <span>${escapeHtml(entry.from)}</span>
+                        <span>${escapeHtml(entry.displayDate)}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+        document.getElementById('clearOTPHistoryBtn')?.addEventListener('click', clearOTPHistory);
 
         async function fetchTempDomains() {
             const cached = localStorage.getItem('tempmail_domains');
@@ -599,6 +754,7 @@
                         }, 1500);
                     });
                 });
+                addOTPToHistory(code, msg.from?.address || 'unknown', new Date(msg.createdAt).toLocaleString());
             }
             item.addEventListener('click', async () => {
                 try {
@@ -688,6 +844,7 @@
                 await refreshTempInbox(true);
                 hideTempLoading();
                 startTempPolling();
+                loadOTPHistory();
             } catch (e) {
                 tempEmailEl.textContent = 'Error. Tap New.';
                 hideTempLoading();
@@ -697,6 +854,12 @@
         function destroyTempMail() {
             clearInterval(tempPollTimer);
             tempPollTimer = null;
+        }
+
+        function requestNotificationPermission() {
+            if (window.Notification && Notification.permission === 'default') {
+                Notification.requestPermission();
+            }
         }
 
         document.getElementById('tempCopyEmail').addEventListener('click', async () => {
@@ -735,6 +898,7 @@
                     } catch (err) { tempEmailEl.textContent = 'Error. Try again.'; }
                 }, 2000);
             } finally { btn.disabled = false; }
+            requestNotificationPermission();
         });
 
         // Section switching
@@ -769,14 +933,17 @@
             navs.forEach(b=>{ b.classList.toggle('active', b.getAttribute('data-section')===section); });
             if(section==='about') { const grid = document.getElementById('appLinksGrid'); if(grid) { grid.classList.remove('animate-in'); void grid.offsetWidth; grid.classList.add('animate-in'); } }
             if(section==='allCreat') renderNotesList();
-            if(section==='tempmail') initTempMail();
-            else destroyTempMail();
+            if(section==='tempmail') {
+                initTempMail();
+                requestNotificationPermission();
+            } else destroyTempMail();
             updateDashboardStats();
         }
 
         navs.forEach(b=>b.addEventListener('click', ()=>switchSection(b.getAttribute('data-section'))));
 
         loadNotes();
+        loadOTPHistory();
         currentEmails = generateVariants(document.getElementById('baseEmailInput').value.trim(),4);
         renderCurrent();
         updateDashboardStats();
