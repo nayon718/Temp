@@ -915,6 +915,52 @@
             }, 250);
         }
 
+        // ---- OTP auto-copy to device clipboard ----
+        // Browsers block clipboard writes while the app is in background, so if the
+        // immediate copy fails it stays pending and completes as soon as the app regains focus.
+        let pendingOTPCopy = null, lastAutoCopiedOTP = null;
+        async function tryCopyText(text) {
+            try { await navigator.clipboard.writeText(text); return true; }
+            catch (e) {
+                try {
+                    const ta = document.createElement('textarea');
+                    ta.value = text;
+                    ta.style.position = 'fixed';
+                    ta.style.opacity = '0';
+                    document.body.appendChild(ta);
+                    ta.focus();
+                    ta.select();
+                    const ok = document.execCommand('copy');
+                    ta.remove();
+                    return ok;
+                } catch (e2) { return false; }
+            }
+        }
+        function autoCopyOTP(code) {
+            if (!code || code === lastAutoCopiedOTP || code === pendingOTPCopy) return;
+            pendingOTPCopy = code;
+            tryCopyText(code).then(ok => {
+                if (ok && pendingOTPCopy === code) {
+                    lastAutoCopiedOTP = code;
+                    pendingOTPCopy = null;
+                    toast(`📋 OTP copied: ${code}`, 'success');
+                }
+            });
+        }
+        function retryPendingOTPCopy() {
+            if (document.hidden || !pendingOTPCopy) return;
+            const c = pendingOTPCopy;
+            tryCopyText(c).then(ok => {
+                if (ok && pendingOTPCopy === c) {
+                    lastAutoCopiedOTP = c;
+                    pendingOTPCopy = null;
+                    toast(`📋 OTP copied: ${c}`, 'success');
+                }
+            });
+        }
+        document.addEventListener('visibilitychange', retryPendingOTPCopy);
+        window.addEventListener('focus', retryPendingOTPCopy);
+
         function attachCodeChip(item, code, from, createdAt) {
             if (item.querySelector('.code-copy-chip')) return;
             const codeBtn = document.createElement('button');
@@ -938,6 +984,9 @@
             });
             item.appendChild(codeBtn);
             addOTPToHistory(code, from || 'unknown', createdAt ? new Date(createdAt).toLocaleString() : new Date().toLocaleString());
+            // auto-copy only fresh codes (arrived within the last 10 minutes)
+            const codeTs = createdAt ? new Date(createdAt).getTime() : Date.now();
+            if (!isNaN(codeTs) && Date.now() - codeTs < 10 * 60 * 1000) autoCopyOTP(code);
         }
 
         function createTempMessageElement(msg) {
