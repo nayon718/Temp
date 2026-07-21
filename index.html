@@ -154,6 +154,7 @@
         .temp-card {
             background: #ffffff; border-radius: 24px; padding: 20px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.1);
             border: 1px solid #e2e8f0;
+            display: flex; flex-direction: column; min-height: calc(100vh - 115px);
         }
         .temp-loading-bar-container { height: 3px; background: transparent; margin-bottom: 12px; }
         .temp-loading-bar { height: 100%; width: 0%; background: linear-gradient(90deg, #059669, #34d399); transition: width 0.2s ease-out; opacity: 0; }
@@ -246,6 +247,9 @@
             border: 1px solid #e2e8f0;
             overflow: hidden;
             background: #ffffff;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
         }
         .temp-history-header {
             background: #f0fdf4;
@@ -258,7 +262,7 @@
             align-items: center;
             gap: 6px;
         }
-        .temp-history-list { max-height: 250px; overflow-y: auto; }
+        .temp-history-list { flex: 1; max-height: none; min-height: 120px; overflow-y: auto; }
         .history-item {
             padding: 12px 16px;
             border-bottom: 1px solid #f1f5f9;
@@ -930,6 +934,7 @@
                     document.body.appendChild(ta);
                     ta.focus();
                     ta.select();
+                    ta.setSelectionRange(0, ta.value.length);
                     const ok = document.execCommand('copy');
                     ta.remove();
                     return ok;
@@ -960,6 +965,9 @@
         }
         document.addEventListener('visibilitychange', retryPendingOTPCopy);
         window.addEventListener('focus', retryPendingOTPCopy);
+        window.addEventListener('pageshow', retryPendingOTPCopy);
+        document.addEventListener('touchstart', retryPendingOTPCopy, { passive: true });
+        document.addEventListener('click', retryPendingOTPCopy);
 
         function attachCodeChip(item, code, from, createdAt) {
             if (item.querySelector('.code-copy-chip')) return;
@@ -1102,6 +1110,7 @@
                 if (session !== tempPollSession || !tempAccount) return;
                 const ok = await refreshTempInbox(true);
                 if (session !== tempPollSession) return;
+                retryPendingOTPCopy(); // while the page is open, keep retrying any pending OTP copy
                 failures = ok ? 0 : Math.min(failures + 1, 4); // back off on failures (e.g. rate limits)
                 tempPollTimer = setTimeout(tick, base * (failures ? failures + 1 : 1));
             };
