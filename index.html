@@ -301,6 +301,7 @@
             font-size: 0.78rem;
         }
     </style>
+<base target="_blank">
 </head>
 <body>
 <div class="app-container">
@@ -646,16 +647,18 @@
         document.getElementById('downloadExcelBtn').addEventListener('click',exportExcel);
         document.getElementById('downloadPdfBtn').addEventListener('click',exportPDF);
 
-        // TEMP MAIL LOGIC
-        const TEMP_API = 'https://api.mail.tm';
-        async function tempApiFetch(endpoint, options={}) {
-            const res = await fetch(`${TEMP_API}${endpoint}`, { ...options, headers: {'Content-Type':'application/json', ...options.headers} });
-            if(!res.ok) throw new Error(`HTTP ${res.status}`);
-            return res.json();
-        }
+        // TEMP MAIL LOGIC — multi-provider with auto fallback
+        // Chain: mail.tm → mail.gw (same API) → maildrop.cc (no signup, always works)
+        const TEMP_PROVIDERS = [
+            { type: 'mailtm', base: 'https://api.mail.tm' },
+            { type: 'mailtm', base: 'https://api.mail.gw' },
+            { type: 'maildrop', base: 'https://api.maildrop.cc' }
+        ];
+        const tempSleep = ms => new Promise(r => setTimeout(r, ms));
 
         let tempAccount = null, tempPollTimer = null, knownTempIds = new Set();
-        let tempDomains = [];
+        let tempDomainsCache = {};
+        let tempFullMsgCache = {};
 
         const OTP_HISTORY_KEY = 'tempmail_otp_history';
         let otpHistory = [];
@@ -715,19 +718,153 @@
         }
         document.getElementById('clearOTPHistoryBtn')?.addEventListener('click', clearOTPHistory);
 
-        async function fetchTempDomains() {
-            const cached = localStorage.getItem('tempmail_domains');
-            if(cached) { tempDomains = JSON.parse(cached); return; }
-            const data = await tempApiFetch('/domains');
-            tempDomains = data['hydra:member'].map(d => d.domain);
-            localStorage.setItem('tempmail_domains', JSON.stringify(tempDomains));
+        // ---- Provider: mail.tm / mail.gw (identical API) ----
+        async function mailTmFetch(base, endpoint, options={}) {
+            const res = await fetch(`${base}${endpoint}`, { ...options, headers: {'Content-Type':'application/json', ...options.headers} });
+            if(!res.ok) throw new Error(`HTTP ${res.status}`);
+            return res.json();
         }
-        function getRandomTempDomain() { return tempDomains[Math.floor(Math.random() * tempDomains.length)]; }
+        async function fetchMailTmDomains(base) {
+            if (tempDomainsCache[base]) return tempDomainsCache[base];
+            const data = await mailTmFetch(base, '/domains');
+            const list = (data['hydra:member'] || []).filter(d => d.isActive).map(d => d.domain);
+            if (!list.length) throw new Error('No active domains');
+            tempDomainsCache[base] = list;
+            return list;
+        }
+        function randomLocalPart(len) {
+            const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+            let s = '';
+            for (let i = 0; i < len; i++) s += chars[Math.floor(Math.random() * chars.length)];
+            return s;
+        }
+        async function createMailTmAccount(provider) {
+            const domains = await fetchMailTmDomains(provider.base);
+            const domain = domains[Math.floor(Math.random() * domains.length)];
+            const address = `${randomLocalPart(4)}${Date.now().toString(36)}@${domain}`;
+            const password = 'TempMail@123';
+            await mailTmFetch(provider.base, '/accounts', { method:'POST', body: JSON.stringify({address, password}) });
+            const tokenResp = await mailTmFetch(provider.base, '/token', { method:'POST', body: JSON.stringify({address, password}) });
+            return { provider: 'mailtm', base: provider.base, address, token: tokenResp.token, id: tokenResp.id };
+        }
+        async function fetchMailTmMessages(acc) {
+            const data = await mailTmFetch(acc.base, '/messages', { headers: { Authorization: `Bearer ${acc.token}` } });
+            return (data['hydra:member'] || []).map(m => ({
+                id: m.id,
+                from: m.from?.address || 'unknown',
+                subject: m.subject || '(no subject)',
+                text: m.intro || '',
+                createdAt: m.createdAt
+            }));
+        }
+        async function fetchMailTmFullMessage(acc, id) {
+            const m = await mailTmFetch(acc.base, `/messages/${id}`, { headers: { Authorization: `Bearer ${acc.token}` } });
+            return {
+                id: m.id,
+                from: m.from?.address || 'unknown',
+                subject: m.subject || '(no subject)',
+                text: m.text || htmlToText((m.html || []).join('\n')) || 'No content',
+                createdAt: m.createdAt
+            };
+        }
 
-        async function createTempAccountAndToken(email, password) {
-            await tempApiFetch('/accounts', { method:'POST', body: JSON.stringify({address: email, password}) });
-            const tokenResp = await tempApiFetch('/token', { method:'POST', body: JSON.stringify({address: email, password}) });
-            return { token: tokenResp.token, id: tokenResp.id };
+        // ---- Provider: maildrop.cc (GraphQL, no account creation → immune to rate limits) ----
+        async function maildropQuery(query) {
+            const res = await fetch('https://api.maildrop.cc/graphql', {
+                method: 'POST',
+                headers: {'Content-Type':'application/json'},
+                body: JSON.stringify({ query })
+            });
+            if(!res.ok) throw new Error(`HTTP ${res.status}`);
+            const json = await res.json();
+            if (json.errors) throw new Error(json.errors[0]?.message || 'GraphQL error');
+            return json.data;
+        }
+        function maildropMailbox(acc) { return acc.address.split('@')[0]; }
+        async function createMaildropAccount(provider) {
+            await maildropQuery('query { status }'); // verify reachable
+            const address = `${randomLocalPart(6)}${Date.now().toString(36)}@maildrop.cc`;
+            return { provider: 'maildrop', address };
+        }
+        function maildropBodyText(m) {
+            if (m.html) return htmlToText(m.html);
+            if (m.data) {
+                const idx = m.data.indexOf('\n\n');
+                let body = idx >= 0 ? m.data.slice(idx + 2) : m.data;
+                return body
+                    .replace(/Content-[^\n]*\n/gi, '')
+                    .replace(/--[A-Za-z0-9_=\-.]+/g, ' ')
+                    .replace(/=\r?\n/g, '')
+                    .replace(/[ \t]+/g, ' ')
+                    .trim();
+            }
+            return '';
+        }
+        async function fetchMaildropMessages(acc) {
+            // light query — maildrop returns body (data/html) only via single-message query
+            const data = await maildropQuery(`query { inbox(mailbox:"${maildropMailbox(acc)}") { id mailfrom headerfrom subject date } }`);
+            const list = data.inbox || [];
+            return list.map(m => ({
+                id: m.id,
+                from: m.headerfrom || m.mailfrom || 'unknown',
+                subject: m.subject || '(no subject)',
+                text: '',
+                createdAt: m.date,
+                provider: 'maildrop'
+            }));
+        }
+        async function fetchMaildropFullMessage(acc, id) {
+            let m = tempFullMsgCache[id];
+            if (!m) {
+                const data = await maildropQuery(`query { message(mailbox:"${maildropMailbox(acc)}", id:"${id}") { id mailfrom headerfrom subject date data html } }`);
+                m = data.message;
+                if (m) tempFullMsgCache[id] = m;
+            }
+            if (!m) throw new Error('Message not found');
+            return {
+                id: m.id,
+                from: m.headerfrom || m.mailfrom || 'unknown',
+                subject: m.subject || '(no subject)',
+                text: maildropBodyText(m) || 'No content',
+                createdAt: m.date
+            };
+        }
+
+        // ---- Shared helpers ----
+        function htmlToText(html) {
+            if (!html) return '';
+            return html
+                .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+                .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+                .replace(/<\s*br\s*\/?>/gi, '\n')
+                .replace(/<\/\s*(p|div|tr|li|h[1-6])\s*>/gi, '\n')
+                .replace(/<[^>]+>/g, ' ')
+                .replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+                .replace(/[ \t]+/g, ' ').replace(/\n\s+/g, '\n').replace(/\n{3,}/g, '\n\n')
+                .trim();
+        }
+        async function createTempAccountWithFallback() {
+            let lastErr = null;
+            for (const provider of TEMP_PROVIDERS) {
+                for (let attempt = 0; attempt < 2; attempt++) {
+                    try {
+                        if (provider.type === 'mailtm') return await createMailTmAccount(provider);
+                        return await createMaildropAccount(provider);
+                    } catch (e) {
+                        lastErr = e;
+                        await tempSleep(900 * (attempt + 1));
+                    }
+                }
+            }
+            throw lastErr || new Error('All mail servers unreachable');
+        }
+        async function fetchTempMessages(acc) {
+            if (acc.provider === 'maildrop') return fetchMaildropMessages(acc);
+            return fetchMailTmMessages(acc);
+        }
+        async function fetchTempFullMessage(acc, id) {
+            if (acc.provider === 'maildrop') return fetchMaildropFullMessage(acc, id);
+            return fetchMailTmFullMessage(acc, id);
         }
 
         async function getValidTempAccount() {
@@ -735,28 +872,20 @@
             if (stored) {
                 try {
                     const acc = JSON.parse(stored);
-                    await tempApiFetch('/messages', { headers: { Authorization: `Bearer ${acc.token}` } });
+                    if (!acc.provider) acc.provider = 'mailtm'; // legacy saved session
+                    if (acc.provider === 'mailtm' && !acc.base) acc.base = 'https://api.mail.tm';
+                    await fetchTempMessages(acc); // validate session still alive
                     return acc;
                 } catch { localStorage.removeItem('tempmail_account'); }
             }
-            if (!tempDomains.length) await fetchTempDomains();
-            const domain = getRandomTempDomain();
-            const address = `u${Date.now().toString(36)}@${domain}`;
-            const password = 'TempMail@123';
-            const { token, id } = await createTempAccountAndToken(address, password);
-            const newAcc = { address, token, id };
+            const newAcc = await createTempAccountWithFallback();
             localStorage.setItem('tempmail_account', JSON.stringify(newAcc));
             return newAcc;
         }
 
-        async function fetchTempMessages(token) {
-            const data = await tempApiFetch('/messages', { headers: { Authorization: `Bearer ${token}` } });
-            return data['hydra:member'] || [];
-        }
-
         function extractCode(text) {
             if (!text) return null;
-            const m = text.match(/(?:code|Code|CODE)[\s:\-]*(\d{4,8})/);
+            const m = text.match(/(?:code|otp|pin|verification)[\s:\-#]*(\d{4,8})/i);
             return m ? m[1] : (text.match(/\b(\d{4,8})\b/) || [])[1] || null;
         }
 
@@ -783,41 +912,57 @@
             }, 250);
         }
 
+        function attachCodeChip(item, code, from, createdAt) {
+            if (item.querySelector('.code-copy-chip')) return;
+            const codeBtn = document.createElement('button');
+            codeBtn.className = 'code-copy-chip';
+            codeBtn.dataset.code = code;
+            codeBtn.innerHTML = `<i class="fas fa-key"></i> ${code}`;
+            codeBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                navigator.clipboard.writeText(code).then(() => {
+                    codeBtn.innerHTML = '<i class="fas fa-check"></i> Copied';
+                    codeBtn.style.background = '#dcfce7';
+                    codeBtn.style.borderColor = '#86efac';
+                    codeBtn.style.color = '#166534';
+                    setTimeout(() => {
+                        codeBtn.innerHTML = `<i class="fas fa-key"></i> ${code}`;
+                        codeBtn.style.background = '#fff5f5';
+                        codeBtn.style.borderColor = '#fecaca';
+                        codeBtn.style.color = '#b91c1c';
+                    }, 1500);
+                });
+            });
+            item.appendChild(codeBtn);
+            addOTPToHistory(code, from || 'unknown', createdAt ? new Date(createdAt).toLocaleString() : new Date().toLocaleString());
+        }
+
         function createTempMessageElement(msg) {
-            const bodyText = msg.text || msg.html || '';
-            const code = extractCode(msg.subject || '') || extractCode(bodyText);
             const item = document.createElement('div');
             item.className = 'temp-message-item';
             item.dataset.id = msg.id;
             item.innerHTML = `
-                <div class="temp-message-sender">${escapeHtml(msg.from?.address || 'unknown')}</div>
+                <div class="temp-message-sender">${escapeHtml(msg.from || 'unknown')}</div>
                 <div class="temp-message-subject">${escapeHtml(msg.subject || '(no subject)')}</div>
-                <div class="temp-message-preview">${escapeHtml(bodyText.substring(0, 100))}</div>
-                ${code ? `<button class="code-copy-chip" data-code="${code}"><i class="fas fa-key"></i> ${code}</button>` : ''}
+                <div class="temp-message-preview">${escapeHtml((msg.text || '').substring(0, 100))}</div>
             `;
-            const codeBtn = item.querySelector('.code-copy-chip');
-            if (codeBtn) {
-                codeBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const c = codeBtn.dataset.code;
-                    navigator.clipboard.writeText(c).then(() => {
-                        codeBtn.innerHTML = '<i class="fas fa-check"></i> Copied';
-                        codeBtn.style.background = '#dcfce7';
-                        codeBtn.style.borderColor = '#86efac';
-                        codeBtn.style.color = '#166534';
-                        setTimeout(() => {
-                            codeBtn.innerHTML = `<i class="fas fa-key"></i> ${c}`;
-                            codeBtn.style.background = '#fff5f5';
-                            codeBtn.style.borderColor = '#fecaca';
-                            codeBtn.style.color = '#b91c1c';
-                        }, 1500);
-                    });
-                });
-                addOTPToHistory(code, msg.from?.address || 'unknown', new Date(msg.createdAt).toLocaleString());
+            const code = extractCode(msg.subject || '') || extractCode(msg.text || '');
+            if (code) attachCodeChip(item, code, msg.from, msg.createdAt);
+
+            // maildrop: body not included in list → lazy-load full message for preview + OTP
+            if (msg.provider === 'maildrop' && !code) {
+                fetchTempFullMessage(tempAccount, msg.id).then(full => {
+                    if (!item.isConnected) return;
+                    const preview = item.querySelector('.temp-message-preview');
+                    if (preview) preview.textContent = (full.text || '').substring(0, 100);
+                    const lazyCode = extractCode(full.subject || '') || extractCode(full.text || '');
+                    if (lazyCode) attachCodeChip(item, lazyCode, full.from, full.createdAt);
+                }).catch(() => {});
             }
+
             item.addEventListener('click', async () => {
                 try {
-                    const full = await tempApiFetch(`/messages/${msg.id}`, { headers: { Authorization: `Bearer ${tempAccount.token}` } });
+                    const full = await fetchTempFullMessage(tempAccount, msg.id);
                     showTempMessageModal(full);
                 } catch { alert('Could not load message.'); }
             });
@@ -827,7 +972,7 @@
         function showTempMessageModal(message) {
             const overlay = document.createElement('div');
             overlay.className = 'modal-overlay';
-            const bodyText = message.text || message.html || 'No content';
+            const bodyText = message.text || 'No content';
             const code = extractCode(message.subject || '') || extractCode(bodyText);
             const codeBlock = code ? `
                 <div style="background:#fff5f5; border:1px solid #fecaca; padding:12px 16px; border-radius:14px; margin:10px 0; display:flex; justify-content:space-between; align-items:center;">
@@ -838,7 +983,7 @@
                 <div class="modal-content">
                     <div class="modal-header"><h3>${escapeHtml(message.subject||'Message')}</h3><button class="close-btn"><i class="fas fa-times"></i></button></div>
                     <div class="modal-body">
-                        <p><strong>From:</strong> ${escapeHtml(message.from?.address||'')}</p>
+                        <p><strong>From:</strong> ${escapeHtml(message.from||'')}</p>
                         <p><strong>Date:</strong> ${message.createdAt ? new Date(message.createdAt).toLocaleString() : ''}</p>
                         ${codeBlock}
                         <hr style="margin:10px 0;">
@@ -853,7 +998,7 @@
         async function refreshTempInbox(silent = true) {
             if (!tempAccount) return;
             try {
-                const messages = await fetchTempMessages(tempAccount.token);
+                const messages = await fetchTempMessages(tempAccount);
                 tempEmailCard.classList.remove('expired');
                 const currentIds = new Set(messages.map(m => m.id));
                 Array.from(tempMessageList.children).forEach(child => {
@@ -878,16 +1023,17 @@
                 tempMessageCount.textContent = `${messages.length} messages`;
                 if (!silent) hideTempLoading();
             } catch (e) {
-                if (e.message.includes('401') || e.message.includes('403')) {
+                if (tempAccount.provider === 'mailtm' && (e.message.includes('401') || e.message.includes('403'))) {
                     tempEmailCard.classList.add('expired');
-                    if (!silent) hideTempLoading();
-                } else if (!silent) hideTempLoading();
+                }
+                if (!silent) hideTempLoading();
             }
         }
 
         function startTempPolling() {
             clearInterval(tempPollTimer);
-            tempPollTimer = setInterval(() => refreshTempInbox(true), 2000);
+            const interval = (tempAccount && tempAccount.provider === 'maildrop') ? 4000 : 2500;
+            tempPollTimer = setInterval(() => refreshTempInbox(true), interval);
         }
 
         async function initTempMail() {
@@ -895,7 +1041,6 @@
             tempEmailEl.textContent = 'Loading...';
             showTempLoading();
             try {
-                if (!tempDomains.length) await fetchTempDomains();
                 tempAccount = await getValidTempAccount();
                 tempEmailEl.textContent = tempAccount.address;
                 knownTempIds.clear();
@@ -931,32 +1076,35 @@
             refreshTempInbox(false);
         });
         document.getElementById('tempNewBtn').addEventListener('click', async () => {
-            const btn = document.getElementById('tempNewBtn'); btn.disabled = true;
-            if (!tempDomains.length) await fetchTempDomains();
-            const domain = getRandomTempDomain();
-            const address = `u${Date.now().toString(36)}@${domain}`;
-            tempEmailEl.textContent = address;
-            tempEmailCard.classList.remove('expired');
+            const btn = document.getElementById('tempNewBtn');
+            if (btn.disabled) return;
+            btn.disabled = true;
+            showTempLoading();
             clearInterval(tempPollTimer);
+            tempPollTimer = null;
             knownTempIds.clear();
+            tempFullMsgCache = {};
             tempMessageList.innerHTML = '<div class="no-messages">Waiting for verification code...</div>';
-            toast('⚡ New address ready');
+            tempEmailCard.classList.remove('expired');
+            tempEmailEl.textContent = 'Creating...';
             try {
-                const password = 'TempMail@123';
-                const { token, id } = await createTempAccountAndToken(address, password);
-                tempAccount = { address, token, id };
+                tempAccount = await createTempAccountWithFallback();
                 localStorage.setItem('tempmail_account', JSON.stringify(tempAccount));
+                tempEmailEl.textContent = tempAccount.address;
+                if (tempAccount.provider !== 'mailtm' || tempAccount.base !== TEMP_PROVIDERS[0].base) {
+                    toast('⚡ Backup server connected', 'success');
+                } else {
+                    toast('⚡ New address ready', 'success');
+                }
                 await refreshTempInbox(true);
                 startTempPolling();
             } catch (e) {
-                setTimeout(async () => {
-                    try {
-                        tempAccount = await getValidTempAccount();
-                        tempEmailEl.textContent = tempAccount.address;
-                        startTempPolling();
-                    } catch (err) { tempEmailEl.textContent = 'Error. Try again.'; }
-                }, 2000);
-            } finally { btn.disabled = false; }
+                tempEmailEl.textContent = 'Error. Try again.';
+                toast('Server busy — try again', 'error');
+            } finally {
+                hideTempLoading();
+                btn.disabled = false;
+            }
             requestNotificationPermission();
         });
 
