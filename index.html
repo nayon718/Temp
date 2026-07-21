@@ -1114,7 +1114,27 @@
                 tempAccount = await createTempAccountWithFallback();
                 localStorage.setItem('tempmail_account', JSON.stringify(tempAccount));
                 tempEmailEl.textContent = tempAccount.address;
-                if (tempAccount.provider !== 'mailtm' || tempAccount.base !== TEMP_PROVIDERS[0].base) {
+                // auto-copy the new address to the system clipboard
+                let copied = false;
+                try {
+                    await navigator.clipboard.writeText(tempAccount.address);
+                    copied = true;
+                } catch (e) {
+                    try {
+                        const ta = document.createElement('textarea');
+                        ta.value = tempAccount.address;
+                        ta.style.position = 'fixed';
+                        ta.style.opacity = '0';
+                        document.body.appendChild(ta);
+                        ta.focus();
+                        ta.select();
+                        copied = document.execCommand('copy');
+                        ta.remove();
+                    } catch (e2) {}
+                }
+                if (copied) {
+                    toast('📋 New address copied!', 'success');
+                } else if (tempAccount.provider !== 'mailtm' || tempAccount.base !== TEMP_PROVIDERS[0].base) {
                     toast('⚡ Backup server connected', 'success');
                 } else {
                     toast('⚡ New address ready', 'success');
