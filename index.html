@@ -305,6 +305,66 @@
             color: #94a3b8;
             font-size: 0.78rem;
         }
+
+        /* PREMIUM ACTIVATION POPUP */
+        .premium-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.55);
+            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+            z-index: 2500; display: flex; align-items: center; justify-content: center;
+            padding: 16px; opacity: 0; pointer-events: none;
+            transition: opacity 0.35s cubic-bezier(0.4,0,0.2,1);
+        }
+        .premium-overlay.active { opacity: 1; pointer-events: auto; }
+        .premium-card {
+            background: #ffffff; border-radius: 28px; padding: 32px 24px;
+            max-width: 360px; width: 100%; text-align: center;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.18), 0 8px 20px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.6);
+            transform: translateY(40px) scale(0.92); opacity: 0;
+            transition: transform 0.45s cubic-bezier(0.34,1.56,0.64,1), opacity 0.35s ease;
+        }
+        .premium-overlay.active .premium-card {
+            transform: translateY(0) scale(1); opacity: 1;
+        }
+        .premium-icon-wrap {
+            width: 72px; height: 72px; border-radius: 50%;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            display: inline-flex; align-items: center; justify-content: center;
+            margin-bottom: 18px; box-shadow: 0 8px 24px rgba(245,158,11,0.35);
+            animation: premiumIconPulse 2s ease-in-out infinite;
+        }
+        @keyframes premiumIconPulse {
+            0%,100%{ transform: scale(1); box-shadow: 0 8px 24px rgba(245,158,11,0.35); }
+            50%{ transform: scale(1.08); box-shadow: 0 12px 32px rgba(245,158,11,0.5); }
+        }
+        .premium-icon-wrap i { font-size: 1.6rem; color: #fff; }
+        .premium-title { font-size: 1.15rem; font-weight: 700; color: #1e293b; margin-bottom: 6px; letter-spacing: -0.3px; }
+        .premium-subtitle { font-size: 0.78rem; color: #64748b; margin-bottom: 20px; line-height: 1.5; }
+        .premium-input {
+            width: 100%; padding: 12px 16px; border: 1.5px solid #e2e8f0;
+            border-radius: 16px; font-size: 0.9rem; text-align: center; letter-spacing: 1px;
+            background: #f8fafc; outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+            margin-bottom: 14px; font-weight: 600; color: #1e293b;
+        }
+        .premium-input:focus { border-color: #22c55e; box-shadow: 0 0 0 3px rgba(34,197,94,0.1); }
+        .premium-input.error { border-color: #ef4444; box-shadow: 0 0 0 3px rgba(239,68,68,0.1); animation: shake 0.4s ease; }
+        @keyframes shake { 0%,100%{ transform: translateX(0); } 20%{ transform: translateX(-6px); } 40%{ transform: translateX(6px); } 60%{ transform: translateX(-4px); } 80%{ transform: translateX(4px); } }
+        .premium-btn {
+            width: 100%; padding: 13px; border-radius: 16px; border: none;
+            background: linear-gradient(135deg, #16a34a, #22c55e); color: #fff;
+            font-weight: 700; font-size: 0.9rem; cursor: pointer;
+            box-shadow: 0 6px 18px rgba(22,163,74,0.3);
+            transition: all 0.25s cubic-bezier(0.34,1.56,0.64,1);
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .premium-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(22,163,74,0.4); }
+        .premium-btn:active { transform: scale(0.96); }
+        .premium-error-msg { color: #ef4444; font-size: 0.72rem; margin-top: 10px; min-height: 18px; font-weight: 600; }
+        .premium-locked-blur {
+            filter: blur(4px) brightness(0.85); pointer-events: none; user-select: none;
+            transition: filter 0.4s ease;
+        }
     </style>
 <base target="_blank">
 </head>
@@ -504,6 +564,18 @@
             <p style="font-size:0.62rem; color:#94a3b8; text-align:center; margin-top:14px;">Auto‑refresh every 2s · Codes extracted automatically</p>
         </div>
     </div>
+    <!-- PREMIUM POPUP -->
+    <div class="premium-overlay" id="premiumOverlay">
+        <div class="premium-card">
+            <div class="premium-icon-wrap"><i class="fas fa-crown"></i></div>
+            <div class="premium-title">Only Allow Premium Users</div>
+            <div class="premium-subtitle">Enter your activation key below to unlock Temp Mail features.</div>
+            <input type="text" class="premium-input" id="premiumKeyInput" placeholder="Enter activation key" autocomplete="off">
+            <button class="premium-btn" id="premiumContinueBtn"><i class="fas fa-unlock-alt"></i> Continue</button>
+            <div class="premium-error-msg" id="premiumErrorMsg"></div>
+        </div>
+    </div>
+
 </div>
 
 <div class="bottom-nav">
@@ -553,6 +625,60 @@
                 });
             } catch(e) {}
         }
+
+        const PREMIUM_KEY = 'caseforge_premium_activated';
+        const CORRECT_KEY = 'NAYON718';
+        let isPremiumUser = false;
+
+        function checkPremiumStatus() {
+            isPremiumUser = localStorage.getItem(PREMIUM_KEY) === 'true';
+            return isPremiumUser;
+        }
+        function activatePremium() {
+            localStorage.setItem(PREMIUM_KEY, 'true');
+            isPremiumUser = true;
+        }
+        function showPremiumPopup() {
+            const overlay = document.getElementById('premiumOverlay');
+            const tempSec = document.getElementById('tempmailSection');
+            if (overlay) overlay.classList.add('active');
+            if (tempSec) tempSec.classList.add('premium-locked-blur');
+        }
+        function hidePremiumPopup() {
+            const overlay = document.getElementById('premiumOverlay');
+            const tempSec = document.getElementById('tempmailSection');
+            if (overlay) overlay.classList.remove('active');
+            if (tempSec) tempSec.classList.remove('premium-locked-blur');
+        }
+
+        // Premium popup event listeners
+        (function setupPremiumPopup() {
+            const continueBtn = document.getElementById('premiumContinueBtn');
+            const keyInput = document.getElementById('premiumKeyInput');
+            const errorMsg = document.getElementById('premiumErrorMsg');
+            if (!continueBtn) return;
+
+            continueBtn.addEventListener('click', () => {
+                const val = keyInput.value.trim().toUpperCase();
+                if (val === CORRECT_KEY) {
+                    activatePremium();
+                    keyInput.classList.remove('error');
+                    errorMsg.textContent = '';
+                    hidePremiumPopup();
+                    toast('✅ Premium activated! Enjoy Temp Mail.', 'success');
+                    initTempMail();
+                    requestNotificationPermission();
+                } else {
+                    keyInput.classList.add('error');
+                    errorMsg.textContent = '❌ Invalid key. Please try again.';
+                    setTimeout(() => keyInput.classList.remove('error'), 600);
+                }
+            });
+
+            keyInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') continueBtn.click();
+            });
+        })();
 
         const STORAGE_KEY = 'caseforge_notes', CUT_COUNT_KEY = 'caseforge_cutcount';
         let savedNotes = [];
@@ -1243,14 +1369,24 @@
             if(section==='about') { const grid = document.getElementById('appLinksGrid'); if(grid) { grid.classList.remove('animate-in'); void grid.offsetWidth; grid.classList.add('animate-in'); } }
             if(section==='allCreat') renderNotesList();
             if(section==='tempmail') {
-                initTempMail();
-                requestNotificationPermission();
-            } else destroyTempMail();
+                checkPremiumStatus();
+                if (!isPremiumUser) {
+                    showPremiumPopup();
+                } else {
+                    hidePremiumPopup();
+                    initTempMail();
+                    requestNotificationPermission();
+                }
+            } else {
+                destroyTempMail();
+                hidePremiumPopup();
+            }
             updateDashboardStats();
         }
 
         navs.forEach(b=>b.addEventListener('click', ()=>switchSection(b.getAttribute('data-section'))));
 
+        checkPremiumStatus();
         loadNotes();
         loadOTPHistory();
         currentEmails = generateVariants(document.getElementById('baseEmailInput').value.trim(),4);
@@ -1259,4 +1395,4 @@
     })();
 </script>
 </body>
-</html
+                            </html>
