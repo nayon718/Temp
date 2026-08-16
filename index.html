@@ -11,12 +11,9 @@
     <link rel="icon" type="image/png" href="message.png">
     <link rel="apple-touch-icon" href="message.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js">
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js">
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.6.0/jspdf.plugin.autotable.min.js">
-    </script>
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.6.0/jspdf.plugin.autotable.min.js"></script>
     <style>
         * { margin:0; padding:0; box-sizing:border-box; }
         body { background:#f4f7fb; padding-bottom:70px; font-family:system-ui, -apple-system, 'Segoe UI', 'Inter', sans-serif; -webkit-tap-highlight-color:transparent; -webkit-font-smoothing:antialiased; touch-action:manipulation; }
@@ -365,6 +362,31 @@
             filter: blur(4px) brightness(0.85); pointer-events: none; user-select: none;
             transition: filter 0.4s ease;
         }
+
+        /* SERVER LIST STYLES */
+        .server-row {
+            display: flex; align-items: center; justify-content: space-between;
+            background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px;
+            padding: 12px 14px; transition: all 0.2s ease;
+        }
+        .server-row:hover { background: #f1f5f9; border-color: #cbd5e1; }
+        .server-info { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
+        .server-icon {
+            width: 36px; height: 36px; border-radius: 50%;
+            background: linear-gradient(135deg, #4f46e5, #6366f1);
+            color: #fff; display: inline-flex; align-items: center; justify-content: center;
+            font-size: 0.85rem; font-weight: 700; flex-shrink: 0;
+        }
+        .server-name { font-weight: 600; font-size: 0.82rem; color: #1e293b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .server-open-btn {
+            background: linear-gradient(135deg, #16a34a, #22c55e); color: #fff;
+            border: none; padding: 8px 18px; border-radius: 24px;
+            font-size: 0.75rem; font-weight: 700; cursor: pointer;
+            box-shadow: 0 4px 12px rgba(22,163,74,0.25);
+            transition: all 0.2s ease; flex-shrink: 0;
+        }
+        .server-open-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(22,163,74,0.35); }
+        .server-open-btn:active { transform: scale(0.94); }
     </style>
 <base target="_blank">
 </head>
@@ -424,74 +446,18 @@
         </div>
     </div>
 
-    <!-- VPN SECTION -->
-    <div id="vpnSection" class="section">
+    <!-- SERVER SECTION -->
+    <div id="serverSection" class="section">
         <div class="card">
-            <h2 style="font-weight:700; font-size:1.1rem;"><i class="fas fa-lock" style="color:#1d8c5e;"></i> Proton VPN</h2>
-            <div class="vpn-promo-line">
-                <img src="proton.png" alt="Proton VPN" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 36 36%22%3E%3Ccircle cx=%2218%22 cy=%2218%22 r=%2218%22 fill=%22%231d8c5e%22/%3E%3Ctext x=%2218%22 y=%2225%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2218%22 font-weight=%22bold%22%3EP%3C/text%3E%3C/svg%3E'">
-                <span class="promo-text">🔒 Proton VPN 3 Months · 250 TK</span>
-                <a href="https://wa.me/8801757827996?text=Assalamu%20Alaikum%20%F0%9F%98%8A%2C%20%E0%A6%86%E0%A6%AE%E0%A6%BF%20Proton%20VPN%203%20Months%20(250%20TK)%20%E0%A6%A8%E0%A6%BF%E0%A6%A4%E0%A7%87%20%E0%A6%9A%E0%A6%BE%E0%A6%87%E0%A5%A4%20bKash%20%E0%A6%8F%20%E0%A6%AA%E0%A7%87%E0%A6%AE%E0%A7%87%E0%A6%A8%E0%A7%8D%E0%A6%9F%20%E0%A6%95%E0%A6%B0%E0%A6%AC%E0%A7%8B%20%E2%80%94%20%E0%A6%A8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AC%E0%A6%BE%E0%A6%B0%3A%2001757827996%E0%A5%A4%20%E0%A6%A6%E0%A7%9F%E0%A6%BE%20%E0%A6%95%E0%A6%B0%E0%A7%87%20%E0%A6%AC%E0%A6%B2%E0%A7%81%E0%A6%A8%20%E0%A6%95%E0%A6%BF%E0%A6%AD%E0%A6%BE%E0%A6%AC%E0%A7%87%20%E0%A6%A8%E0%A7%87%E0%A6%AC%E0%A7%8B%20%E2%9C%8C%EF%B8%8F" class="promo-btn" target="_blank"><i class="fab fa-whatsapp"></i> Buy Now</a>
-            </div>
+            <h2 style="font-weight:700; font-size:1.1rem; margin-bottom:12px;"><i class="fas fa-server" style="color:#4f46e5;"></i> Temp Mail Servers</h2>
+            <p style="font-size:0.68rem; color:#475569; margin-bottom:12px;">Choose a server to generate temporary email instantly</p>
+            <div id="serverList" style="display:flex; flex-direction:column; gap:10px;"></div>
         </div>
-
-        <!-- Premium Services Card -->
-        <div class="card">
-            <h2 style="font-weight:700; font-size:1.1rem; margin-bottom: 6px;"><i class="fas fa-shopping-cart"></i> Buy Premium Services</h2>
-            <!-- ABC Proxy -->
-            <div class="vpn-promo-line">
-                <img src="internet.png" style="width:30px; height:30px; object-fit:contain; border-radius:8px;" alt="buy">
-                <span class="promo-text">5GB High Speed ABC Proxy – 700 TK</span>
-                <a href="https://wa.me/8801757827996?text=Assalamu%20Alaikum%20%F0%9F%98%8A%2C%20%E0%A6%86%E0%A6%AE%E0%A6%BF%20ABC%20Proxy%20(700%20TK)%20%E0%A6%A8%E0%A6%BF%E0%A6%A4%E0%A7%87%20%E0%A6%9A%E0%A6%BE%E0%A6%87%E0%A5%A4%20bKash%20%E0%A6%8F%20%E0%A6%AA%E0%A7%87%E0%A6%AE%E0%A7%87%E0%A6%A8%E0%A7%8D%E0%A6%9F%20%E0%A6%95%E0%A6%B0%E0%A6%AC%E0%A7%8B%20%E2%80%94%20%E0%A6%A8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AC%E0%A6%BE%E0%A6%B0%3A%2001757827996%E0%A5%A4%20%E0%A6%A6%E0%A7%9F%E0%A6%BE%20%E0%A6%95%E0%A6%B0%E0%A7%87%20%E0%A6%AC%E0%A6%B2%E0%A7%81%E0%A6%A8%20%E0%A6%95%E0%A6%BF%E0%A6%AD%E0%A6%BE%E0%A6%AC%E0%A7%87%20%E0%A6%A8%E0%A7%87%E0%A6%AC%E0%A7%8B%20%E2%9C%8C%EF%B8%8F" class="promo-btn" target="_blank"><i class="fab fa-whatsapp"></i> Buy Now</a>
-            </div>
-            <!-- 1 Month Hosting -->
-            <div class="vpn-promo-line">
-                <img src="server.png" style="width:30px; height:30px; object-fit:contain; border-radius:8px;" alt="buy">
-                <span class="promo-text">1 Month Hosting – Unlimited Storage – 300 TK</span>
-                <a href="https://wa.me/8801757827996?text=Assalamu%20Alaikum%20%F0%9F%98%8A%2C%20%E0%A6%86%E0%A6%AE%E0%A6%BF%201%20Month%20Hosting%20(300%20TK)%20%E0%A6%A8%E0%A6%BF%E0%A6%A4%E0%A7%87%20%E0%A6%9A%E0%A6%BE%E0%A6%87%E0%A5%A4%20bKash%20%E0%A6%8F%20%E0%A6%AA%E0%A7%87%E0%A6%AE%E0%A7%87%E0%A6%A8%E0%A7%8D%E0%A6%9F%20%E0%A6%95%E0%A6%B0%E0%A6%AC%E0%A7%8B%20%E2%80%94%20%E0%A6%A8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AC%E0%A6%BE%E0%A6%B0%3A%2001757827996%E0%A5%A4%20%E0%A6%A6%E0%A7%9F%E0%A6%BE%20%E0%A6%95%E0%A6%B0%E0%A7%87%20%E0%A6%AC%E0%A6%B2%E0%A7%81%E0%A6%A8%20%E0%A6%95%E0%A6%BF%E0%A6%AD%E0%A6%BE%E0%A6%AC%E0%A7%87%20%E0%A6%A8%E0%A7%87%E0%A6%AC%E0%A7%8B%20%E2%9C%8C%EF%B8%8F" class="promo-btn" target="_blank"><i class="fab fa-whatsapp"></i> Buy Now</a>
-            </div>
-            <!-- 1 Year Hosting -->
-            <div class="vpn-promo-line">
-                <img src="server.png" style="width:30px; height:30px; object-fit:contain; border-radius:8px;" alt="buy">
-                <span class="promo-text">1 Year Hosting – Unlimited Storage – 35$</span>
-                <a href="https://wa.me/8801757827996?text=Assalamu%20Alaikum%20%F0%9F%98%8A%2C%20%E0%A6%86%E0%A6%AE%E0%A6%BF%201%20Year%20Hosting%20(35%24)%20%E0%A6%A8%E0%A6%BF%E0%A6%A4%E0%A7%87%20%E0%A6%9A%E0%A6%BE%E0%A6%87%E0%A5%A4%20bKash%20%E0%A6%8F%20%E0%A6%AA%E0%A7%87%E0%A6%AE%E0%A7%87%E0%A6%A8%E0%A7%8D%E0%A6%9F%20%E0%A6%95%E0%A6%B0%E0%A6%AC%E0%A7%8B%20%E2%80%94%20%E0%A6%A8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AC%E0%A6%BE%E0%A6%B0%3A%2001757827996%E0%A5%A4%20%E0%A6%A6%E0%A7%9F%E0%A6%BE%20%E0%A6%95%E0%A6%B0%E0%A7%87%20%E0%A6%AC%E0%A6%B2%E0%A7%81%E0%A6%A8%20%E0%A6%95%E0%A6%BF%E0%A6%AD%E0%A6%BE%E0%A6%AC%E0%A7%87%20%E0%A6%A8%E0%A7%87%E0%A6%AC%E0%A7%8B%20%E2%9C%8C%EF%B8%8F" class="promo-btn" target="_blank"><i class="fab fa-whatsapp"></i> Buy Now</a>
-            </div>
-            <!-- Premium Domain -->
-            <div class="vpn-promo-line">
-                <img src="domains-website.png" style="width:30px; height:30px; object-fit:contain; border-radius:8px;" alt="buy">
-                <span class="promo-text">Buy Premium .Com Domain – Only 8$</span>
-                <a href="https://wa.me/8801757827996?text=Assalamu%20Alaikum%20%F0%9F%98%8A%2C%20%E0%A6%86%E0%A6%AE%E0%A6%BF%20Premium%20.Com%20Domain%20(8%24)%20%E0%A6%A8%E0%A6%BF%E0%A6%A4%E0%A7%87%20%E0%A6%9A%E0%A6%BE%E0%A6%87%E0%A5%A4%20bKash%20%E0%A6%8F%20%E0%A6%AA%E0%A7%87%E0%A6%AE%E0%A7%87%E0%A6%A8%E0%A7%8D%E0%A6%9F%20%E0%A6%95%E0%A6%B0%E0%A6%AC%E0%A7%8B%20%E2%80%94%20%E0%A6%A8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AC%E0%A6%BE%E0%A6%B0%3A%2001757827996%E0%A5%A4%20%E0%A6%A6%E0%A7%9F%E0%A6%BE%20%E0%A6%95%E0%A6%B0%E0%A7%87%20%E0%A6%AC%E0%A6%B2%E0%A7%81%E0%A6%A8%20%E0%A6%95%E0%A6%BF%E0%A6%AD%E0%A6%BE%E0%A6%AC%E0%A7%87%20%E0%A6%A8%E0%A7%87%E0%A6%AC%E0%A7%8B%20%E2%9C%8C%EF%B8%8F" class="promo-btn" target="_blank"><i class="fab fa-whatsapp"></i> Buy Now</a>
-            </div>
-            <!-- Develop Website -->
-            <div class="vpn-promo-line">
-                <img src="domain.png" style="width:30px; height:30px; object-fit:contain; border-radius:8px;" alt="buy">
-                <span class="promo-text">Custom Website Build – Only 5,000 BDT</span>
-                <a href="https://wa.me/8801757827996?text=Assalamu%20Alaikum%20%F0%9F%98%8A%2C%20%E0%A6%86%E0%A6%AE%E0%A6%BF%20Custom%20Website%20Build%20(5000%20BDT)%20%E0%A6%A8%E0%A6%BF%E0%A6%A4%E0%A7%87%20%E0%A6%9A%E0%A6%BE%E0%A6%87%E0%A5%A4%20bKash%20%E0%A6%8F%20%E0%A6%AA%E0%A7%87%E0%A6%AE%E0%A7%87%E0%A6%A8%E0%A7%8D%E0%A6%9F%20%E0%A6%95%E0%A6%B0%E0%A6%AC%E0%A7%8B%20%E2%80%94%20%E0%A6%A8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AC%E0%A6%BE%E0%A6%B0%3A%2001757827996%E0%A5%A4%20%E0%A6%A6%E0%A7%9F%E0%A6%BE%20%E0%A6%95%E0%A6%B0%E0%A7%87%20%E0%A6%AC%E0%A6%B2%E0%A7%81%E0%A6%A8%20%E0%A6%95%E0%A6%BF%E0%A6%AD%E0%A6%BE%E0%A6%AC%E0%A7%87%20%E0%A6%A8%E0%A7%87%E0%A6%AC%E0%A7%8B%20%E2%9C%8C%EF%B8%8F" class="promo-btn" target="_blank"><i class="fab fa-whatsapp"></i> Buy Now</a>
-            </div>
-            <!-- Develop App -->
-            <div class="vpn-promo-line">
-                <img src="apk.png" style="width:30px; height:30px; object-fit:contain; border-radius:8px;" alt="buy">
-                <span class="promo-text">Develop Any App – Only 3,000 BDT</span>
-                <a href="https://wa.me/8801757827996?text=Assalamu%20Alaikum%20%F0%9F%98%8A%2C%20%E0%A6%86%E0%A6%AE%E0%A6%BF%20App%20Development%20(3000%20BDT)%20%E0%A6%A8%E0%A6%BF%E0%A6%A4%E0%A7%87%20%E0%A6%9A%E0%A6%BE%E0%A6%87%E0%A5%A4%20bKash%20%E0%A6%8F%20%E0%A6%AA%E0%A7%87%E0%A6%AE%E0%A7%87%E0%A6%A8%E0%A7%8D%E0%A6%9F%20%E0%A6%95%E0%A6%B0%E0%A6%AC%E0%A7%8B%20%E2%80%94%20%E0%A6%A8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AC%E0%A6%BE%E0%A6%B0%3A%2001757827996%E0%A5%A4%20%E0%A6%A6%E0%A7%9F%E0%A6%BE%20%E0%A6%95%E0%A6%B0%E0%A7%87%20%E0%A6%AC%E0%A6%B2%E0%A7%81%E0%A6%A8%20%E0%A6%95%E0%A6%BF%E0%A6%AD%E0%A6%BE%E0%A6%AC%E0%A7%87%20%E0%A6%A8%E0%A7%87%E0%A6%AC%E0%A7%8B%20%E2%9C%8C%EF%B8%8F" class="promo-btn" target="_blank"><i class="fab fa-whatsapp"></i> Buy Now</a>
-            </div>
-            <!-- Develop Single Website -->
-            <div class="vpn-promo-line">
-                <img src="domain.png" style="width:30px; height:30px; object-fit:contain; border-radius:8px;" alt="buy">
-                <span class="promo-text">Custom Single Website – Only 1,000 BDT</span>
-                <a href="https://wa.me/8801757827996?text=Assalamu%20Alaikum%20%F0%9F%98%8A%2C%20%E0%A6%86%E0%A6%AE%E0%A6%BF%20Single%20Website%20(1000%20BDT)%20%E0%A6%A8%E0%A6%BF%E0%A6%A4%E0%A7%87%20%E0%A6%9A%E0%A6%BE%E0%A6%87%E0%A5%A4%20bKash%20%E0%A6%8F%20%E0%A6%AA%E0%A7%87%E0%A6%AE%E0%A7%87%E0%A6%A8%E0%A7%8D%E0%A6%9F%20%E0%A6%95%E0%A6%B0%E0%A6%AC%E0%A7%8B%20%E2%80%94%20%E0%A6%A8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AC%E0%A6%BE%E0%A6%B0%3A%2001757827996%E0%A5%A4%20%E0%A6%A6%E0%A7%9F%E0%A6%BE%20%E0%A6%95%E0%A6%B0%E0%A7%87%20%E0%A6%AC%E0%A6%B2%E0%A7%81%E0%A6%A8%20%E0%A6%95%E0%A6%BF%E0%A6%AD%E0%A6%BE%E0%A6%AC%E0%A7%87%20%E0%A6%A8%E0%A7%87%E0%A6%AC%E0%A7%8B%20%E2%9C%8C%EF%B8%8F" class="promo-btn" target="_blank"><i class="fab fa-whatsapp"></i> Buy Now</a>
-            </div>
-            <!-- Learn Trading -->
-            <div class="vpn-promo-line">
-                <img src="solana.png" style="width:30px; height:30px; object-fit:contain; border-radius:8px;" alt="buy">
-                <span class="promo-text">A-Z Learn & Earn Trading – Original Market – Only 2,000 BDT</span>
-                <a href="https://wa.me/8801757827996?text=Assalamu%20Alaikum%20%F0%9F%98%8A%2C%20%E0%A6%86%E0%A6%AE%E0%A6%BF%20Trading%20Course%20(2000%20BDT)%20%E0%A6%A8%E0%A6%BF%E0%A6%A4%E0%A7%87%20%E0%A6%9A%E0%A6%BE%E0%A6%87%E0%A5%A4%20bKash%20%E0%A6%8F%20%E0%A6%AA%E0%A7%87%E0%A6%AE%E0%A7%87%E0%A6%A8%E0%A7%8D%E0%A6%9F%20%E0%A6%95%E0%A6%B0%E0%A6%AC%E0%A7%8B%20%E2%80%94%20%E0%A6%A8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AC%E0%A6%BE%E0%A6%B0%3A%2001757827996%E0%A5%A4%20%E0%A6%A6%E0%A7%9F%E0%A6%BE%20%E0%A6%95%E0%A6%B0%E0%A7%87%20%E0%A6%AC%E0%A6%B2%E0%A7%81%E0%A6%A8%20%E0%A6%95%E0%A6%BF%E0%A6%AD%E0%A6%BE%E0%A6%AC%E0%A7%87%20%E0%A6%A8%E0%A7%87%E0%A6%AC%E0%A7%8B%20%E2%9C%8C%EF%B8%8F" class="promo-btn" target="_blank"><i class="fab fa-whatsapp"></i> Buy Now</a>
-            </div>
-            <!-- Create Any Tools -->
-            <div class="vpn-promo-line">
-                <img src="ai.png" style="width:30px; height:30px; object-fit:contain; border-radius:8px;" alt="buy">
-                <span class="promo-text">Create Any Tools – Only 1,000 BDT</span>
-                <a href="https://wa.me/8801757827996?text=Assalamu%20Alaikum%20%F0%9F%98%8A%2C%20%E0%A6%86%E0%A6%AE%E0%A6%BF%20Tool%20Creation%20(1000%20BDT)%20%E0%A6%A8%E0%A6%BF%E0%A6%A4%E0%A7%87%20%E0%A6%9A%E0%A6%BE%E0%A6%87%E0%A5%A4%20bKash%20%E0%A6%8F%20%E0%A6%AA%E0%A7%87%E0%A6%AE%E0%A7%87%E0%A6%A8%E0%A7%8D%E0%A6%9F%20%E0%A6%95%E0%A6%B0%E0%A6%AC%E0%A7%8B%20%E2%80%94%20%E0%A6%A8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AC%E0%A6%BE%E0%A6%B0%3A%2001757827996%E0%A5%A4%20%E0%A6%A6%E0%A7%9F%E0%A6%BE%20%E0%A6%95%E0%A6%B0%E0%A7%87%20%E0%A6%AC%E0%A6%B2%E0%A7%81%E0%A6%A8%20%E0%A6%95%E0%A6%BF%E0%A6%AD%E0%A6%BE%E0%A6%AC%E0%A7%87%20%E0%A6%A8%E0%A7%87%E0%A6%AC%E0%A7%8B%20%E2%9C%8C%EF%B8%8F" class="promo-btn" target="_blank"><i class="fab fa-whatsapp"></i> Buy Now</a>
-            </div>
+        <div class="sweet-watermark"><i class="fas fa-check-circle" style="color:#16a34a;"></i> সুইট বয় নয়ন</div>
+        <div class="social-links">
+            <a href="https://ah-nayon.github.io/web/" target="_blank" class="social-icon-circle contact-web"><i class="fas fa-globe"></i></a>
+            <a href="https://www.facebook.com/share/1P7hqLHFBu/" target="_blank" class="social-icon-circle facebook-og"><i class="fab fa-facebook-f"></i></a>
+            <a href="mailto:mdahoshanhabibnayon@gmail.com" class="social-icon-circle mail-og"><i class="fas fa-envelope"></i></a>
         </div>
     </div>
 
@@ -566,7 +532,8 @@
     </div>
     <!-- PREMIUM POPUP -->
     <div class="premium-overlay" id="premiumOverlay">
-        <div class="premium-card">
+        <div class="premium-card" style="position:relative;">
+            <button id="premiumCloseBtn" style="position:absolute; top:14px; right:14px; background:#f1f5f9; border:none; width:32px; height:32px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; color:#64748b; transition:background 0.2s; z-index:2;"><i class="fas fa-times"></i></button>
             <div class="premium-icon-wrap"><i class="fas fa-crown"></i></div>
             <div class="premium-title">Only Allow Premium Users</div>
             <div class="premium-subtitle">Enter your activation key below to unlock Temp Mail features.</div>
@@ -576,13 +543,24 @@
         </div>
     </div>
 
+    <!-- SERVER LAUNCH OVERLAY -->
+    <div id="serverLaunchOverlay" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(15,23,42,0.9); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); z-index:2600; display:none; flex-direction:column; align-items:center; justify-content:center; opacity:0; transition:opacity 0.3s ease;">
+        <div style="width:64px; height:64px; border-radius:50%; background:linear-gradient(135deg,#4f46e5,#6366f1); display:flex; align-items:center; justify-content:center; margin-bottom:20px; box-shadow:0 8px 32px rgba(79,70,229,0.4); animation:pulseServer 1.5s ease-in-out infinite;">
+            <i class="fas fa-server" style="font-size:1.5rem; color:#fff;"></i>
+        </div>
+        <h3 id="serverLaunchTitle" style="font-size:1.1rem; font-weight:700; color:#fff; margin-bottom:8px;">Opening Server...</h3>
+        <p style="font-size:0.8rem; color:#94a3b8;">Launching in new tab</p>
+        <button id="serverLaunchCancel" style="margin-top:24px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); color:#fff; padding:8px 20px; border-radius:24px; font-size:0.75rem; cursor:pointer; transition:background 0.2s;"><i class="fas fa-times"></i> Cancel</button>
+    </div>
+    <style>@keyframes pulseServer{0%,100%{transform:scale(1);}50%{transform:scale(1.1);}}</style>
+
 </div>
 
 <div class="bottom-nav">
     <button class="nav-item active" data-section="generator"><i class="fas fa-wand-magic-sparkles"></i><span>Creats</span></button>
     <button class="nav-item" data-section="allCreat"><i class="fas fa-folder-open"></i><span>Emails</span></button>
     <button class="nav-item" data-section="tempmail"><i class="fas fa-clock"></i><span>Temp</span></button>
-    <button class="nav-item" data-section="vpn"><i class="fas fa-lock"></i><span>VPN</span></button>
+    <button class="nav-item" data-section="server"><i class="fas fa-server"></i><span>Server</span></button>
     <button class="nav-item" data-section="about"><i class="fas fa-info-circle"></i><span>About</span></button>
 </div>
 
@@ -656,6 +634,7 @@
             const continueBtn = document.getElementById('premiumContinueBtn');
             const keyInput = document.getElementById('premiumKeyInput');
             const errorMsg = document.getElementById('premiumErrorMsg');
+            const closeBtn = document.getElementById('premiumCloseBtn');
             if (!continueBtn) return;
 
             continueBtn.addEventListener('click', () => {
@@ -678,6 +657,13 @@
             keyInput.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter') continueBtn.click();
             });
+
+            if (closeBtn) {
+                closeBtn.addEventListener('click', () => {
+                    hidePremiumPopup();
+                    switchSection('generator');
+                });
+            }
         })();
 
         const STORAGE_KEY = 'caseforge_notes', CUT_COUNT_KEY = 'caseforge_cutcount';
@@ -778,8 +764,7 @@
         document.getElementById('downloadExcelBtn').addEventListener('click',exportExcel);
         document.getElementById('downloadPdfBtn').addEventListener('click',exportPDF);
 
-        // TEMP MAIL LOGIC — multi-provider with auto fallback
-        // Chain: mail.tm → mail.gw (same API) → maildrop.cc (no signup, always works)
+        // TEMP MAIL LOGIC
         const TEMP_PROVIDERS = [
             { type: 'mailtm', base: 'https://api.mail.tm' },
             { type: 'mailtm', base: 'https://api.mail.gw' },
@@ -852,7 +837,6 @@
         }
         document.getElementById('clearOTPHistoryBtn')?.addEventListener('click', clearOTPHistory);
 
-        // ---- Provider: mail.tm / mail.gw (identical API) ----
         async function mailTmFetch(base, endpoint, options={}) {
             const res = await fetch(`${base}${endpoint}`, { ...options, headers: {'Content-Type':'application/json', ...options.headers} });
             if(!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -902,7 +886,6 @@
             };
         }
 
-        // ---- Provider: maildrop.cc (GraphQL, no account creation → immune to rate limits) ----
         async function maildropQuery(query) {
             const res = await fetch('https://api.maildrop.cc/graphql', {
                 method: 'POST',
@@ -916,7 +899,7 @@
         }
         function maildropMailbox(acc) { return acc.address.split('@')[0]; }
         async function createMaildropAccount(provider) {
-            await maildropQuery('query { status }'); // verify reachable
+            await maildropQuery('query { status }');
             const address = `${randomLocalPart(6)}${Date.now().toString(36)}@maildrop.cc`;
             return { provider: 'maildrop', address };
         }
@@ -935,7 +918,6 @@
             return '';
         }
         async function fetchMaildropMessages(acc) {
-            // light query — maildrop returns body (data/html) only via single-message query
             const data = await maildropQuery(`query { inbox(mailbox:"${maildropMailbox(acc)}") { id mailfrom headerfrom subject date } }`);
             const list = data.inbox || [];
             return list.map(m => ({
@@ -964,7 +946,6 @@
             };
         }
 
-        // ---- Shared helpers ----
         function htmlToText(html) {
             if (!html) return '';
             return html
@@ -1006,9 +987,9 @@
             if (stored) {
                 try {
                     const acc = JSON.parse(stored);
-                    if (!acc.provider) acc.provider = 'mailtm'; // legacy saved session
+                    if (!acc.provider) acc.provider = 'mailtm';
                     if (acc.provider === 'mailtm' && !acc.base) acc.base = 'https://api.mail.tm';
-                    await fetchTempMessages(acc); // validate session still alive
+                    await fetchTempMessages(acc);
                     return acc;
                 } catch { localStorage.removeItem('tempmail_account'); }
             }
@@ -1046,9 +1027,6 @@
             }, 250);
         }
 
-        // ---- OTP auto-copy to device clipboard ----
-        // Browsers block clipboard writes while the app is in background, so if the
-        // immediate copy fails it stays pending and completes as soon as the app regains focus.
         let pendingOTPCopy = null, lastAutoCopiedOTP = null;
         async function tryCopyText(text) {
             try { await navigator.clipboard.writeText(text); return true; }
@@ -1119,13 +1097,12 @@
             });
             item.appendChild(codeBtn);
             addOTPToHistory(code, from || 'unknown', createdAt ? new Date(createdAt).toLocaleString() : new Date().toLocaleString());
-            // auto-copy only fresh codes (arrived within the last 10 minutes)
             const codeTs = createdAt ? new Date(createdAt).getTime() : Date.now();
             if (!isNaN(codeTs) && Date.now() - codeTs < 10 * 60 * 1000) autoCopyOTP(code);
         }
 
         function createTempMessageElement(msg) {
-            const acc = tempAccount; // capture — account may change before async work finishes
+            const acc = tempAccount;
             const item = document.createElement('div');
             item.className = 'temp-message-item';
             item.dataset.id = String(msg.id);
@@ -1137,7 +1114,6 @@
             const code = extractCode(msg.subject || '') || extractCode(msg.text || '');
             if (code) attachCodeChip(item, code, msg.from, msg.createdAt);
 
-            // maildrop: body not included in list → lazy-load full message for preview + OTP
             if (msg.provider === 'maildrop' && !code) {
                 fetchTempFullMessage(acc, msg.id).then(full => {
                     if (!item.isConnected || acc !== tempAccount) return;
@@ -1189,16 +1165,12 @@
                 const messages = await fetchTempMessages(tempAccount);
                 tempEmailCard.classList.remove('expired');
                 const currentIds = new Set(messages.map(m => String(m.id)));
-                // remove elements whose message no longer exists server-side
                 Array.from(tempMessageList.children).forEach(child => {
                     if (child.classList.contains('temp-message-item') && !currentIds.has(child.dataset.id)) {
                         child.remove();
                         knownTempIds.delete(child.dataset.id);
                     }
                 });
-                // DOM is the source of truth: any message whose element is missing gets
-                // re-rendered — even if its id was already marked "known" (lost render fix).
-                // newest first: iterate reversed + prepend so list order matches the API.
                 messages.slice().reverse().forEach(msg => {
                     const msgId = String(msg.id);
                     const exists = Array.from(tempMessageList.children).some(c => c.classList.contains('temp-message-item') && c.dataset.id === msgId);
@@ -1207,7 +1179,7 @@
                         const el = createTempMessageElement(msg);
                         tempMessageList.prepend(el);
                         knownTempIds.add(msg.id);
-                    } catch (e) { /* not marked known → retried on next poll */ }
+                    } catch (e) {}
                 });
                 if (messages.length > 0) {
                     const empty = tempMessageList.querySelector('.no-messages');
@@ -1237,8 +1209,8 @@
                 if (session !== tempPollSession || !tempAccount) return;
                 const ok = await refreshTempInbox(true);
                 if (session !== tempPollSession) return;
-                retryPendingOTPCopy(); // while the page is open, keep retrying any pending OTP copy
-                failures = ok ? 0 : Math.min(failures + 1, 4); // back off on failures (e.g. rate limits)
+                retryPendingOTPCopy();
+                failures = ok ? 0 : Math.min(failures + 1, 4);
                 tempPollTimer = setTimeout(tick, base * (failures ? failures + 1 : 1));
             };
             tempPollTimer = setTimeout(tick, base);
@@ -1264,7 +1236,7 @@
         }
 
         function destroyTempMail() {
-            tempPollSession++; // invalidate any in-flight poll callback
+            tempPollSession++;
             clearTimeout(tempPollTimer);
             tempPollTimer = null;
         }
@@ -1299,7 +1271,6 @@
                 tempAccount = await createTempAccountWithFallback();
                 localStorage.setItem('tempmail_account', JSON.stringify(tempAccount));
                 tempEmailEl.textContent = tempAccount.address;
-                // auto-copy the new address to the system clipboard
                 let copied = false;
                 try {
                     await navigator.clipboard.writeText(tempAccount.address);
@@ -1336,12 +1307,78 @@
             requestNotificationPermission();
         });
 
+        // ================= SERVER SECTION =================
+        const SERVERS = [
+            { name: 'Server 1', url: 'https://www.disposablemail.com/' },
+            { name: 'Server 2', url: 'https://temp-mail.org/' },
+            { name: 'Server 3', url: 'https://10minutemail.com/' },
+            { name: 'Server 4', url: 'https://www.guerrillamail.com/' },
+            { name: 'Server 5', url: 'https://mail.tm/en/' },
+            { name: 'Server 6', url: 'https://maildrop.cc/' },
+            { name: 'Server 7', url: 'https://getnada.com/' },
+            { name: 'Server 8', url: 'https://www.tempmailo.com/' },
+            { name: 'Server 9', url: 'https://tempail.com/' },
+            { name: 'Server 10', url: 'https://www.emailondeck.com/' },
+            { name: 'Server 11', url: 'https://www.throwawaymail.com/' },
+            { name: 'Server 12', url: 'https://yopmail.com/' },
+            { name: 'Server 13', url: 'https://www.mohmal.com/' },
+            { name: 'Server 14', url: 'https://www.fake-mail.net/' },
+            { name: 'Server 15', url: 'https://temp-mail.io/' }
+        ];
+
+        function renderServerList() {
+            const list = document.getElementById('serverList');
+            if (!list) return;
+            list.innerHTML = '';
+            SERVERS.forEach((srv, idx) => {
+                const row = document.createElement('div');
+                row.className = 'server-row';
+                row.innerHTML = `
+                    <div class="server-info">
+                        <div class="server-icon">${idx + 1}</div>
+                        <div class="server-name">${escapeHtml(srv.name)}</div>
+                    </div>
+                    <button class="server-open-btn" data-idx="${idx}"><i class="fas fa-external-link-alt"></i> Open</button>
+                `;
+                row.querySelector('.server-open-btn').addEventListener('click', () => openServer(srv));
+                list.appendChild(row);
+            });
+        }
+
+        const serverLaunchOverlay = document.getElementById('serverLaunchOverlay');
+        const serverLaunchTitle = document.getElementById('serverLaunchTitle');
+        let serverLaunchTimer = null;
+
+        function openServer(srv) {
+            if (!srv || !srv.url) return;
+            serverLaunchTitle.textContent = 'Opening ' + srv.name + '...';
+            serverLaunchOverlay.style.display = 'flex';
+            requestAnimationFrame(() => {
+                serverLaunchOverlay.style.opacity = '1';
+            });
+            serverLaunchTimer = setTimeout(() => {
+                window.open(srv.url, '_blank');
+                serverLaunchOverlay.style.opacity = '0';
+                setTimeout(() => {
+                    serverLaunchOverlay.style.display = 'none';
+                }, 300);
+            }, 800);
+        }
+
+        document.getElementById('serverLaunchCancel').addEventListener('click', () => {
+            if (serverLaunchTimer) clearTimeout(serverLaunchTimer);
+            serverLaunchOverlay.style.opacity = '0';
+            setTimeout(() => {
+                serverLaunchOverlay.style.display = 'none';
+            }, 300);
+        });
+
         // Section switching
         const sections = {
             generator: document.getElementById('generatorSection'),
             allCreat: document.getElementById('allCreatSection'),
             tempmail: document.getElementById('tempmailSection'),
-            vpn: document.getElementById('vpnSection'),
+            server: document.getElementById('serverSection'),
             about: document.getElementById('aboutSection')
         };
         const navs = document.querySelectorAll('.nav-item');
@@ -1350,7 +1387,7 @@
         function switchSection(section) {
             if(isTransitioning || section===currentSection) return;
             isTransitioning = true;
-            const order = ['generator','allCreat','tempmail','vpn','about'];
+            const order = ['generator','allCreat','tempmail','server','about'];
             const goingForward = order.indexOf(section) > order.indexOf(currentSection);
             const targetSec = sections[section];
             const oldSection = document.querySelector('.section.active-section');
@@ -1368,6 +1405,7 @@
             navs.forEach(b=>{ b.classList.toggle('active', b.getAttribute('data-section')===section); });
             if(section==='about') { const grid = document.getElementById('appLinksGrid'); if(grid) { grid.classList.remove('animate-in'); void grid.offsetWidth; grid.classList.add('animate-in'); } }
             if(section==='allCreat') renderNotesList();
+            if(section==='server') renderServerList();
             if(section==='tempmail') {
                 checkPremiumStatus();
                 if (!isPremiumUser) {
@@ -1395,4 +1433,4 @@
     })();
 </script>
 </body>
-                            </html>
+</html>
